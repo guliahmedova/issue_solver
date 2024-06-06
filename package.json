@@ -9,11 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.19",
     "axios": "^1.7.2",
+    "formik": "^2.4.6",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "sass": "^1.77.4",
     "swr": "^2.2.5",
+    "zod": "^3.23.8",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

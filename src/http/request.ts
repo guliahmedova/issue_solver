@@ -1,10 +1,11 @@
+import urlConfig from "@/constants/url";
 import { useAuthStore } from "@/state/useAuthStore";
 import axios from "axios";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
 export const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  baseURL: urlConfig.local.baseUrl,
   headers: {
     "Content-Type": "application/json",
   },

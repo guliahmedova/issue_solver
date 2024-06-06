@@ -3,6 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { SWRConfig } from "swr";
 import { defaultValues } from "@/swr/config";
+import { SWRProvider } from "@/swr/SwrProvider";
+import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material";
+import { theme } from "@/utils/theme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,9 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SWRConfig value={defaultValues}>
-          {children}
-        </SWRConfig>
+        <CssVarsProvider theme={theme} defaultMode="light">
+          <SWRProvider>{children}</SWRProvider>
+        </CssVarsProvider>
       </body>
     </html>
   );
