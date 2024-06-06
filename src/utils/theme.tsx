@@ -1,6 +1,17 @@
 "use client";
 import { experimental_extendTheme as extendTheme } from "@mui/material";
 
+declare module "@mui/material/styles" {
+  interface BreakpointOverrides {
+    xs: true;
+    sm: true;
+    md: true;
+    lg: true;
+    xl: true;
+    xxl: true;
+  }
+}
+
 export const theme = extendTheme({
   colorSchemes: {
     light: {
@@ -105,6 +116,16 @@ export const theme = extendTheme({
           },
         },
       ],
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 480,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
     },
   },
 });
