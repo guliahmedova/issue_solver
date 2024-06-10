@@ -1,14 +1,28 @@
 import { Button as MuiButton } from "@mui/material";
 import { ButtonProps as MuiButtonProps } from "@mui/material";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
 interface ButtonProps extends Pick<MuiButtonProps, Exclude<keyof MuiButtonProps, "variant">> {
   handleClick?: () => void;
-  variant: "text" | "outlined" | "contained";
+  variant: "primary" | "secondary" | "disabled";
+  showIcon?: boolean;
 }
 
-export default function Button({ variant, handleClick, children, ...restProps }: ButtonProps) {
+export default function Button({
+  variant,
+  handleClick,
+  showIcon = false,
+  children,
+  ...restProps
+}: ButtonProps) {
   return (
-    <MuiButton variant={variant} onClick={handleClick} {...restProps}>
+    <MuiButton
+      variant={variant}
+      onClick={handleClick}
+      endIcon={showIcon ? <ArrowRightAltIcon /> : null}
+      fullWidth
+      {...restProps}
+    >
       {children}
     </MuiButton>
   );

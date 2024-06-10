@@ -11,7 +11,14 @@ declare module "@mui/material/styles" {
     xxl: true;
   }
 }
-
+declare module "@mui/material/Button" {
+  interface ButtonPropsVariantOverrides {
+    primary: true;
+    secondary: true;
+    default: true;
+    disabled: true;
+  }
+}
 export const theme = extendTheme({
   colorSchemes: {
     light: {
@@ -27,9 +34,10 @@ export const theme = extendTheme({
           main: "#315AB5",
         },
         primary: {
-          main: "#315AB5",
+          main: "#2981FF",
           light: "#B2C5FF",
           dark: "#0D419C",
+          contrastText: "#0169FE",
         },
         secondary: {
           main: "#585E71",
@@ -42,7 +50,7 @@ export const theme = extendTheme({
           dark: "rgb(18, 113, 56)",
         },
         text: {
-          primary: "#20262d",
+          primary: "#fff",
           secondary: "#2f3a45",
         },
         error: {
@@ -106,18 +114,61 @@ export const theme = extendTheme({
       variants: [
         {
           props: {
-            variant: "text",
+            variant: "primary",
           },
-          style: {
-            width: "150px",
-            height: "40px",
+          style: ({ theme }) => ({
             padding: "12px 24px 12px 24px",
-            gap: "10px",
-          },
+            borderRadius: "20px",
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "center",
+            textTransform: "none",
+            fontSize: "13px",
+            fontWeight: "500",
+            lineHeight: "16px",
+            color: theme.palette.text.primary,
+            background: theme.palette.primary.main,
+            "& > .MuiButton-endIcon > svg": {
+              fontSize: "12px ",
+            },
+            "&:hover": {
+              background: theme.palette.primary.light,
+            },
+            "&:active": {
+              background: theme.palette.primary.dark,
+            },
+            [theme.breakpoints.between("md", "xl")]: {
+              padding: "14.77px 22.15px",
+              "& > .MuiButton-endIcon > svg": {
+                fontSize: "14px ",
+              },
+            },
+            [theme.breakpoints.up("xl")]: {
+              padding: "16px 24px",
+              fontSize: "18px",
+              lineHeight: "21.98px",
+              "& > .MuiButton-endIcon > svg": {
+                fontSize: "22px ",
+              },
+            },
+          }),
         },
       ],
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: ({ theme }) =>
+          theme.unstable_sx({
+            width: "380px",
+            height: "64px",
+            borderRadius: "12px",
+            background: theme.palette.background.paper,
+            border: "none",
+          }),
+      },
+    },
   },
+
   breakpoints: {
     values: {
       xs: 480,
