@@ -1,11 +1,9 @@
+import { SWRProvider } from "@/swr/SwrProvider";
+import { theme } from "@/utils/theme";
+import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { SWRConfig } from "swr";
-import { defaultValues } from "@/swr/config";
-import { SWRProvider } from "@/swr/SwrProvider";
-import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material";
-import { theme } from "@/utils/theme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,4 +26,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
