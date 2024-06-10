@@ -1,6 +1,28 @@
 "use client";
 import { experimental_extendTheme as extendTheme } from "@mui/material";
 
+declare module "@mui/material/styles" {
+  interface BreakpointOverrides {
+    xs: true;
+    sm: true;
+    md: true;
+    lg: true;
+    xl: true;
+    xxl: true;
+  }
+};
+
+declare module "@mui/material/Button" {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  interface ButtonPropsVariantOverrides {
+    link: true;
+    primary: true;
+    primaryLight: true;
+    defaultLight: true;
+    default: true;
+  }
+};
+
 export const theme = extendTheme({
   colorSchemes: {
     light: {
@@ -12,7 +34,7 @@ export const theme = extendTheme({
         },
         info: {
           dark: "#01579b",
-          light: "#03a9f4",
+          light: "#2981FF",
           main: "#315AB5",
         },
         primary: {
@@ -106,5 +128,60 @@ export const theme = extendTheme({
         },
       ],
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          // width: "380px",
+          // height: "64px",
+          padding: "18px 16px",
+          borderRadius: "12px",
+          backgroundColor: "white",
+          border: 0,
+          outline: "none",
+          fontSize: "14px",
+          "&:hover": {
+            border: '1px solid #2981FF'
+          }
+        }
+      }
+    },
+    MuiInputLabel: {
+      variants: [
+        {
+          props: {
+            variant: "standard",
+          },
+          style: {
+            fontSize: "15px",
+            marginBottom: "8px",
+            fontWeight: 500
+          }
+        }
+      ]
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: "#2981FF"
+        }
+      }
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          color: "#9D9D9D"
+        }
+      }
+    }
   },
+  breakpoints: {
+    values: {
+      xs: 480,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+    },
+  }
 });

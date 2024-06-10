@@ -12,4 +12,4 @@ export default function Button({ variant, handleClick, children, ...restProps }:
       {children}
     </MuiButton>
   );
-}
+};
