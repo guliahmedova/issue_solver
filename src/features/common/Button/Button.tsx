@@ -26,4 +26,4 @@ export default function Button({
       {children}
     </MuiButton>
   );
-}
+};
