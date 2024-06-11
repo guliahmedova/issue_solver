@@ -1,10 +1,9 @@
+import AuthSidebar from "@/features/common/AuthSidebar";
 
 const Home = () => {
   return (
-    <div>
-      Home Page
-    </div>
+    <AuthSidebar children={<h1>Salan</h1>} />
   )
 }
 
-export default Home
+export default Home;

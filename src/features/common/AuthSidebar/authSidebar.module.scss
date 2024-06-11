@@ -1,0 +1,39 @@
+.animated_text {
+    overflow: hidden;
+    height: 60px;
+}
+
+.word:first-child {
+    line-height: 60px;
+    animation: animateText 10s infinite;
+}
+
+@keyframes animateText {
+    0% {
+        margin-top: 0px;
+    }
+
+    16% {
+        margin-top: -60px;
+    }
+
+    33% {
+        margin-top: -120px;
+    }
+
+    50% {
+        margin-top: -180px;
+    }
+
+    60% {
+        margin-top: -120px;
+    }
+
+    82% {
+        margin-top: -60px;
+    }
+
+    100% {
+        margin-top: 0px;
+    }
+}
