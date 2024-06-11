@@ -1,0 +1,30 @@
+.container{
+    width: 50%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #F0F4F9;
+    padding: 268px 122px;
+    
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin: 0 auto;
+}
+.fieldContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+.register{
+    display: flex;
+    justify-content: space-evenly;
+    padding:24px 86px;
+}
