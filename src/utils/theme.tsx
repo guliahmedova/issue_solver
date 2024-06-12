@@ -192,13 +192,6 @@ export const theme = extendTheme({
           color: "#2981FF"
         }
       }
-    },
-    MuiTypography: {
-      styleOverrides: {
-        root: {
-          color: "#9D9D9D"
-        }
-      }
     }
   },
 

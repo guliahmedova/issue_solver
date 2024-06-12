@@ -1,7 +1,6 @@
 "use client";
+import { Button, Input } from "@/features/common";
 import { Box, Typography } from "@mui/material";
-import Input from "../Input";
-import Button from "../Button/Button";
 import { Field, Formik } from "formik";
 import styles from "./index.module.scss";
 
@@ -44,10 +43,10 @@ export default function LoginForm() {
                   autoComplete="email"
                   component={Input}
                   placeholder="E-poçtunuzu daxil edin."
-                  //   errorText={touched.email && errors.email ? errors.email : undefined}
-                  //   value={values.email}
-                  //   onChange={handleChange}
-                  //   onBlur={handleBlur}
+                //   errorText={touched.email && errors.email ? errors.email : undefined}
+                //   value={values.email}
+                //   onChange={handleChange}
+                //   onBlur={handleBlur}
                 />
                 <Field
                   name="email"
@@ -57,10 +56,10 @@ export default function LoginForm() {
                   autoComplete="email"
                   component={Input}
                   placeholder="E-poçtunuzu daxil edin."
-                  //   errorText={touched.email && errors.email ? errors.email : undefined}
-                  //   value={values.email}
-                  //   onChange={handleChange}
-                  //   onBlur={handleBlur}
+                //   errorText={touched.email && errors.email ? errors.email : undefined}
+                //   value={values.email}
+                //   onChange={handleChange}
+                //   onBlur={handleBlur}
                 />
                 <Button variant="primary">Daxil ol</Button>
               </div>

@@ -1,4 +1,4 @@
-import AuthSidebar from "@/features/common/AuthSidebar";
+import AuthSidebar from "@/features/AuthSidebar";
 
 const Home = () => {
   return (
