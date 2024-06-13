@@ -2,7 +2,6 @@
 import { Input } from '@/features/common';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik';
-import { useState } from 'react';
 import { z, ZodError } from 'zod';
 import style from './changepassword.module.scss';
 import ValidationSchema from './schema';
@@ -11,12 +10,6 @@ type FormValues = z.infer<typeof ValidationSchema>;
 
 const ChangePassword = () => {
     // const { trigger: loginTrigger, isMutating: isCreating, error } = useRequestMutation(API.login, { method: 'POST' });
-
-    const [showPassword, setShowPassword] = useState(false);
-
-    const handleClickShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
 
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -83,8 +76,6 @@ const ChangePassword = () => {
                                     component={Input}
                                     placeholder="Şifrənizi təyin edin"
                                     autoComplete="password"
-                                    showPassword={showPassword}
-                                    handleClickShowPassword={handleClickShowPassword}
                                     handleMouseDownPassword={handleMouseDownPassword}
                                     errorText={touched.password && errors.password ? errors.password : undefined}
                                     value={values.password}
@@ -98,8 +89,6 @@ const ChangePassword = () => {
                                     component={Input}
                                     placeholder="Şifrənizi təsdiq edin"
                                     autoComplete="confirmPassword"
-                                    showPassword={showPassword}
-                                    handleClickShowPassword={handleClickShowPassword}
                                     handleMouseDownPassword={handleMouseDownPassword}
                                     errorText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
                                     value={values.confirmPassword}

@@ -1,6 +1,7 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, InputProps, OutlinedInput } from "@mui/material";
 import { get } from 'lodash';
+import { useState } from 'react';
 
 interface IMuiInput extends Pick<InputProps, Exclude<keyof InputProps, "icon">> {
     labelVariant?: "filled" | "outlined" | "standard";
@@ -8,7 +9,6 @@ interface IMuiInput extends Pick<InputProps, Exclude<keyof InputProps, "icon">> 
     edge?: "end" | "start";
     handleClickShowPassword?: () => void;
     handleMouseDownPassword?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    showPassword?: boolean;
     errorText?: string;
     labelText: string;
     field?: any;
@@ -16,8 +16,9 @@ interface IMuiInput extends Pick<InputProps, Exclude<keyof InputProps, "icon">> 
     type: string;
 };
 
-const Input = ({ labelText, labelVariant = "standard", handleClickShowPassword, handleMouseDownPassword,
-    position = "end", edge = "end", field, form, showPassword, type = "text", errorText, ...props }: IMuiInput) => {
+const Input = ({ labelText, labelVariant = "standard", handleMouseDownPassword,
+    position = "end", edge = "end", field, form, type = "text", errorText, ...props }: IMuiInput) => {
+    const [showPassword, setShowPassword] = useState(false);
 
     const isError = get(form?.errors, field?.name) && get(form?.touched, field?.name);
 
@@ -33,7 +34,7 @@ const Input = ({ labelText, labelVariant = "standard", handleClickShowPassword, 
                         type === "password" ?
                             <InputAdornment position={position}>
                                 <IconButton
-                                    onClick={handleClickShowPassword}
+                                    onClick={() => setShowPassword(prev => !prev)}
                                     onMouseDown={handleMouseDownPassword}
                                     edge={edge}
                                 >
