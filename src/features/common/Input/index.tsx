@@ -22,8 +22,8 @@ const Input = ({ labelText, labelVariant = "standard", handleClickShowPassword, 
     const isError = get(form?.errors, field?.name) && get(form?.touched, field?.name);
 
     return (
-        <Box>
-            <InputLabel variant={labelVariant} error={isError}>{labelText}</InputLabel>
+        <Box width="100%" sx={{ marginBottom: "40px" }}>
+            <InputLabel variant={labelVariant} error={isError} sx={{ marginBottom: "8px" }}>{labelText}</InputLabel>
             <FormControl error={isError} fullWidth>
                 <OutlinedInput
                     margin='normal'
@@ -37,7 +37,7 @@ const Input = ({ labelText, labelVariant = "standard", handleClickShowPassword, 
                                     onMouseDown={handleMouseDownPassword}
                                     edge={edge}
                                 >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    {showPassword ? <Visibility /> : <VisibilityOff />}
                                 </IconButton>
                             </InputAdornment> : null
                     }
@@ -45,7 +45,7 @@ const Input = ({ labelText, labelVariant = "standard", handleClickShowPassword, 
                     {...field}
                 />
                 {isError && (
-                    <FormHelperText>{errorText}</FormHelperText>
+                    <FormHelperText variant='standard'>{errorText}</FormHelperText>
                 )}
             </FormControl>
         </Box>

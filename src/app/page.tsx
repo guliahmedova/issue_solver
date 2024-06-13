@@ -2,7 +2,7 @@ import AuthSidebar from "@/features/AuthSidebar";
 
 const Home = () => {
   return (
-    <AuthSidebar children={<h1>Salan</h1>} />
+    <AuthSidebar children={<h1>Hello World</h1>} />
   )
 }
 

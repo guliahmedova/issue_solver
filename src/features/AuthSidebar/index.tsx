@@ -13,7 +13,7 @@ const AuthSidebar = ({ children }: IAuthSidebar) => {
 
     return (
         <Grid container component="div" sx={{ height: "100vh" }}>
-            <Grid item xs={false} sm={4} md={6} sx={{
+            <Grid item md={false} lg={6} sx={{
                 position: "relative",
                 height: "100%"
             }}>
@@ -74,7 +74,7 @@ const AuthSidebar = ({ children }: IAuthSidebar) => {
                 </Box>
             </Grid>
 
-            <Grid item xs={12} sm={8} md={6} height="100%">
+            <Grid item xs={12} sm={8} md={12} lg={6} height="100%">
                 <Box sx={{
                     height: "100%",
                     width: "100%",
@@ -104,7 +104,6 @@ const AuthSidebar = ({ children }: IAuthSidebar) => {
                     </Container>
                 </Box>
             </Grid>
-
         </Grid>
     )
 }

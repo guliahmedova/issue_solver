@@ -153,22 +153,49 @@ export const theme = extendTheme({
             },
           }),
         },
+        {
+          props: {
+            variant: "contained",
+          },
+          style: {
+            boxShadow: "none",
+            fontSize: "18px",
+            borderRadius: '200px',
+            paddingBlock: "16px",
+            backgroundColor: "#2981FF",
+            width: "100%",
+            color: "white",
+            fontWeight: "500"
+          },
+        },
       ],
     },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          // width: "380px",
-          // height: "64px",
-          padding: "18px 16px",
+          padding: "auto 16px",
           borderRadius: "12px",
           backgroundColor: "white",
+          color: "black",
           border: 0,
           outline: "none",
           fontSize: "14px",
+          borderWidth: "1px",
           "&:hover": {
-            border: '1px solid #2981FF'
-          }
+            border: 0
+          },
+          "&:focus-within": {
+            border: "1px solid #2981FF"
+          },
+          "&:is(:hover, :focus-within, :focus-visible) > fieldset": {
+            border: "10px solid red",
+          },
+          "& > fieldset": {
+            border: "1.5px solid #DDE2F6 !important",
+          },
+          "&:disabled > fieldset": {
+            border: "1.5px solid #DDE2F6",
+          },
         }
       }
     },
