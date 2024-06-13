@@ -51,7 +51,7 @@ export const theme = extendTheme({
         },
         text: {
           primary: "#fff",
-          secondary: "#2f3a45",
+          secondary: "#000000",
         },
         error: {
           dark: "#c62828",
@@ -158,19 +158,20 @@ export const theme = extendTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          // width: "380px",
-          // height: "64px",
-          padding: "18px 16px",
           borderRadius: "12px",
           backgroundColor: "white",
-          border: 0,
+          border: "none",
           outline: "none",
           fontSize: "14px",
+          color: "#000000",
           "&:hover": {
-            border: '1px solid #2981FF'
-          }
-        }
-      }
+            border: "1px solid #2981FF",
+          },
+          "&:is(:hover, :focus-within, :focus-visible) > fieldset": {
+            border: "none",
+          },
+        },
+      },
     },
     MuiInputLabel: {
       variants: [
@@ -181,18 +182,18 @@ export const theme = extendTheme({
           style: {
             fontSize: "15px",
             marginBottom: "8px",
-            fontWeight: 500
-          }
-        }
-      ]
+            fontWeight: 500,
+          },
+        },
+      ],
     },
     MuiIconButton: {
       styleOverrides: {
         root: {
-          color: "#2981FF"
-        }
-      }
-    }
+          color: "#2981FF",
+        },
+      },
+    },
   },
 
   breakpoints: {
@@ -204,5 +205,5 @@ export const theme = extendTheme({
       xl: 1280,
       xxl: 1536,
     },
-  }
+  },
 });
