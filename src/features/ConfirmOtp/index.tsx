@@ -70,10 +70,6 @@ const ConfirmOtp = () => {
                                     inputProps={{
                                         style: { textAlign: "center", border: 0, outline: 0 }
                                     }}
-                                    sx={{
-                                        color: `${activeIndexClass === index ? "black" : "#2981FF"}`,
-                                        backgroundColor: `${activeIndexClass === index ? "#BED4F4" : "white"}`,
-                                    }}
                                     inputRef={index === activeOTPIndex ? inputRef : null}
                                     onKeyDown={(e) => handleKeyDownOn(e, index)}
                                     value={otp[index]}
