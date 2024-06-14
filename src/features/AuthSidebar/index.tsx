@@ -74,7 +74,7 @@ const AuthSidebar = ({ children }: IAuthSidebar) => {
                 </Box>
             </Grid>
 
-            <Grid item xs={12} sm={8} md={6} height="100%">
+            <Grid item xs={12} sm={8} md={12} lg={6} height="100%">
                 <Box sx={{
                     height: "100%",
                     width: "100%",
