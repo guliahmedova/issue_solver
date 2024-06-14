@@ -51,7 +51,7 @@ export const theme = extendTheme({
         },
         text: {
           primary: "#fff",
-          secondary: "#000000",
+          secondary: "#2f3a45",
         },
         error: {
           dark: "#c62828",
@@ -137,6 +137,44 @@ export const theme = extendTheme({
             "&:active": {
               background: theme.palette.primary.dark,
             },
+            "&:disabled": {
+              opacity: "36%",
+              color: "white",
+            },
+            [theme.breakpoints.between("md", "xl")]: {
+              padding: "14.77px 22.15px",
+              "& > .MuiButton-endIcon > svg": {
+                fontSize: "14px ",
+              },
+            },
+            [theme.breakpoints.up("xl")]: {
+              padding: "16px 24px",
+              fontSize: "18px",
+              lineHeight: "21.98px",
+              "& > .MuiButton-endIcon > svg": {
+                fontSize: "22px ",
+              },
+            },
+          }),
+        },
+        {
+          props: {
+            variant: "secondary",
+          },
+          style: ({ theme }) => ({
+            padding: "16px 24px",
+            textTransform: "none",
+            fontSize: "18px",
+            fontWeight: "500",
+            lineHeight: "22.68px",
+            color: theme.palette.primary.main,
+            "& > .MuiButton-endIcon > svg": {
+              fontSize: "12px ",
+            },
+            "&:disabled": {
+              opacity: "36%",
+              color: "#0169FE",
+            },
             [theme.breakpoints.between("md", "xl")]: {
               padding: "14.77px 22.15px",
               "& > .MuiButton-endIcon > svg": {
@@ -160,15 +198,16 @@ export const theme = extendTheme({
         root: {
           borderRadius: "12px",
           backgroundColor: "white",
-          border: "none",
-          outline: "none",
           fontSize: "14px",
-          color: "#000000",
-          "&:hover": {
-            border: "1px solid #2981FF",
+          color: "black",
+          "& > fieldset": {
+            border: "none ",
           },
-          "&:is(:hover, :focus-within, :focus-visible) > fieldset": {
-            border: "none",
+          "&:hover > fieldset": {
+            border: "1px solid #2981FF !important",
+          },
+          "&.Mui-error > fieldset": {
+            border: "1px solid red !important",
           },
         },
       },

@@ -2,14 +2,15 @@
 import { Field, Form, Formik, FormikProps } from "formik";
 import Input from "../common/Input";
 import { Button } from "../common";
-import { Box, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { ZodError, z } from "zod";
-import ValidationSchema from "../Login/schema";
-type FormValues = z.infer<typeof ValidationSchema>;
+import EmailValidationSchema from "./schema";
+import Link from "next/link";
+type FormValues = z.infer<typeof EmailValidationSchema>;
 export default function EmailDetermine() {
   const validateForm = (values: FormValues) => {
     try {
-      ValidationSchema.parse(values);
+      EmailValidationSchema.parse(values);
     } catch (error) {
       if (error instanceof ZodError) {
         return error.formErrors.fieldErrors;
@@ -17,20 +18,35 @@ export default function EmailDetermine() {
     }
   };
   return (
-    <Box width="100%" height="100%" display="flex" justifyContent="center" flexDirection="column">
-      <Box paddingBottom="28px">
+    <Box
+      width="100%"
+      height="100%"
+      display="flex"
+      justifyContent="center"
+      flexDirection="column"
+      alignItems="center"
+    >
+      <Box paddingBottom="50px" textAlign="left" width="83%">
         <Typography color="initial" fontSize={28} fontWeight={600}>
-          Daxil ol
+          E-poçtunuzu daxil edin{" "}
         </Typography>
         <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap>
-          Zəhmət olmasa, giriş üçün məlumatlarınızı daxil edin.
+          E-poçt hesabınıza təsdiq kod göndəriləcək.
         </Typography>
-        <hr />
       </Box>
+      <Divider
+        component="hr"
+        color="#2981FF"
+        style={{
+          borderColor: "#2981ff",
+          opacity: "0.4",
+          width: "83%",
+          marginBottom: "30px",
+        }}
+      />
       <Formik
         initialValues={{
           email: "",
-          password: "",
         }}
         validate={validateForm}
         onSubmit={values => {
@@ -65,13 +81,31 @@ export default function EmailDetermine() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              <Button variant="primary" type="submit" disabled={!isValid && !dirty}>
+              <Button variant="primary" type="submit" disabled={!isValid || !dirty}>
                 Təsdiq kodu göndər
               </Button>
             </Form>
           </Box>
         )}
       </Formik>
+      <Box
+        display="flex"
+        justifyContent="space-evenly"
+        alignItems="center"
+        marginTop="80px"
+        width="83%"
+      >
+        <Typography color="#9D9D9D">Hesabınız yoxdur?</Typography>
+        <Link
+          href="/register"
+          style={{
+            textDecoration: "none",
+            color: "#2981FF",
+          }}
+        >
+          Qeydiyyatdan keçin
+        </Link>
+      </Box>
     </Box>
   );
 }

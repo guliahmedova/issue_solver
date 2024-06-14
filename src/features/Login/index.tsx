@@ -47,10 +47,10 @@ export default function LoginForm() {
             email: "",
             password: "",
           }}
-          validate={validateForm}
           onSubmit={values => {
             console.log(values);
           }}
+          validate={validateForm}
         >
           {({
             handleSubmit,
@@ -109,7 +109,7 @@ export default function LoginForm() {
                   marginBlock: "40px",
                 }}
               >
-                <Typography>Hesabınız yoxdur?</Typography>
+                <Typography color="#9D9D9D">Hesabınız yoxdur?</Typography>
                 <Link
                   href="/register"
                   style={{
