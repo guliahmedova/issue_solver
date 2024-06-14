@@ -82,11 +82,6 @@ const AuthSidebar = ({ children }: IAuthSidebar) => {
                     flexDirection: "column",
                     alignItems: "end",
                 }}>
-                    <Container maxWidth="sm" sx={{
-                        paddingBlock: "36px"
-                    }}>
-                        <Typography variant="body2" color="#000000" fontWeight={500} textAlign="right">Mode*</Typography>
-                    </Container>
 
                     <Container maxWidth="sm" sx={{
                         width: "100%",
