@@ -37,11 +37,12 @@ const Input = ({
   ...props
 }: IMuiInput) => {
   const isError = get(form?.errors, field?.name) && get(form?.touched, field?.name);
-
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <Box>
+    <Box sx={{
+      marginBottom: "40px"
+    }}>
       <InputLabel variant={labelVariant} error={isError}>
         {labelText}
       </InputLabel>

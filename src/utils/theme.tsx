@@ -11,6 +11,7 @@ declare module "@mui/material/styles" {
     xxl: true;
   }
 }
+
 declare module "@mui/material/Button" {
   interface ButtonPropsVariantOverrides {
     primary: true;
@@ -19,6 +20,7 @@ declare module "@mui/material/Button" {
     disabled: true;
   }
 }
+
 export const theme = extendTheme({
   colorSchemes: {
     light: {
