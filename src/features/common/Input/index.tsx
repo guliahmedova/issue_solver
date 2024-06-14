@@ -1,7 +1,15 @@
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, InputProps, OutlinedInput } from "@mui/material";
-import { get } from 'lodash';
-import { useState } from 'react';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+    Box,
+    FormControl,
+    FormHelperText,
+    IconButton,
+    InputAdornment,
+    InputLabel,
+    InputProps,
+    OutlinedInput,
+} from "@mui/material";
+import { get } from "lodash";
 
 interface IMuiInput extends Pick<InputProps, Exclude<keyof InputProps, "icon">> {
     labelVariant?: "filled" | "outlined" | "standard";
@@ -9,45 +17,57 @@ interface IMuiInput extends Pick<InputProps, Exclude<keyof InputProps, "icon">> 
     edge?: "end" | "start";
     handleClickShowPassword?: () => void;
     handleMouseDownPassword?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+    showPassword?: boolean;
     errorText?: string;
     labelText: string;
     field?: any;
     form?: any;
     type: string;
-};
+}
 
-const Input = ({ labelText, labelVariant = "standard", handleMouseDownPassword,
-    position = "end", edge = "end", field, form, type = "text", errorText, ...props }: IMuiInput) => {
-    const [showPassword, setShowPassword] = useState(false);
-
+const Input = ({
+    labelText,
+    labelVariant = "standard",
+    handleClickShowPassword,
+    handleMouseDownPassword,
+    position = "end",
+    edge = "end",
+    field,
+    form,
+    showPassword,
+    type = "text",
+    errorText,
+    ...props
+}: IMuiInput) => {
     const isError = get(form?.errors, field?.name) && get(form?.touched, field?.name);
 
     return (
-        <Box width="100%" sx={{ marginBottom: "40px" }}>
-            <InputLabel variant={labelVariant} error={isError} sx={{ marginBottom: "8px" }}>{labelText}</InputLabel>
+        <Box>
+            <InputLabel variant={labelVariant} error={isError}>
+                {labelText}
+            </InputLabel>
             <FormControl error={isError} fullWidth>
                 <OutlinedInput
-                    margin='normal'
+                    margin="normal"
                     fullWidth
                     type={type === "password" && showPassword ? "text" : type}
                     endAdornment={
-                        type === "password" ?
+                        type === "password" ? (
                             <InputAdornment position={position}>
                                 <IconButton
-                                    onClick={() => setShowPassword(prev => !prev)}
+                                    onClick={handleClickShowPassword}
                                     onMouseDown={handleMouseDownPassword}
                                     edge={edge}
                                 >
                                     {showPassword ? <Visibility /> : <VisibilityOff />}
                                 </IconButton>
-                            </InputAdornment> : null
+                            </InputAdornment>
+                        ) : null
                     }
                     {...props}
                     {...field}
                 />
-                {isError && (
-                    <FormHelperText variant='standard'>{errorText}</FormHelperText>
-                )}
+                {isError && <FormHelperText>{errorText}</FormHelperText>}
             </FormControl>
         </Box>
     );

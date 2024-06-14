@@ -137,6 +137,10 @@ export const theme = extendTheme({
             "&:active": {
               background: theme.palette.primary.dark,
             },
+            "&:disabled": {
+              opacity: "36%",
+              color: "white",
+            },
             [theme.breakpoints.between("md", "xl")]: {
               padding: "14.77px 22.15px",
               "& > .MuiButton-endIcon > svg": {
@@ -155,49 +159,58 @@ export const theme = extendTheme({
         },
         {
           props: {
-            variant: "contained",
+            variant: "secondary",
           },
-          style: {
-            boxShadow: "none",
+          style: ({ theme }) => ({
+            padding: "16px 24px",
+            textTransform: "none",
             fontSize: "18px",
-            borderRadius: '200px',
-            paddingBlock: "16px",
-            backgroundColor: "#2981FF",
-            width: "100%",
-            color: "white",
-            fontWeight: "500"
-          },
+            fontWeight: "500",
+            lineHeight: "22.68px",
+            color: theme.palette.primary.main,
+            "& > .MuiButton-endIcon > svg": {
+              fontSize: "12px ",
+            },
+            "&:disabled": {
+              opacity: "36%",
+              color: "#0169FE",
+            },
+            [theme.breakpoints.between("md", "xl")]: {
+              padding: "14.77px 22.15px",
+              "& > .MuiButton-endIcon > svg": {
+                fontSize: "14px ",
+              },
+            },
+            [theme.breakpoints.up("xl")]: {
+              padding: "16px 24px",
+              fontSize: "18px",
+              lineHeight: "21.98px",
+              "& > .MuiButton-endIcon > svg": {
+                fontSize: "22px ",
+              },
+            },
+          }),
         },
       ],
     },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          padding: "auto 16px",
           borderRadius: "12px",
           backgroundColor: "white",
-          color: "black",
-          border: 0,
-          outline: "none",
           fontSize: "14px",
-          borderWidth: "1px",
-          "&:hover": {
-            border: 0
-          },
-          "&:focus-within": {
-            border: "1px solid #2981FF"
-          },
-          "&:is(:hover, :focus-within, :focus-visible) > fieldset": {
-            border: "10px solid red",
-          },
+          color: "black",
           "& > fieldset": {
-            border: "1.5px solid #DDE2F6 !important",
+            border: "none ",
           },
-          "&:disabled > fieldset": {
-            border: "1.5px solid #DDE2F6",
+          "&:hover > fieldset": {
+            border: "1px solid #2981FF !important",
           },
-        }
-      }
+          "&.Mui-error > fieldset": {
+            border: "1px solid red !important",
+          },
+        },
+      },
     },
     MuiInputLabel: {
       variants: [
@@ -208,18 +221,18 @@ export const theme = extendTheme({
           style: {
             fontSize: "15px",
             marginBottom: "8px",
-            fontWeight: 500
-          }
-        }
-      ]
+            fontWeight: 500,
+          },
+        },
+      ],
     },
     MuiIconButton: {
       styleOverrides: {
         root: {
-          color: "#2981FF"
-        }
-      }
-    }
+          color: "#2981FF",
+        },
+      },
+    },
   },
 
   breakpoints: {
@@ -231,5 +244,5 @@ export const theme = extendTheme({
       xl: 1280,
       xxl: 1536,
     },
-  }
+  },
 });
