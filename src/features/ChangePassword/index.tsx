@@ -98,7 +98,7 @@ const ChangePassword = () => {
                                 <Button
                                     type="submit"
                                     fullWidth
-                                    variant="contained"
+                                    variant="primary"
                                     sx={{ mb: 2, textTransform: "capitalize" }}
                                     disabled={!isValid || !dirty}
                                 >
