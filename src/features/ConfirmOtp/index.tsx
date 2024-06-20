@@ -80,9 +80,10 @@ const ConfirmOtp = () => {
                                 <Box component="div" width="100%" height="1px" border="1px solid #2981FF" />
                             </Grid>
                         ) : (
-                            <Grid item key={index} textAlign="center">
+                            <Grid item key={index} textAlign="center" >
                                 <OutlinedInput
                                     className={style.otp_input}
+                                    // sx={{ border: "2px solid #EF5648", backgroundColor: "#FF3D2C0F" }}
                                     inputProps={{
                                         style: { textAlign: "center", border: 0, outline: 0 }
                                     }}
