@@ -1,6 +1,5 @@
 "use client";
-import API from "@/http/api";
-import { useRequestMutation } from "@/http/request";
+import { Button, Input } from "@/features/common";
 import { Box, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikProps } from "formik";
 import Link from "next/link";
@@ -13,46 +12,6 @@ import ValidationSchema from "./schema";
 type FormValues = z.infer<typeof ValidationSchema>;
 
 export default function LoginForm() {
-  // const {
-  //   trigger: loginTrigger,
-  //   isMutating: isCreating,
-  //   error,
-  // } = useRequestMutation(API.login, { method: "POST" });
-
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
-  const validateForm = (values: FormValues) => {
-    try {
-      ValidationSchema.parse(values);
-    } catch (error) {
-      if (error instanceof ZodError) {
-        return error.formErrors.fieldErrors;
-      }
-    }
-  };
-
-  // const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
-  //   try {
-  //     const data = {
-  //       email: values?.email,
-  //       password: values?.password,
-  //     };
-
-  //     await loginTrigger({ body: data });
-  //     actions.setSubmitting(false);
-  //   } catch (error) {
-  //     console.error("ERROR IN LOGIN PAGE/SUBMIT FORM: ", error);
-  //     actions.setSubmitting(false);
-  //   }
-  // };
   return (
     <Box component="div" height="100%" display="flex" justifyContent="center" alignItems="flex-end">
       <Box width="83%" display="flex" flexDirection="column" gap="20px">
@@ -65,27 +24,17 @@ export default function LoginForm() {
           </Typography>
         </Box>
         <Formik
-          initialValues={{
-            email: "",
-            password: "",
-          }}
-          validate={validateForm}
-          onSubmit={values => {
-            console.log(values);
+          initialValues={{ name: "jared" }}
+          onSubmit={(values, actions) => {
+            setTimeout(() => {
+              alert(JSON.stringify(values, null, 2));
+              actions.setSubmitting(false);
+            }, 1000);
           }}
         >
-          {({
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            values,
-            errors,
-            touched,
-            isValid,
-            dirty,
-          }: FormikProps<FormValues>) => (
-            <Form onSubmit={handleSubmit}>
-              <Box display="flex" flexDirection="column" gap="20px">
+          {props => (
+            <form onSubmit={props.handleSubmit}>
+              <div className={styles.fieldContainer}>
                 <Field
                   name="email"
                   labelText="E-poçt"
@@ -114,35 +63,9 @@ export default function LoginForm() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Box textAlign="right" color="#4D96FF">
-                  <Link href="/forgot-password">Şifrənizi unutmusuz?</Link>
-                </Box>
-                <Button type="submit" variant="primary" disabled={!isValid || !dirty}>
-                  Daxil ol
-                </Button>
-              </Box>
-
-              <Box
-                textAlign="right"
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "24px",
-                  marginBlock: "40px",
-                }}
-              >
-                <Typography>Hesabınız yoxdur?</Typography>
-                <Link
-                  href="/register"
-                  style={{
-                    textDecoration: "none",
-                    color: "#2981FF",
-                  }}
-                >
-                  Qeydiyyatdan keçin
-                </Link>
-              </Box>
-            </Form>
+                <Button variant="primary">Daxil ol</Button>
+              </div>
+            </form>
           )}
         </Formik>
       </Box>

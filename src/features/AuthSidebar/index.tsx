@@ -1,7 +1,9 @@
+"use client";
 import { gradient } from "@/assets/imgs";
 import { Box, Container, Divider, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import style from './authSidebar.module.scss';
 
 interface IAuthSidebar {
@@ -9,48 +11,43 @@ interface IAuthSidebar {
 };
 
 const AuthSidebar = ({ children }: IAuthSidebar) => {
-    const words = ['sürət', 'kömək', 'əlçatanlıq', 'vaxta qənaət'];
+    const scrollContentRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const scrollContent = scrollContentRef?.current;
+        if (!scrollContent) return;
+
+        const items = Array.from(scrollContent?.children) as HTMLElement[];
+
+        items.forEach((item: HTMLElement) => {
+            const clone = item.cloneNode(true);
+            scrollContent?.appendChild(clone);
+        });
+    }, []);
 
     return (
         <Grid container component="div" sx={{ height: "100vh" }}>
-            <Grid item xs={false} sm={4} md={6} sx={{
-                position: "relative",
-                height: "100%"
-            }}>
+            <Grid className={style.sidebar} item xs={false} sm={4} md={6}>
                 <Image src={gradient} alt="" objectFit="cover" layout="fill" quality={100} />
 
-                <Box component="div" sx={{
-                    position: "absolute",
-                    zIndex: 1,
-                    height: "100%",
-                    width: "100%",
-                    top: "50%",
-                    left: "50%",
-                    transform: 'translate(-50%,-50%)',
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "space-between"
-                }}>
-                    <Box component="div" height="100%" display="flex" flexDirection="column" alignItems="start"
-                        justifyContent="center" width={440} flexWrap="nowrap" sx={{
-                            userSelect: "none"
-                        }}>
-                        <Typography component="span" sx={{
-                            fontSize: "48px",
-                            fontWeight: "bold",
-                            color: "#000B1B",
-                        }}>Servisimizin əsas üstünlüyü-
-                            <Typography component="div" className={style.animated_text}>
-                                {words.map((word, index) => (
-                                    <Typography component="div" className={style.word} key={index} sx={{
-                                        fontSize: "48px",
-                                        fontWeight: "bold",
-                                        color: "#2981FF"
-                                    }}> {word}</Typography>
-                                ))}
+                <Box component="div" className={style.center}>
+                    <Box component="div" className={style.animation_center}>
+                        <Box component="div" className={style.sidebar_animation_container}>
+                            <Typography className={style.sidebar_title}>
+                                Servisimizin əsas
                             </Typography>
-                        </Typography>
+                            <Box component="div" height="100%" className={style.sentence}>
+                                üstünlüyü –
+                                <Box component="div" className={style.scroll_container}>
+                                    <Box component="div" className={style.scroll_content} ref={scrollContentRef}>
+                                        <Box component="div">sürət</Box>
+                                        <Box component="div">kömək</Box>
+                                        <Box component="div">əlçatanlıq</Box>
+                                        <Box component="div">vaxta qənaət</Box>
+                                    </Box>
+                                </Box>
+                            </Box>
+                        </Box>
                     </Box>
 
                     <Divider component="hr" sx={{
@@ -74,7 +71,7 @@ const AuthSidebar = ({ children }: IAuthSidebar) => {
                 </Box>
             </Grid>
 
-            <Grid item xs={12} sm={8} md={6} height="100%">
+            <Grid item xs={12} sm={8} md={12} lg={6} height="100%">
                 <Box sx={{
                     height: "100%",
                     width: "100%",
@@ -104,7 +101,6 @@ const AuthSidebar = ({ children }: IAuthSidebar) => {
                     </Container>
                 </Box>
             </Grid>
-
         </Grid>
     )
 }

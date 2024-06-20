@@ -11,6 +11,7 @@ declare module "@mui/material/styles" {
     xxl: true;
   }
 }
+
 declare module "@mui/material/Button" {
   interface ButtonPropsVariantOverrides {
     primary: true;
@@ -19,6 +20,7 @@ declare module "@mui/material/Button" {
     disabled: true;
   }
 }
+
 export const theme = extendTheme({
   colorSchemes: {
     light: {
@@ -137,6 +139,44 @@ export const theme = extendTheme({
             "&:active": {
               background: theme.palette.primary.dark,
             },
+            "&:disabled": {
+              opacity: "36%",
+              color: "white",
+            },
+            [theme.breakpoints.between("md", "xl")]: {
+              padding: "14.77px 22.15px",
+              "& > .MuiButton-endIcon > svg": {
+                fontSize: "14px ",
+              },
+            },
+            [theme.breakpoints.up("xl")]: {
+              padding: "16px 24px",
+              fontSize: "18px",
+              lineHeight: "21.98px",
+              "& > .MuiButton-endIcon > svg": {
+                fontSize: "22px ",
+              },
+            },
+          }),
+        },
+        {
+          props: {
+            variant: "secondary",
+          },
+          style: ({ theme }) => ({
+            padding: "16px 24px",
+            textTransform: "none",
+            fontSize: "18px",
+            fontWeight: "500",
+            lineHeight: "22.68px",
+            color: theme.palette.primary.main,
+            "& > .MuiButton-endIcon > svg": {
+              fontSize: "12px ",
+            },
+            "&:disabled": {
+              opacity: "36%",
+              color: "#0169FE",
+            },
             [theme.breakpoints.between("md", "xl")]: {
               padding: "14.77px 22.15px",
               "& > .MuiButton-endIcon > svg": {
@@ -158,19 +198,21 @@ export const theme = extendTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          // width: "380px",
-          // height: "64px",
-          padding: "18px 16px",
           borderRadius: "12px",
           backgroundColor: "white",
-          border: 0,
-          outline: "none",
           fontSize: "14px",
-          "&:hover": {
-            border: '1px solid #2981FF'
-          }
-        }
-      }
+          color: "black",
+          "& > fieldset": {
+            border: "none ",
+          },
+          "&:hover > fieldset": {
+            border: "1px solid #2981FF !important",
+          },
+          "&.Mui-error > fieldset": {
+            border: "1px solid red !important",
+          },
+        },
+      },
     },
     MuiInputLabel: {
       variants: [
@@ -181,18 +223,18 @@ export const theme = extendTheme({
           style: {
             fontSize: "15px",
             marginBottom: "8px",
-            fontWeight: 500
-          }
-        }
-      ]
+            fontWeight: 500,
+          },
+        },
+      ],
     },
     MuiIconButton: {
       styleOverrides: {
         root: {
-          color: "#2981FF"
-        }
-      }
-    }
+          color: "#2981FF",
+        },
+      },
+    },
   },
 
   breakpoints: {
@@ -204,5 +246,5 @@ export const theme = extendTheme({
       xl: 1280,
       xxl: 1536,
     },
-  }
+  },
 });
