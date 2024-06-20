@@ -5,8 +5,6 @@ import { Field, Form, Formik, FormikProps } from "formik";
 import Link from "next/link";
 import { useState } from "react";
 import { ZodError, z } from "zod";
-import Button from "../common/Button/Button";
-import Input from "../common/Input";
 import ValidationSchema from "./schema";
 
 type FormValues = z.infer<typeof ValidationSchema>;
