@@ -12,20 +12,15 @@ interface IAction {
 }
 
 export const useAuthStore = create<IState & IAction>()(
-  devtools(
-    persist(
-      set => ({
-        authData: null,
-        setAuth: (authData: IAuthData | null) =>
-          set(() => ({ authData: authData ? { ...authData } : null })),
-      }),
-      {
-        name: "__auth",
-        skipHydration: true,
-      },
-    ),
+  persist(
+    set => ({
+      authData: null,
+      setAuth: (authData: IAuthData | null) =>
+        set(() => ({ authData: authData ? { ...authData } : null })),
+    }),
     {
-      enabled: process.env.NEXT_PUBLIC_ENV === "local",
+      name: "__auth",
+      skipHydration: true,
     },
   ),
 );
