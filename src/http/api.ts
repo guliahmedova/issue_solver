@@ -1,6 +1,6 @@
 const API = {
-  "todos": "todos",
-  "login": ""
-}
+  "login": "",
+  "verify_account": "/auth/verify-account"
+};
 
 export default API;

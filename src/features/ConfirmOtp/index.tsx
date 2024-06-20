@@ -1,18 +1,22 @@
 "use client";
 import { Button } from "@/features/common";
+import API from "@/http/api";
+import { useRequestMutation } from "@/http/request";
 import { Box, Divider, Grid, OutlinedInput, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import style from './confirmOtp.module.scss';
+import { AxiosError } from "axios";
 
 let currentOTPIndex: number;
 
 const ConfirmOtp = () => {
+    const { trigger: confirmOtpTrigger } = useRequestMutation(API.verify_account, { method: 'POST' });
     const [otp, setOtp] = useState<string[]>(new Array(7).fill(''));
     const [activeOTPIndex, setActiveOTPIndex] = useState<number>(0);
-    const [activeIndexClass, setActiveIndexClass] = useState<number | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+    const [otpError, setOtpError] = useState(null);
 
-    const handleChange = ({ target }: any, index: number): void => {
+    const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number): void => {
         const { value } = target;
         const newOTP: string[] = [...otp];
         newOTP[currentOTPIndex] = value.substring(value.length - 1);
@@ -26,7 +30,6 @@ const ConfirmOtp = () => {
             setActiveOTPIndex(currentOTPIndex - 1);
         } else {
             setActiveOTPIndex(currentOTPIndex + 1);
-            setActiveIndexClass(index);
         }
         setOtp(newOTP);
     };
@@ -35,13 +38,26 @@ const ConfirmOtp = () => {
         inputRef.current?.focus();
     }, [activeOTPIndex]);
 
-    const handleKeyDownOn = (e: any, index: number) => {
+    const handleKeyDownOn = ({ key }: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
         currentOTPIndex = index;
-        if (e.key === 'Backspace') {
+        setOtpError(null);
+        if (key === 'Backspace') {
             if (currentOTPIndex === 4) {
                 setActiveOTPIndex(currentOTPIndex);
             } else {
                 setActiveOTPIndex(currentOTPIndex - 1);
+            }
+        }
+    };
+
+    const handleSubmit = async () => {
+        try {
+            const otpCode = otp?.join("");
+            await confirmOtpTrigger({ body: { otp: otpCode } });
+            setOtpError(null);
+        } catch (error: unknown) {
+            if (error instanceof AxiosError) {
+                setOtpError(error?.response?.data?.message);
             }
         }
     };
@@ -84,14 +100,18 @@ const ConfirmOtp = () => {
                     <Typography fontSize="17px" color="#2981FF">Qalan vaxt: 00:30 </Typography>
                 </Box>
 
+                {otpError && <Typography color="red">{otpError}</Typography>}
+
                 <Box component="div" marginTop="83px">
-                    <Button variant="primary" fullWidth sx={{
+                    <Button variant="primary" onClick={handleSubmit} disabled={activeOTPIndex === 7 ? false : true} fullWidth sx={{
                         textTransform: "capitalize"
                     }}>Təsdiqlə</Button>
                 </Box>
 
                 <Box component="div" textAlign="center" paddingBlock="16px">
-                    <Typography fontSize="18px" color="#2981FF">Kodu yenidən göndər</Typography>
+                    <Button variant="secondary" fullWidth sx={{
+                        textTransform: "capitalize"
+                    }}>Kodu yenidən göndər</Button>
                 </Box>
             </Box>
         </Box>
