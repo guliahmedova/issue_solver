@@ -1,5 +1,5 @@
 const API = {
-  "login": "",
+  "login": "/auth/login",
   "verify_account": "/auth/verify-account"
 };
 
