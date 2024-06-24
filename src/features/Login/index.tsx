@@ -1,5 +1,5 @@
 "use client";
-import { Box, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import Link from "next/link";
 import { ZodError, z } from "zod";
@@ -51,7 +51,7 @@ export default function LoginForm() {
   };
 
   return (
-    <Box component="div" height="100%" display="flex" justifyContent="center" alignItems="flex-end">
+    <Box component="div" height="100%" display="flex" justifyContent="center" alignItems="center">
       <Box width="83%" display="flex" flexDirection="column" gap="20px">
         <Box>
           <Typography color="initial" fontSize={28} fontWeight={600}>
@@ -62,6 +62,10 @@ export default function LoginForm() {
           </Typography>
           {loginError && <Typography color="red">{loginError}</Typography>}
         </Box>
+        <Divider
+          color="#2981FF"
+          sx={{ height: "0.5px", width: "100%", border: "0.5px", opacity: "40%" }}
+        />
         <Formik
           initialValues={{
             email: "",
@@ -81,12 +85,11 @@ export default function LoginForm() {
             dirty,
           }: FormikProps<FormValues>) => (
             <Form onSubmit={handleSubmit}>
-              <Box display="flex" flexDirection="column" gap="20px">
+              <Box display="flex" flexDirection="column">
                 <Field
                   name="email"
                   labelText="E-poçt"
                   type="text"
-                  autoFocus={true}
                   autoComplete="email"
                   component={Input}
                   placeholder="E-poçtunuzu daxil edin."
@@ -108,7 +111,7 @@ export default function LoginForm() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                <Box textAlign="right" color="#4D96FF">
+                <Box textAlign="right" color="#4D96FF" marginBottom="40px">
                   <Link href="/forgot-password">Şifrənizi unutmusuz?</Link>
                 </Box>
                 <Button type="submit" variant="primary" disabled={!isValid || !dirty}>
@@ -116,13 +119,13 @@ export default function LoginForm() {
                 </Button>
               </Box>
 
-              <Box
+              {/* <Box
                 textAlign="right"
                 sx={{
                   display: "flex",
                   justifyContent: "center",
                   gap: "24px",
-                  marginBlock: "40px",
+                  marginBlock: "20px",
                 }}
               >
                 <Typography color="#9D9D9D">Hesabınız yoxdur?</Typography>
@@ -135,7 +138,7 @@ export default function LoginForm() {
                 >
                   Qeydiyyatdan keçin
                 </Link>
-              </Box>
+              </Box> */}
             </Form>
           )}
         </Formik>

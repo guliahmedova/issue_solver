@@ -1,13 +1,12 @@
 "use client";
-import { Field, Form, Formik, FormikProps } from "formik";
-import Input from "../common/Input";
-import { Button } from "../common";
 import { Box, Divider, Typography } from "@mui/material";
+import { Field, Form, Formik, FormikProps } from "formik";
 import { ZodError, z } from "zod";
+import { Button } from "../common";
+import Input from "../common/Input";
 import EmailValidationSchema from "./schema";
-import Link from "next/link";
 type FormValues = z.infer<typeof EmailValidationSchema>;
-export default function EmailDetermine() {
+export default function ForgotPassword() {
   const validateForm = (values: FormValues) => {
     try {
       EmailValidationSchema.parse(values);
@@ -26,9 +25,9 @@ export default function EmailDetermine() {
       flexDirection="column"
       alignItems="center"
     >
-      <Box paddingBottom="50px" textAlign="left" width="83%">
+      <Box paddingBottom="20px" textAlign="left" width="83%">
         <Typography color="initial" fontSize={28} fontWeight={600}>
-          E-poçtunuzu daxil edin{" "}
+          E-poçtunuzu daxil edin
         </Typography>
         <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap>
           E-poçt hesabınıza təsdiq kod göndəriləcək.
@@ -66,7 +65,7 @@ export default function EmailDetermine() {
           <Box display="flex" justifyContent="center" alignItems="center" width="83%">
             <Form
               onSubmit={handleSubmit}
-              style={{ width: "100%", display: "flex", flexDirection: "column", gap: "100px" }}
+              style={{ width: "100%", display: "flex", flexDirection: "column", gap: "60px" }}
             >
               <Field
                 name="email"
@@ -88,7 +87,7 @@ export default function EmailDetermine() {
           </Box>
         )}
       </Formik>
-      <Box
+      {/* <Box
         display="flex"
         justifyContent="space-evenly"
         alignItems="center"
@@ -105,7 +104,7 @@ export default function EmailDetermine() {
         >
           Qeydiyyatdan keçin
         </Link>
-      </Box>
+      </Box> */}
     </Box>
   );
 }
