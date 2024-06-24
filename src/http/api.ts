@@ -1,6 +1,7 @@
 const API = {
   "login": "/auth/login",
-  "verify_account": "/auth/verify-account"
+  "otp_trust": "Auths/otp-trust",
+  "resend_otp": "Auths/resend-otp"
 };
 
 export default API;
