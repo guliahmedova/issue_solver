@@ -3,18 +3,23 @@ import { Button } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
 import { Box, Divider, Grid, OutlinedInput, Typography } from "@mui/material";
+import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import style from './confirmOtp.module.scss';
-import { AxiosError } from "axios";
 
 let currentOTPIndex: number;
 
 const ConfirmOtp = () => {
-    const { trigger: confirmOtpTrigger } = useRequestMutation(API.verify_account, { method: 'POST' });
+    const { trigger: confirmOtpTrigger } = useRequestMutation(API.otp_trust, { method: 'POST' });
+    const { trigger: resendOtpTrigger } = useRequestMutation(API.resend_otp, { method: 'POST' });
     const [otp, setOtp] = useState<string[]>(new Array(7).fill(''));
     const [activeOTPIndex, setActiveOTPIndex] = useState<number>(0);
     const inputRef = useRef<HTMLInputElement>(null);
     const [otpError, setOtpError] = useState(null);
+    const [success, setSuccess] = useState<boolean>(true);
+    const router = useRouter();
+    const [timer, setTimer] = useState(180);
 
     const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number): void => {
         const { value } = target;
@@ -33,6 +38,26 @@ const ConfirmOtp = () => {
         }
         setOtp(newOTP);
     };
+
+    const startCountdown = (onTick: any) => {
+        let timerFunc = setInterval(() => {
+            onTick((prevTimer: number) => {
+                if (prevTimer <= 0) {
+                    clearInterval(timerFunc);
+                    return 0;
+                } else {
+                    return prevTimer - 1;
+                }
+            });
+        }, 1000);
+
+        return timerFunc;
+    };
+
+    useEffect(() => {
+        const timerFunc = startCountdown(setTimer);
+        return () => clearInterval(timerFunc);
+    }, [timer]);
 
     useEffect(() => {
         inputRef.current?.focus();
@@ -53,11 +78,30 @@ const ConfirmOtp = () => {
     const handleSubmit = async () => {
         try {
             const otpCode = otp?.join("");
-            await confirmOtpTrigger({ body: { otp: otpCode } });
+            await confirmOtpTrigger({ body: { otpCode: otpCode } });
             setOtpError(null);
+            setSuccess(true);
+            router.push("/change-password");
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
-                setOtpError(error?.response?.data?.message);
+                setOtpError(error?.response?.data?.Message);
+                setSuccess(false);
+            }
+        }
+    };
+
+    const handleResendOtpClick = async () => {
+        setSuccess(true);
+        setOtp(new Array(7).fill(''));
+        setActiveOTPIndex(0);
+        try {
+            setTimer(180);
+            const email = "ilkinsuleymanov200@gmail.com";
+            await resendOtpTrigger({ body: { email: email } });
+            setOtpError(null);
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                setOtpError(error?.response?.data?.Message);
             }
         }
     };
@@ -67,7 +111,7 @@ const ConfirmOtp = () => {
             <Box component="div" className={style.confirm_otp_content}>
                 <Box component="div">
                     <Typography className={style.form_title}>Təsdiq kodu</Typography>
-                    <Typography className={style.sub_title}>E-poçtunuza gələn təsdiq kodu daxil edin.</Typography>
+                    <Typography className={style.sub_title}>E-poçtunuza gələn təsdiq kodunu daxil edin</Typography>
                     <Divider className={style.divider} component="hr" />
                 </Box>
 
@@ -83,7 +127,7 @@ const ConfirmOtp = () => {
                             <Grid item key={index} textAlign="center" >
                                 <OutlinedInput
                                     className={style.otp_input}
-                                    // sx={{ border: "2px solid #EF5648", backgroundColor: "#FF3D2C0F" }}
+                                    sx={success ? null : { border: "2px solid #EF5648", backgroundColor: "#FF3D2C0F" }}
                                     inputProps={{
                                         style: { textAlign: "center", border: 0, outline: 0 }
                                     }}
@@ -98,7 +142,8 @@ const ConfirmOtp = () => {
                 </Grid>
 
                 <Box component="div">
-                    <Typography fontSize="17px" color="#2981FF">Qalan vaxt: 00:30 </Typography>
+                    <Typography fontSize="17px" color="#2981FF">Qalan vaxt: {`${Math.floor(timer / 60)}`.padStart(2, "0")}:
+                        {`${timer % 60}`.padStart(2, "0")} </Typography>
                 </Box>
 
                 {otpError && <Typography color="red">{otpError}</Typography>}
@@ -110,7 +155,7 @@ const ConfirmOtp = () => {
                 </Box>
 
                 <Box component="div" textAlign="center" paddingBlock="16px">
-                    <Button variant="secondary" fullWidth sx={{
+                    <Button variant="secondary" fullWidth onClick={handleResendOtpClick} sx={{
                         textTransform: "capitalize"
                     }}>Kodu yenidən göndər</Button>
                 </Box>
