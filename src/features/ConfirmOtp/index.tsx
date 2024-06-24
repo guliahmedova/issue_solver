@@ -84,7 +84,8 @@ const ConfirmOtp = () => {
             router.push("/change-password");
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
-                setOtpError(error?.response?.data?.Message);
+                console.log(error);
+                setOtpError(error?.response?.data?.message);
                 setSuccess(false);
             }
         }
@@ -101,10 +102,12 @@ const ConfirmOtp = () => {
             setOtpError(null);
         } catch (error) {
             if (error instanceof AxiosError) {
-                setOtpError(error?.response?.data?.Message);
+                setOtpError(error?.response?.data?.message);
             }
         }
     };
+
+    console.log("otpError: ", otpError);
 
     return (
         <Box className={style.confirm_otp_container} component="div">
