@@ -79,8 +79,7 @@ const AuthSidebar = ({ children }: IAuthSidebar) => {
             alignItems: "end",
           }}
         >
-          <Container
-            maxWidth="sm"
+          <Box
             sx={{
               width: "100%",
               height: "100%",
@@ -88,7 +87,7 @@ const AuthSidebar = ({ children }: IAuthSidebar) => {
             }}
           >
             {children}
-          </Container>
+          </Box>
 
           {/* <Divider
             component="hr"
