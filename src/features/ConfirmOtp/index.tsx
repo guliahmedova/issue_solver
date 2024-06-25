@@ -15,11 +15,16 @@ const ConfirmOtp = () => {
     const { trigger: resendOtpTrigger } = useRequestMutation(API.resend_otp, { method: 'POST' });
     const [otp, setOtp] = useState<string[]>(new Array(7).fill(''));
     const [activeOTPIndex, setActiveOTPIndex] = useState<number>(0);
-    const inputRef = useRef<HTMLInputElement>(null);
-    const [otpError, setOtpError] = useState(null);
     const [success, setSuccess] = useState<boolean>(true);
+    const [otpError, setOtpError] = useState(null);
+    const [openPopup, setOpenPopup] = useState(false);
+    const [timer, setTimer] = useState(1);
+    const [btnsDisabled, setBtnsDisabled] = useState({
+        primaryBtn: true,
+        secondaryBtn: true
+    });
+    const inputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
-    const [timer, setTimer] = useState(180);
 
     const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number): void => {
         const { value } = target;
@@ -63,6 +68,21 @@ const ConfirmOtp = () => {
         inputRef.current?.focus();
     }, [activeOTPIndex]);
 
+    useEffect(() => {
+        if (activeOTPIndex === 7) {
+            setBtnsDisabled(prevState => ({
+                ...prevState,
+                primaryBtn: false
+            }));
+        }
+        if (timer == 0) {
+            setBtnsDisabled({
+                primaryBtn: true,
+                secondaryBtn: false
+            });
+        }
+    }, [activeOTPIndex, timer]);
+
     const handleKeyDownOn = ({ key }: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
         currentOTPIndex = index;
         setOtpError(null);
@@ -84,9 +104,12 @@ const ConfirmOtp = () => {
             router.push("/change-password");
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
-                console.log(error);
                 setOtpError(error?.response?.data?.message);
                 setSuccess(false);
+                setBtnsDisabled(prevState => ({
+                    ...prevState,
+                    secondaryBtn: true
+                }));
             }
         }
     };
@@ -96,21 +119,37 @@ const ConfirmOtp = () => {
         setOtp(new Array(7).fill(''));
         setActiveOTPIndex(0);
         try {
-            setTimer(180);
             const email = "ilkinsuleymanov200@gmail.com";
             await resendOtpTrigger({ body: { email: email } });
             setOtpError(null);
+            setOpenPopup(false);
+            setTimer(180);
         } catch (error) {
             if (error instanceof AxiosError) {
-                setOtpError(error?.response?.data?.message);
-            }
-        }
+                setTimer(0);
+                setOpenPopup(true);
+                setBtnsDisabled({
+                    primaryBtn: true,
+                    secondaryBtn: true
+                });
+            };
+        };
     };
-
-    console.log("otpError: ", otpError);
 
     return (
         <Box className={style.confirm_otp_container} component="div">
+
+            {openPopup && (
+                <Box className={style.overlay}>
+                    <Box className={style.popup_container}>
+                        <Box className={style.popup_content}>
+                            <Typography>Daha sonra yenidən cəhd edin</Typography>
+                            <Button variant="secondary" onClick={() => router.push("/login")}>Oldu</Button>
+                        </Box>
+                    </Box>
+                </Box>
+            )}
+
             <Box component="div" className={style.confirm_otp_content}>
                 <Box component="div">
                     <Typography className={style.form_title}>Təsdiq kodu</Typography>
@@ -144,21 +183,24 @@ const ConfirmOtp = () => {
                     ))}
                 </Grid>
 
-                <Box component="div">
-                    <Typography fontSize="17px" color="#2981FF">Qalan vaxt: {`${Math.floor(timer / 60)}`.padStart(2, "0")}:
-                        {`${timer % 60}`.padStart(2, "0")} </Typography>
+                <Box component="div" height={20}>
+                    {timer != 0 && (
+                        <Typography fontSize="17px" color="#2981FF">
+                            Qalan vaxt: {`${Math.floor(timer / 60)}`.padStart(2, "0")}:{`${timer % 60}`.padStart(2, "0")}
+                        </Typography>
+                    )}
                 </Box>
 
                 {otpError && <Typography color="red">{otpError}</Typography>}
 
                 <Box component="div" marginTop="83px">
-                    <Button variant="primary" onClick={handleSubmit} disabled={activeOTPIndex === 7 ? false : true} fullWidth sx={{
+                    <Button variant="primary" onClick={handleSubmit} disabled={btnsDisabled.primaryBtn ? true : false} fullWidth sx={{
                         textTransform: "capitalize"
                     }}>Təsdiqlə</Button>
                 </Box>
 
                 <Box component="div" textAlign="center" paddingBlock="16px">
-                    <Button variant="secondary" fullWidth onClick={handleResendOtpClick} sx={{
+                    <Button variant="secondary" fullWidth disabled={btnsDisabled.secondaryBtn ? true : false} onClick={handleResendOtpClick} sx={{
                         textTransform: "capitalize"
                     }}>Kodu yenidən göndər</Button>
                 </Box>

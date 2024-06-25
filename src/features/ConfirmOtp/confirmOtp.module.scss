@@ -3,6 +3,29 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+    position: relative;
+    margin:  0 auto;
+
+    .overlay {
+        background-color: #353535BF;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .popup_container{
+            background-color: white;
+            border-radius: 8px;
+            .popup_content{
+                padding: 1rem;
+            }
+        }
+    }
 
     .confirm_otp_content {
         width: 83%;
