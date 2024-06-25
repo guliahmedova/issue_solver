@@ -18,7 +18,7 @@ const ConfirmOtp = () => {
     const [success, setSuccess] = useState<boolean>(true);
     const [otpError, setOtpError] = useState(null);
     const [openPopup, setOpenPopup] = useState(false);
-    const [timer, setTimer] = useState(1);
+    const [timer, setTimer] = useState(180);
     const [btnsDisabled, setBtnsDisabled] = useState({
         primaryBtn: true,
         secondaryBtn: true
