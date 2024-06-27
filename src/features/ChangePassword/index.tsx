@@ -5,11 +5,13 @@ import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { z, ZodError } from "zod";
 import style from "./changepassword.module.scss";
 import ValidationSchema from "./schema";
+import API from "@/http/api";
+import { useRequestMutation } from "@/http/request";
 
 type FormValues = z.infer<typeof ValidationSchema>;
 
 const ChangePassword = () => {
-  // const { trigger: loginTrigger, isMutating: isCreating, error } = useRequestMutation(API.login, { method: 'POST' });
+  const { trigger: changePasswordTrigger } = useRequestMutation(API.reset_password, { method: 'POST' });
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -26,17 +28,17 @@ const ChangePassword = () => {
   };
 
   const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
-    // try {
-    //     const data = {
-    //         password: values?.password,
-    //         email: values?.confirmPassword
-    //     };
-    //     await loginTrigger({ body: data });
-    //     actions.setSubmitting(false);
-    // } catch (error) {
-    //     console.error("ERROR IN LOGIN PAGE/SUBMIT FORM: ", error);
-    //     actions.setSubmitting(false);
-    // }
+    try {
+      const data = {
+        password: values?.password,
+        confirmPassword: values?.confirmPassword
+      };
+      await changePasswordTrigger({ body: data });
+      actions.setSubmitting(false);
+    } catch (error) {
+      console.error("ERROR IN LOGIN PAGE/SUBMIT FORM: ", error);
+      actions.setSubmitting(false);
+    }
   };
 
   return (
@@ -85,7 +87,7 @@ const ChangePassword = () => {
                 />
                 <Field
                   name="confirmPassword"
-                  labelText="Şifrənin təsdiqi"
+                  labelText="Şifrə təsdiqi"
                   type="password"
                   component={Input}
                   placeholder="Şifrənizi təsdiq edin"
