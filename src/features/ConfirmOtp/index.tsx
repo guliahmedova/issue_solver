@@ -101,10 +101,9 @@ const ConfirmOtp = () => {
             await confirmOtpTrigger({ body: { otpCode: otpCode } });
             setOtpError(null);
             setSuccess(true);
-            if (otpTrustResponse?.status === 200) {
-                sessionStorage.setItem('__otp_token', otpTrustResponse?.data);
-                console.log("otp_token has been added!");
-            }
+            const otpToken = otpTrustResponse?.data;
+            await sessionStorage.setItem('__otp_token', otpToken);
+            console.log("otpTrustResponse: ", otpTrustResponse);
             router.push("/change-password");
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
@@ -118,13 +117,14 @@ const ConfirmOtp = () => {
         }
     };
 
+    console.log(otpTrustResponse);
+
     const handleSendOtpAgainBtn = async () => {
         setSuccess(true);
         setOtp(new Array(7).fill(''));
         setActiveOTPIndex(0);
         try {
-            // const email = sessionStorage.getItem("user_email");
-            const email = "guliehmedova19@gmail.com";
+            const email = sessionStorage.getItem("user_email");
             await resendOtpTrigger({ body: { email: email } });
             setOtpError(null);
             setOpenPopup(false);
@@ -229,7 +229,7 @@ export default ConfirmOtp;
 }
  */
 
-// kodu yeniden gonder - reset otp 
+// kodu yeniden gonder - reset otp
 
 /**
  * {
@@ -238,3 +238,5 @@ export default ConfirmOtp;
   "message": "new opt code send to gmail"
  }
  */
+
+// change password da user_email silmek lazimdir.
