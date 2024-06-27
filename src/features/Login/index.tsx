@@ -15,7 +15,7 @@ type FormValues = z.infer<typeof ValidationSchema>;
 export default function LoginForm() {
   const [loginError, setLoginError] = useState(null);
   const router = useRouter();
-  const { trigger: LoginTrigger, data: responseData } = useRequestMutation(API.login, {
+  const { trigger: LoginTrigger } = useRequestMutation(API.login, {
     method: "POST",
   });
   const setAuth = useAuthStore(state => state.setAuth);
@@ -29,8 +29,8 @@ export default function LoginForm() {
       password: values.password,
     };
     try {
-      await LoginTrigger({ body: data });
-      setAuth({ token: responseData?.accessToken });
+      const loginData = await LoginTrigger({ body: data });
+      setAuth({ token: loginData?.accessToken });
       actions.setSubmitting(false);
       setLoginError(null);
       router.push("/");

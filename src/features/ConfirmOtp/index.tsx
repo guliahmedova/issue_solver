@@ -98,14 +98,13 @@ const ConfirmOtp = () => {
     const handleSubmit = async () => {
         try {
             const otpCode = otp?.join("");
-            await confirmOtpTrigger({ body: { otpCode: otpCode } });
+            const otpData = await confirmOtpTrigger({ body: { otpCode: otpCode } });
             setOtpError(null);
             setSuccess(true);
-            if (otpTrustResponse?.status === 200) {
-                sessionStorage.setItem('__otp_token', otpTrustResponse?.data);
-                console.log("otp_token has been added!");
-            }
             router.push("/change-password");
+            const otpToken = otpData?.data;
+            sessionStorage.setItem('otp_token', otpToken);
+            console.log("otpTrustResponse in handle submit func: ", otpData);
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
                 setOtpError(error?.response?.data?.message);
@@ -123,8 +122,7 @@ const ConfirmOtp = () => {
         setOtp(new Array(7).fill(''));
         setActiveOTPIndex(0);
         try {
-            // const email = sessionStorage.getItem("user_email");
-            const email = "guliehmedova19@gmail.com";
+            const email = sessionStorage.getItem("user_email");
             await resendOtpTrigger({ body: { email: email } });
             setOtpError(null);
             setOpenPopup(false);
@@ -141,6 +139,8 @@ const ConfirmOtp = () => {
         };
     };
 
+    console.log("OTP RESPONSE: ", otpTrustResponse);
+    
     return (
         <Box className={style.confirm_otp_container} component="div">
             {openPopup && (
@@ -229,7 +229,7 @@ export default ConfirmOtp;
 }
  */
 
-// kodu yeniden gonder - reset otp 
+// kodu yeniden gonder - reset otp
 
 /**
  * {
@@ -238,3 +238,5 @@ export default ConfirmOtp;
   "message": "new opt code send to gmail"
  }
  */
+
+// change password da user_email silmek lazimdir.

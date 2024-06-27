@@ -1,12 +1,22 @@
 "use client";
+import API from "@/http/api";
+import { useRequestMutation } from "@/http/request";
 import { Box, Divider, Typography } from "@mui/material";
-import { Field, Form, Formik, FormikProps } from "formik";
+import { AxiosError } from "axios";
+import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { ZodError, z } from "zod";
 import { Button } from "../common";
 import Input from "../common/Input";
 import EmailValidationSchema from "./schema";
 type FormValues = z.infer<typeof EmailValidationSchema>;
+
 export default function ForgotPassword() {
+  const { trigger: sendEmailTrigger } = useRequestMutation(API.forgot_password, { method: 'POST' });
+  const router = useRouter();
+  const [emailError, setEmailError] = useState<null | string>(null);
+
   const validateForm = (values: FormValues) => {
     try {
       EmailValidationSchema.parse(values);
@@ -16,6 +26,24 @@ export default function ForgotPassword() {
       }
     }
   };
+
+  const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
+    try {
+      const email = values?.email;
+      await sendEmailTrigger({ body: { email: email } });
+      actions.setSubmitting(false);
+      router.push('/confirm-otp');
+      sessionStorage.setItem('user_email', email);
+      setEmailError(null);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        setEmailError(error?.response?.data?.message);
+        console.log("error in email: ", error);
+      }
+      actions.setSubmitting(false);
+    }
+  };
+
   return (
     <Box
       width="100%"
@@ -48,9 +76,7 @@ export default function ForgotPassword() {
           email: "",
         }}
         validate={validateForm}
-        onSubmit={values => {
-          console.log(values);
-        }}
+        onSubmit={handleSubmit}
       >
         {({
           handleSubmit,
@@ -87,6 +113,9 @@ export default function ForgotPassword() {
           </Box>
         )}
       </Formik>
+
+      {emailError && <Typography color="red">{emailError}</Typography>}
+
       {/* <Box
         display="flex"
         justifyContent="space-evenly"
@@ -107,4 +136,4 @@ export default function ForgotPassword() {
       </Box> */}
     </Box>
   );
-}
+};
