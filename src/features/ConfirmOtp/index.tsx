@@ -11,7 +11,7 @@ import style from './confirmOtp.module.scss';
 let currentOTPIndex: number;
 
 const ConfirmOtp = () => {
-    const { trigger: confirmOtpTrigger } = useRequestMutation(API.otp_trust, { method: 'POST' });
+    const { trigger: confirmOtpTrigger, data: otpTrustResponse } = useRequestMutation(API.otp_trust, { method: 'POST' });
     const { trigger: resendOtpTrigger } = useRequestMutation(API.resend_otp, { method: 'POST' });
     const [otp, setOtp] = useState<string[]>(new Array(7).fill(''));
     const [activeOTPIndex, setActiveOTPIndex] = useState<number>(0);
@@ -101,6 +101,10 @@ const ConfirmOtp = () => {
             await confirmOtpTrigger({ body: { otpCode: otpCode } });
             setOtpError(null);
             setSuccess(true);
+            if (otpTrustResponse?.status === 200) {
+                sessionStorage.setItem('__otp_token', otpTrustResponse?.data);
+                console.log("otp_token has been added!");
+            }
             router.push("/change-password");
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
@@ -114,12 +118,13 @@ const ConfirmOtp = () => {
         }
     };
 
-    const handleResendOtpClick = async () => {
+    const handleSendOtpAgainBtn = async () => {
         setSuccess(true);
         setOtp(new Array(7).fill(''));
         setActiveOTPIndex(0);
         try {
-            const email = "ilkinsuleymanov200@gmail.com";
+            // const email = sessionStorage.getItem("user_email");
+            const email = "guliehmedova19@gmail.com";
             await resendOtpTrigger({ body: { email: email } });
             setOtpError(null);
             setOpenPopup(false);
@@ -138,7 +143,6 @@ const ConfirmOtp = () => {
 
     return (
         <Box className={style.confirm_otp_container} component="div">
-
             {openPopup && (
                 <Box className={style.overlay}>
                     <Box className={style.popup_container}>
@@ -200,7 +204,7 @@ const ConfirmOtp = () => {
                 </Box>
 
                 <Box component="div" textAlign="center" paddingBlock="16px">
-                    <Button variant="secondary" fullWidth disabled={btnsDisabled.secondaryBtn ? true : false} onClick={handleResendOtpClick} sx={{
+                    <Button variant="secondary" fullWidth disabled={btnsDisabled.secondaryBtn ? true : false} onClick={handleSendOtpAgainBtn} sx={{
                         textTransform: "capitalize"
                     }}>Kodu yenidən göndər</Button>
                 </Box>
@@ -210,3 +214,27 @@ const ConfirmOtp = () => {
 };
 
 export default ConfirmOtp;
+
+// email page -de user email localda qalmalidir.
+// change password page-de ise responde body-de olan data localda qalmalidir. eger experie date kecibse o zaman localSt silinmelidir. - bunu status code esasen teyin
+// etmeliyem.
+
+// tesdiqleye basanda - otp trust
+/**
+ * {
+  "data": "CdAumAoD/jc6bAJclKhwaMFJr0JgyyqLcJMwd1NRmo1coucZ02V0wXmck05ueYOqtWusTbFXhYMqgls1tdbfOg==",
+  "success": true,
+  "status": 200,
+  "message": "otp is confirm.."
+}
+ */
+
+// kodu yeniden gonder - reset otp 
+
+/**
+ * {
+  "success": true,
+  "status": 200,
+  "message": "new opt code send to gmail"
+ }
+ */

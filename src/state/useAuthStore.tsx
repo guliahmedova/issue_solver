@@ -1,12 +1,15 @@
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { persist } from "zustand/middleware";
+
 export interface IAuthData {
   token: string;
 }
+
 interface IState {
   authData: IAuthData | null;
   loading?: boolean;
 }
+
 interface IAction {
   setAuth: (authData: IAuthData | null) => void;
 }
