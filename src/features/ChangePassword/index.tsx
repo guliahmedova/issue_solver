@@ -1,21 +1,19 @@
 "use client";
 import { Input } from "@/features/common";
+import API from "@/http/api";
+import { useRequestMutation } from "@/http/request";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { z, ZodError } from "zod";
 import style from "./changepassword.module.scss";
 import ValidationSchema from "./schema";
-import API from "@/http/api";
-import { useRequestMutation } from "@/http/request";
+import { useState } from "react";
 
 type FormValues = z.infer<typeof ValidationSchema>;
 
 const ChangePassword = () => {
-  const { trigger: changePasswordTrigger } = useRequestMutation(API.reset_password, { method: 'POST' });
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
+  const { trigger: changePasswordTrigger, data: changePasswordResponse } = useRequestMutation(API.reset_password, { method: 'POST' });
+  const [error, setError] = useState<null | string>(null);
 
   const validateForm = (values: FormValues) => {
     try {
@@ -28,16 +26,23 @@ const ChangePassword = () => {
   };
 
   const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
+    const token = sessionStorage.getItem('otp_token');
+    const data = {
+      password: values?.password,
+      confirmPassword: values?.confirmPassword
+    };
     try {
-      const data = {
-        password: values?.password,
-        confirmPassword: values?.confirmPassword
-      };
-      await changePasswordTrigger({ body: data });
+      await changePasswordTrigger({ body: data, params: `?token=${token}` });
       actions.setSubmitting(false);
-    } catch (error) {
-      console.error("ERROR IN LOGIN PAGE/SUBMIT FORM: ", error);
+      console.log("changePasswordResponse: ", changePasswordResponse);
+      setError(null);
+    } catch (error: any) {
+      console.error("ERROR IN CHANGE PASSWORD: ", error);
       actions.setSubmitting(false);
+      setError(error?.response?.data?.message);
+    } finally {
+      sessionStorage.removeItem('otp_token');
+      sessionStorage.removeItem('user_email');
     }
   };
 
@@ -79,7 +84,6 @@ const ChangePassword = () => {
                   component={Input}
                   placeholder="Şifrənizi təyin edin"
                   autoComplete="password"
-                  handleMouseDownPassword={handleMouseDownPassword}
                   errorText={touched.password && errors.password ? errors.password : undefined}
                   value={values.password}
                   onChange={handleChange}
@@ -92,12 +96,7 @@ const ChangePassword = () => {
                   component={Input}
                   placeholder="Şifrənizi təsdiq edin"
                   autoComplete="confirmPassword"
-                  handleMouseDownPassword={handleMouseDownPassword}
-                  errorText={
-                    touched.confirmPassword && errors.confirmPassword
-                      ? errors.confirmPassword
-                      : undefined
-                  }
+                  errorText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
                   value={values.confirmPassword}
                   onChange={handleChange}
                   onBlur={handleBlur}

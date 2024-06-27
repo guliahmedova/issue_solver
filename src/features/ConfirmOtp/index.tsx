@@ -83,6 +83,16 @@ const ConfirmOtp = () => {
         }
     }, [activeOTPIndex, timer]);
 
+    useEffect(() => {
+        if (otpTrustResponse && otpTrustResponse?.data) {
+            const otpToken = otpTrustResponse?.data;
+            sessionStorage.setItem('otp_token', otpToken);
+            console.log("otpTrustResponse: ", otpTrustResponse);
+        } else {
+            console.error("otpTrustResponse or its data is undefined.");
+        }
+    }, [otpTrustResponse]);
+
     const handleKeyDownOn = ({ key }: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
         currentOTPIndex = index;
         setOtpError(null);
@@ -101,9 +111,6 @@ const ConfirmOtp = () => {
             await confirmOtpTrigger({ body: { otpCode: otpCode } });
             setOtpError(null);
             setSuccess(true);
-            const otpToken = otpTrustResponse?.data;
-            await sessionStorage.setItem('__otp_token', otpToken);
-            console.log("otpTrustResponse: ", otpTrustResponse);
             router.push("/change-password");
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
@@ -116,8 +123,6 @@ const ConfirmOtp = () => {
             }
         }
     };
-
-    console.log(otpTrustResponse);
 
     const handleSendOtpAgainBtn = async () => {
         setSuccess(true);
