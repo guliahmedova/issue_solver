@@ -27,12 +27,15 @@ const ChangePassword = () => {
 
   const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     const token = sessionStorage.getItem('otp_token');
+    console.log("token: ", token);
     const data = {
       password: values?.password,
       confirmPassword: values?.confirmPassword
     };
     try {
-      await changePasswordTrigger({ body: data, params: `?token=${token}` });
+      if (token) {
+        await changePasswordTrigger({ body: data, params: `?token=${token}` });
+      }
       actions.setSubmitting(false);
       console.log("changePasswordResponse: ", changePasswordResponse);
       setError(null);
@@ -40,9 +43,6 @@ const ChangePassword = () => {
       console.error("ERROR IN CHANGE PASSWORD: ", error);
       actions.setSubmitting(false);
       setError(error?.response?.data?.message);
-    } finally {
-      sessionStorage.removeItem('otp_token');
-      sessionStorage.removeItem('user_email');
     }
   };
 

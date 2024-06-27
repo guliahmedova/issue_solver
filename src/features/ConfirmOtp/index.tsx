@@ -83,16 +83,6 @@ const ConfirmOtp = () => {
         }
     }, [activeOTPIndex, timer]);
 
-    useEffect(() => {
-        if (otpTrustResponse && otpTrustResponse?.data) {
-            const otpToken = otpTrustResponse?.data;
-            sessionStorage.setItem('otp_token', otpToken);
-            console.log("otpTrustResponse: ", otpTrustResponse);
-        } else {
-            console.error("otpTrustResponse or its data is undefined.");
-        }
-    }, [otpTrustResponse]);
-
     const handleKeyDownOn = ({ key }: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => {
         currentOTPIndex = index;
         setOtpError(null);
@@ -108,10 +98,13 @@ const ConfirmOtp = () => {
     const handleSubmit = async () => {
         try {
             const otpCode = otp?.join("");
-            await confirmOtpTrigger({ body: { otpCode: otpCode } });
+            const otpData = await confirmOtpTrigger({ body: { otpCode: otpCode } });
             setOtpError(null);
             setSuccess(true);
             router.push("/change-password");
+            const otpToken = otpData?.data;
+            sessionStorage.setItem('otp_token', otpToken);
+            console.log("otpTrustResponse in handle submit func: ", otpData);
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
                 setOtpError(error?.response?.data?.message);
@@ -146,6 +139,8 @@ const ConfirmOtp = () => {
         };
     };
 
+    console.log("OTP RESPONSE: ", otpTrustResponse);
+    
     return (
         <Box className={style.confirm_otp_container} component="div">
             {openPopup && (
