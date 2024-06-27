@@ -34,7 +34,7 @@ const ChangePassword = () => {
     };
     try {
       if (token) {
-        await changePasswordTrigger({ body: data, params: `?token=${token}` });
+        await changePasswordTrigger({ body: data, params: token });
       }
       actions.setSubmitting(false);
       console.log("changePasswordResponse: ", changePasswordResponse);
