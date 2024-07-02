@@ -1,6 +1,11 @@
 .sidebar {
     position: relative;
     height: 100%;
+    width: 50%;
+}
+
+.sidebar_content {
+    width: 50%;
 }
 
 .center {
@@ -76,5 +81,45 @@
 
     100% {
         transform: translateY(-192px);
+    }
+}
+
+@media screen and (max-width: 77rem) {
+    .sidebar_animation_container {
+        font-size: 2rem;
+    }
+
+    .sidebar_title {
+        font-size: 2rem;
+    }
+}
+
+@media screen and (max-width: 64rem) {
+    .sidebar_content {
+        padding-inline: 5%;
+    }
+
+    .sidebar_title {
+        font-size: 2rem;
+    }
+
+    .sidebar_animation_container {
+        font-size: 2rem;
+    }
+}
+
+@media screen and (max-width: 54rem) {
+    .sidebar_content {
+        padding-inline: 4%;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .sidebar_title {
+        font-size: 1.5rem;
     }
 }

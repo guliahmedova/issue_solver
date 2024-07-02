@@ -1,8 +1,7 @@
 "use client";
 import { gradient } from "@/assets/imgs";
-import { Box, Container, Divider, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useRef } from "react";
 import style from "./authSidebar.module.scss";
 
@@ -27,8 +26,9 @@ const AuthSidebar = ({ children }: IAuthSidebar) => {
 
   return (
     <Grid container component="div" sx={{ height: "100vh" }}>
-      <Grid className={style.sidebar} item xs={false} sm={4} md={6}>
-        <Image src={gradient} alt="" objectFit="cover" layout="fill" quality={100} />
+      <Grid className={style.sidebar} item>
+
+        <Image src={gradient} alt="" style={{ objectFit: "cover" }} fill quality={100} priority={true} />
 
         <Box component="div" className={style.center}>
           <Box component="div" className={style.animation_center}>
@@ -69,7 +69,9 @@ const AuthSidebar = ({ children }: IAuthSidebar) => {
         </Box>
       </Grid>
 
-      <Grid item xs={12} sm={8} md={12} lg={6} height="100%">
+      <Grid item height="100%" className={
+        style.sidebar_content
+      }>
         <Box
           sx={{
             height: "100%",
