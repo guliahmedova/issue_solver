@@ -1,14 +1,14 @@
 "use client";
 import { Input } from "@/features/common";
+import API from "@/http/api";
+import { useRequestMutation } from "@/http/request";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { z, ZodError } from "zod";
 import style from "./changepassword.module.scss";
 import ValidationSchema from "./schema";
-import API from "@/http/api";
-import { useRequestMutation } from "@/http/request";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 type FormValues = z.infer<typeof ValidationSchema>;
 
@@ -46,7 +46,7 @@ const ChangePassword = () => {
     });
 
     console.log("change password res: ", response?.data?.message);
-    if (response.status === 200) {
+    if (response.success) {
       router.push('/login');
       sessionStorage.clear();
     } else{
