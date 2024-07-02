@@ -7,11 +7,15 @@ import style from "./changepassword.module.scss";
 import ValidationSchema from "./schema";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type FormValues = z.infer<typeof ValidationSchema>;
 
 const ChangePassword = () => {
   const { trigger: changePasswordTrigger } = useRequestMutation(API.reset_password, { method: 'POST' });
+  const router = useRouter();
+  const [error, setError] = useState(null);
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -29,20 +33,24 @@ const ChangePassword = () => {
 
   const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     const otpToken = sessionStorage.getItem('otp_token');
-    try {
-      const data = {
-        password: values?.password,
-        confirmPassword: values?.confirmPassword
-      };
-      const response = await changePasswordTrigger({
-        body: data,
-        params: { token: `?token=${otpToken}` }
-      });
-      console.log("change password res: ", response);
-      actions.setSubmitting(false);
-    } catch (error) {
-      console.error("ERROR IN LOGIN PAGE/SUBMIT FORM: ", error);
-      actions.setSubmitting(false);
+    actions.setSubmitting(false);
+
+    const data = {
+      password: values?.password,
+      confirmPassword: values?.confirmPassword
+    };
+
+    const response = await changePasswordTrigger({
+      body: data,
+      params: { token: `${otpToken}` }
+    });
+
+    console.log("change password res: ", response?.data?.message);
+    if (response.status === 200) {
+      router.push('/login');
+      sessionStorage.clear();
+    } else{
+      setError(response?.data?.message)
     }
   };
 
@@ -54,6 +62,7 @@ const ChangePassword = () => {
           <Typography className={style.sub_title}>
             Daxil olmaq üçün yeni şifrə təyin edin.
           </Typography>
+          {error && <Typography color="red">{error}</Typography>}
           <Divider className={style.divider} component="hr" />
         </Box>
 
