@@ -1,19 +1,25 @@
 "use client";
 import { Input } from "@/features/common";
-import API from "@/http/api";
-import { useRequestMutation } from "@/http/request";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { z, ZodError } from "zod";
 import style from "./changepassword.module.scss";
 import ValidationSchema from "./schema";
+import API from "@/http/api";
+import { useRequestMutation } from "@/http/request";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type FormValues = z.infer<typeof ValidationSchema>;
 
 const ChangePassword = () => {
-  const { trigger: changePasswordTrigger, data: changePasswordResponse } = useRequestMutation(API.reset_password, { method: 'POST' });
-  const [error, setError] = useState<null | string>(null);
+  const { trigger: changePasswordTrigger } = useRequestMutation(API.reset_password, { method: 'POST' });
+  const router = useRouter();
+  const [error, setError] = useState(null);
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
 
   const validateForm = (values: FormValues) => {
     try {
@@ -26,23 +32,25 @@ const ChangePassword = () => {
   };
 
   const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
-    const token = sessionStorage.getItem('otp_token');
-    console.log("token: ", token);
+    const otpToken = sessionStorage.getItem('otp_token');
+    actions.setSubmitting(false);
+
     const data = {
       password: values?.password,
       confirmPassword: values?.confirmPassword
     };
-    try {
-      if (token) {
-        await changePasswordTrigger({ body: data, params: token });
-      }
-      actions.setSubmitting(false);
-      console.log("changePasswordResponse: ", changePasswordResponse);
-      setError(null);
-    } catch (error: any) {
-      console.error("ERROR IN CHANGE PASSWORD: ", error);
-      actions.setSubmitting(false);
-      setError(error?.response?.data?.message);
+
+    const response = await changePasswordTrigger({
+      body: data,
+      params: { token: `${otpToken}` }
+    });
+
+    console.log("change password res: ", response?.data?.message);
+    if (response.status === 200) {
+      router.push('/login');
+      sessionStorage.clear();
+    } else{
+      setError(response?.data?.message)
     }
   };
 
@@ -54,6 +62,7 @@ const ChangePassword = () => {
           <Typography className={style.sub_title}>
             Daxil olmaq üçün yeni şifrə təyin edin.
           </Typography>
+          {error && <Typography color="red">{error}</Typography>}
           <Divider className={style.divider} component="hr" />
         </Box>
 
@@ -84,6 +93,7 @@ const ChangePassword = () => {
                   component={Input}
                   placeholder="Şifrənizi təyin edin"
                   autoComplete="password"
+                  handleMouseDownPassword={handleMouseDownPassword}
                   errorText={touched.password && errors.password ? errors.password : undefined}
                   value={values.password}
                   onChange={handleChange}
@@ -96,7 +106,12 @@ const ChangePassword = () => {
                   component={Input}
                   placeholder="Şifrənizi təsdiq edin"
                   autoComplete="confirmPassword"
-                  errorText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
+                  handleMouseDownPassword={handleMouseDownPassword}
+                  errorText={
+                    touched.confirmPassword && errors.confirmPassword
+                      ? errors.confirmPassword
+                      : undefined
+                  }
                   value={values.confirmPassword}
                   onChange={handleChange}
                   onBlur={handleBlur}

@@ -11,7 +11,7 @@ import style from './confirmOtp.module.scss';
 let currentOTPIndex: number;
 
 const ConfirmOtp = () => {
-    const { trigger: confirmOtpTrigger, data: otpTrustResponse } = useRequestMutation(API.otp_trust, { method: 'POST' });
+    const { trigger: confirmOtpTrigger } = useRequestMutation(API.otp_trust, { method: 'POST' });
     const { trigger: resendOtpTrigger } = useRequestMutation(API.resend_otp, { method: 'POST' });
     const [otp, setOtp] = useState<string[]>(new Array(7).fill(''));
     const [activeOTPIndex, setActiveOTPIndex] = useState<number>(0);
@@ -139,8 +139,6 @@ const ConfirmOtp = () => {
         };
     };
 
-    console.log("OTP RESPONSE: ", otpTrustResponse);
-    
     return (
         <Box className={style.confirm_otp_container} component="div">
             {openPopup && (
