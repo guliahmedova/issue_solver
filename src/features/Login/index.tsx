@@ -1,24 +1,29 @@
 "use client";
+import API from "@/http/api";
+import { useRequestMutation } from "@/http/request";
+import { useAuthStore } from "@/state/useAuthStore";
 import { Box, Divider, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { ZodError, z } from "zod";
 import Button from "../common/Button/Button";
 import Input from "../common/Input";
 import ValidationSchema from "./schema";
-import { useRequestMutation } from "@/http/request";
-import API from "@/http/api";
-import { useAuthStore } from "@/state/useAuthStore";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+
 type FormValues = z.infer<typeof ValidationSchema>;
+
 export default function LoginForm() {
   const [loginError, setLoginError] = useState(null);
   const router = useRouter();
+
   const { trigger: LoginTrigger } = useRequestMutation(API.login, {
     method: "POST",
   });
+
   const setAuth = useAuthStore(state => state.setAuth);
+
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
@@ -28,12 +33,16 @@ export default function LoginForm() {
       email: values.email,
       password: values.password,
     };
+
     try {
       const loginData = await LoginTrigger({ body: data });
-      setAuth({ token: loginData?.accessToken });
-      actions.setSubmitting(false);
-      setLoginError(null);
-      router.push("/");
+      console.log(loginData);
+      setAuth({ token: loginData?.data?.accessToken });
+      if (loginData?.success) {
+        router.push("/profile");
+        setLoginError(null);
+        actions.setSubmitting(false);
+      }
     } catch (error: any) {
       actions.setSubmitting(false);
       setLoginError(error?.response?.data?.message);
@@ -52,7 +61,7 @@ export default function LoginForm() {
 
   return (
     <Box component="div" height="100%" display="flex" justifyContent="center" alignItems="center">
-      <Box width="83%" display="flex" flexDirection="column" gap="20px">
+      <Box width="68%" display="flex" flexDirection="column" gap="20px">
         <Box>
           <Typography color="initial" fontSize={28} fontWeight={600}>
             Daxil ol
