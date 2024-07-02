@@ -1,2 +1,0 @@
-- reset password - da token ve email silinmelidir.
-- login and changePassword branchlarini silmek lazimdir. 
