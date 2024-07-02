@@ -2,7 +2,7 @@ const API = {
   "login": "/auth/login",
   "otp_trust": "Auths/otp-trust",
   "resend_otp": "Auths/resend-otp",
-  "reset_password": "Auths/reset-password?token=",
+  "reset_password": "Auths/reset-password",
   "forgot_password": "Auths/forget-password"
 };
 
