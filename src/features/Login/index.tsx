@@ -36,10 +36,9 @@ export default function LoginForm() {
 
     try {
       const loginData = await LoginTrigger({ body: data });
-      console.log(loginData);
-      setAuth({ token: loginData?.data?.accessToken });
+      setAuth({ token: loginData?.data?.accessToken, refreshToken: loginData?.data?.refreshToken });
       if (loginData?.success) {
-        router.push("/profile");
+        router.push("/home");
         setLoginError(null);
         actions.setSubmitting(false);
       }
