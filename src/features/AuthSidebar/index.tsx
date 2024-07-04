@@ -27,7 +27,6 @@ const AuthSidebar = ({ children }: IAuthSidebar) => {
   return (
     <Grid container component="div" sx={{ height: "100vh" }}>
       <Grid className={style.sidebar} item>
-
         <Image src={gradient} alt="" style={{ objectFit: "cover" }} fill quality={100} priority={true} />
 
         <Box component="div" className={style.center}>
