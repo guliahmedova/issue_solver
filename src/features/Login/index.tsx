@@ -38,7 +38,7 @@ export default function LoginForm() {
       const loginData = await LoginTrigger({ body: data });
       setAuth({ token: loginData?.data?.accessToken, refreshToken: loginData?.data?.refreshToken });
       if (loginData?.success) {
-        router.push("/home");
+        router.push("/dashboard");
         setLoginError(null);
         actions.setSubmitting(false);
       }
