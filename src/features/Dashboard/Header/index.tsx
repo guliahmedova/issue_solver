@@ -6,6 +6,7 @@ import ChangePassword from "../ChangePassword";
 
 const Header = () => {
     const [showDropdown, setShowDropdown] = useState(false);
+    const [openPasswordModal, setOpenPasswordModal] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const handleOutsideClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -56,7 +57,10 @@ const Header = () => {
                                     </div>
                                 </li>
                                 <li className="cursor-pointer flex items-center gap-5 mb-4"
-                                    onClick={() => setShowDropdown(false)}
+                                    onClick={() => {
+                                        setShowDropdown(false);
+                                        setOpenPasswordModal(true);
+                                    }}
                                 >
                                     <div className="w-12 h-12 rounded-full bg-[#E0EDFF] flex items-center justify-center">
                                         <Image alt="" src={key} />
@@ -81,7 +85,8 @@ const Header = () => {
                 </div>
             </div>
 
-            <ChangePassword />
+            <ChangePassword openPasswordModal={openPasswordModal}
+                setOpenPasswordModal={setOpenPasswordModal} />
         </>
     )
 };
