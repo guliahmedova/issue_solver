@@ -1,6 +1,12 @@
 import AuthSidebar from "@/features/AuthSidebar";
 import Email from "@/features/email";
 
-const EmailPage = () => <AuthSidebar children={<Email />} />
+const EmailPage = () => {
+    return (
+        <AuthSidebar>
+            <Email />
+        </AuthSidebar>
+    )
+}
 
 export default EmailPage;
