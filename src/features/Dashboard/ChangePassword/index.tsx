@@ -5,6 +5,7 @@ import { Field, Form, Formik, FormikProps } from "formik";
 import Image from "next/image";
 import { z, ZodError } from "zod";
 import ValidationSchema from "./schema";
+import { useRef } from "react";
 
 type FormValues = z.infer<typeof ValidationSchema>;
 
@@ -14,6 +15,8 @@ interface IChangePassword {
 };
 
 const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePassword) => {
+    const modelRef = useRef<HTMLDivElement>(null);
+
     const validateForm = (values: FormValues) => {
         try {
             ValidationSchema.parse(values);
@@ -24,9 +27,19 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
         }
     };
 
+    const handleOutsideClick = (e: React.MouseEvent<HTMLElement>) => {
+        if (modelRef?.current && !modelRef?.current?.contains(e.target as Node)) {
+            setOpenPasswordModal(false);
+        };
+    };
+
     return (
-        <div className={`${openPasswordModal ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 bg-black/20 flex flex-col items-center justify-center`}>
-            <div className="bg-white rounded-lg shadow border py-8 px-6 lg:w-4/12 relative">
+        <div className={`${openPasswordModal ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 bg-black/20 flex flex-col items-center justify-center`}
+            onClick={handleOutsideClick}
+        >
+            <div className="bg-white rounded-lg shadow border py-8 px-6 lg:w-4/12 relative"
+                ref={modelRef}
+            >
                 <div className="absolute -top-4 -right-4 cursor-pointer">
                     <button onClick={() => setOpenPasswordModal(false)}>
                         <Image alt="" src={closeBtn} />

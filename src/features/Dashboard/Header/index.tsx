@@ -10,7 +10,6 @@ const Header = () => {
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const handleOutsideClick = (e: React.MouseEvent<HTMLElement>) => {
-        console.log(e.target);
         if (dropdownRef?.current && !dropdownRef?.current?.contains(e.target as Node)) {
             setShowDropdown(false);
         };
