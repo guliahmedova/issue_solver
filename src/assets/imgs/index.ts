@@ -1,4 +1,5 @@
 export { default as building } from './building.svg';
+export { default as closeBtn } from './closeBtn.svg';
 export { default as exit } from './exit.svg';
 export { default as faq } from './FAQ.svg';
 export { default as gradient } from './gradient.svg';
