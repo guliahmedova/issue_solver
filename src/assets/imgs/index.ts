@@ -1,1 +1,12 @@
+export { default as building } from './building.svg';
+export { default as exit } from './exit.svg';
+export { default as faq } from './FAQ.svg';
 export { default as gradient } from './gradient.svg';
+export { default as about } from './InfoIcon.svg';
+export { default as key } from './key.svg';
+export { default as logout } from './logout.svg';
+export { default as applies } from './muractietler.svg';
+export { default as notif } from './notif.svg';
+export { default as privacy } from './Privacy.svg';
+export { default as comments } from './sherh.svg';
+export { default as user } from './user.svg';
