@@ -199,9 +199,9 @@ export const theme = extendTheme({
       styleOverrides: {
         root: {
           borderRadius: "12px",
-          backgroundColor: "white",
+          backgroundColor: "#F0F4F9",
           fontSize: "14px",
-          color: "black",
+          color: "#9D9D9D",
           "& > fieldset": {
             border: "none ",
           },
