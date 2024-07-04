@@ -53,7 +53,7 @@ export default function ForgotPassword() {
       flexDirection="column"
       alignItems="center"
     >
-      <Box paddingBottom="20px" textAlign="left" width="83%">
+      <Box paddingBottom="20px" textAlign="left" width="68%">
         <Typography color="initial" fontSize={28} fontWeight={600}>
           E-poçtunuzu daxil edin
         </Typography>
@@ -67,7 +67,7 @@ export default function ForgotPassword() {
         style={{
           borderColor: "#2981ff",
           opacity: "0.4",
-          width: "83%",
+          width: "68%",
           marginBottom: "30px",
         }}
       />
@@ -88,7 +88,7 @@ export default function ForgotPassword() {
           isValid,
           dirty,
         }: FormikProps<FormValues>) => (
-          <Box display="flex" justifyContent="center" alignItems="center" width="83%">
+          <Box display="flex" justifyContent="center" alignItems="center" width="68%">
             <Form
               onSubmit={handleSubmit}
               style={{ width: "100%", display: "flex", flexDirection: "column", gap: "60px" }}
@@ -121,7 +121,7 @@ export default function ForgotPassword() {
         justifyContent="space-evenly"
         alignItems="center"
         marginTop="80px"
-        width="83%"
+        width="68%"
       >
         <Typography color="#9D9D9D">Hesabınız yoxdur?</Typography>
         <Link
