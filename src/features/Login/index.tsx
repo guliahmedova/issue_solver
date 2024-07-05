@@ -15,15 +15,11 @@ import ValidationSchema from "./schema";
 type FormValues = z.infer<typeof ValidationSchema>;
 
 export default function LoginForm() {
-  const [loginError, setLoginError] = useState(null);
-  const router = useRouter();
-  const [loader, setLoader] = useState(false);
-
-  const { trigger: LoginTrigger } = useRequestMutation(API.login, {
-    method: "POST",
-  });
-
+  const { trigger: LoginTrigger } = useRequestMutation(API.login, { method: "POST" });
   const setAuth = useAuthStore(state => state.setAuth);
+  const [loginError, setLoginError] = useState(null);
+  const [loader, setLoader] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     const data = {
@@ -31,17 +27,24 @@ export default function LoginForm() {
       password: values.password,
     };
 
+    actions.setSubmitting(false);
+
     try {
       setLoader(true);
       const loginData = await LoginTrigger({ body: data });
+
+      for (const permisson of loginData?.data?.permissons) {
+        if (permisson === 'STAFF') {
+          router.push('/dashbord/home');
+        } else {
+          router.push('/dashboard');
+        }
+      };
+
+      console.log("loginData: ", loginData);
       setAuth({ token: loginData?.data?.accessToken, refreshToken: loginData?.data?.refreshToken });
-      if (loginData?.success) {
-        router.push("/dashboard");
-        setLoginError(null);
-        actions.setSubmitting(false);
-      }
+      setLoginError(null);
     } catch (error: any) {
-      actions.setSubmitting(false);
       setLoginError(error?.response?.data?.message);
     } finally {
       setLoader(false);
@@ -137,4 +140,4 @@ export default function LoginForm() {
       </div>
     </>
   );
-}
+};
