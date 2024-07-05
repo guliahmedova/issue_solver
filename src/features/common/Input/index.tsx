@@ -59,7 +59,7 @@ const Input = ({
                   onMouseDown={handleMouseDownPassword}
                   edge={edge}
                 >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                  {showPassword ? <Visibility color={isError ? "error" : "primary"} /> : <VisibilityOff color={isError ? "error" : "primary"} />}
                 </IconButton>
               </InputAdornment>
             ) : null
