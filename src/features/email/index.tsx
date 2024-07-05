@@ -16,6 +16,7 @@ export default function ForgotPassword() {
   const { trigger: sendEmailTrigger } = useRequestMutation(API.forgot_password, { method: 'POST' });
   const router = useRouter();
   const [emailError, setEmailError] = useState<null | string>(null);
+  const [loader, setLoader] = useState(false);
 
   const validateForm = (values: FormValues) => {
     try {
@@ -35,6 +36,7 @@ export default function ForgotPassword() {
       router.push('/confirm-otp');
       sessionStorage.setItem('user_email', email);
       setEmailError(null);
+      setLoader(true);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         setEmailError(error?.response?.data?.message);
@@ -115,15 +117,11 @@ export default function ForgotPassword() {
           )}
         </Formik>
 
-
         {emailError && <Typography color="red">{emailError}</Typography>}
       </Box>
 
-      <div className="fixed top-0 bottom-0 left-0 right-0 flex flex-col items-center justify-center bg-black/40 z-40">
-        <CircularProgress sx={{
-          width: "500px",
-          height: "500px"
-        }} />
+      <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 lg:left-auto left-0 right-0 flex lg:w-[50%] flex-col items-center justify-center bg-black/30 z-40`}>
+        <CircularProgress size="4rem" />
       </div>
     </>
   );
