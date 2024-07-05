@@ -4,7 +4,8 @@ const API = {
   "resend_otp": "Auths/resend-otp",
   "reset_password": "Auths/reset-password",
   "forgot_password": "Auths/forget-password",
-  "login_refreshtoken": "Auths/login-refreshtoken"
+  "login_refreshtoken": "Auths/login-refreshtoken",
+  "user_update_password": "Users/updatepassword"
 };
 
 export default API;
