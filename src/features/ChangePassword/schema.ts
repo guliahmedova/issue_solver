@@ -7,7 +7,7 @@ const passwordValidation = new RegExp(
 
 const ValidationSchema: ZodType<Password> = z.object({
     password: z.string().min(8, "Şifrə ən azı 8 simvoldan ibarət olmalıdır"),
-    confirmPassword: z.string().regex(passwordValidation, { message: 'Your password is not valid', }),
+    confirmPassword: z.string().regex(passwordValidation, { message: 'Şifrədə ən azı bir böyük və kiçik latın hərfi, rəqəm və xüsusi simvol istifadə olunmalıdır.', }),
 }).superRefine(({ password, confirmPassword }, ctx) => {
     if (confirmPassword !== password) {
         ctx.addIssue({
@@ -19,5 +19,3 @@ const ValidationSchema: ZodType<Password> = z.object({
 });
 
 export default ValidationSchema;
-
-// Şifrədə ən azı bir böyük və kiçik latın hərfi, rəqəm və xüsusi simvol istifadə olunmalıdır.
