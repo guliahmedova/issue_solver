@@ -34,7 +34,7 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
     };
 
     return (
-        <div className={`${openPasswordModal ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 bg-black/20 flex flex-col items-center justify-center`}
+        <div className={`${openPasswordModal ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 z-40 right-0 bg-black/20 flex flex-col items-center justify-center`}
             onClick={handleOutsideClick}
         >
             <div className="bg-white rounded-lg shadow border py-8 px-6 lg:w-4/12 relative"
