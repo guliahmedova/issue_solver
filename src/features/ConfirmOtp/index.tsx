@@ -194,7 +194,7 @@ const ConfirmOtp = () => {
 
                     <Box component="div" height={20}>
                         {timer != 0 && (
-                            <Typography fontSize="17px" color="#2981FF">
+                            <Typography fontSize="17px" color="#2981FF" className="select-none">
                                 Qalan vaxt: {`${Math.floor(timer / 60)}`.padStart(2, "0")}:{`${timer % 60}`.padStart(2, "0")}
                             </Typography>
                         )}

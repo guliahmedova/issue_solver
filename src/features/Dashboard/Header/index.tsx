@@ -3,11 +3,13 @@ import { building, key, logout, notif, user } from "@/assets/imgs";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import ChangePassword from "../ChangePassword";
+import LogoutPopup from "../LogoutPopup";
 
 const Header = () => {
     const [showDropdown, setShowDropdown] = useState(false);
     const [openPasswordModal, setOpenPasswordModal] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const [logoutModal, setLogoutModal] = useState<boolean>(false);
 
     const handleOutsideClick = (e: React.MouseEvent<HTMLElement>) => {
         if (dropdownRef?.current && !dropdownRef?.current?.contains(e.target as Node)) {
@@ -38,14 +40,17 @@ const Header = () => {
                     >
                         <Image alt="" src={building} />
                     </div>
-                    <div onClick={handleOutsideClick} className={`${showDropdown ? 'fixed' : 'hidden'} bg-black/20 top-0 bottom-0 left-0 right-0`}
+                    <div onClick={handleOutsideClick} className={`${showDropdown ? 'fixed' : 'hidden'} bg-black/20 top-0 bottom-0 left-0 right-0 z-40`}
                     >
                         <div className="absolute bg-white rounded-xl p-4 border shadow top-24 right-8 h-auto"
                             ref={dropdownRef}
                         >
                             <ul>
                                 <li className="cursor-pointer flex items-center gap-5 mb-4"
-                                    onClick={() => setShowDropdown(false)}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setShowDropdown(false);
+                                    }}
                                 >
                                     <div className="w-12 h-12 rounded-full bg-[#E0EDFF] flex items-center justify-center">
                                         <Image alt="" src={user} />
@@ -69,7 +74,11 @@ const Header = () => {
                                     </div>
                                 </li>
                                 <li className="cursor-pointer flex items-center gap-5 mb-6 pl-3 mt-6"
-                                    onClick={() => setShowDropdown(false)}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setShowDropdown(false);
+                                        setLogoutModal(true);
+                                    }}
                                 >
                                     <div>
                                         <Image alt="" src={logout} />
@@ -86,6 +95,8 @@ const Header = () => {
 
             <ChangePassword openPasswordModal={openPasswordModal}
                 setOpenPasswordModal={setOpenPasswordModal} />
+
+            <LogoutPopup isOpen={logoutModal} close={setLogoutModal} />
         </>
     )
 };
