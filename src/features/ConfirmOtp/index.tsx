@@ -2,7 +2,7 @@
 import { Button } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
-import { Box, Divider, Grid, OutlinedInput, Typography } from "@mui/material";
+import { Box, CircularProgress, Divider, Grid, OutlinedInput, Typography } from "@mui/material";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -23,6 +23,7 @@ const ConfirmOtp = () => {
         primaryBtn: true,
         secondaryBtn: true
     });
+    const [loader, setLoader] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const router = useRouter();
 
@@ -97,6 +98,7 @@ const ConfirmOtp = () => {
 
     const handleSubmit = async () => {
         try {
+            setLoader(true);
             const otpCode = otp?.join("");
             const otpData = await confirmOtpTrigger({ body: { otpCode: otpCode } });
             setOtpError(null);
@@ -104,7 +106,6 @@ const ConfirmOtp = () => {
             router.push("/change-password");
             const otpToken = otpData?.data;
             sessionStorage.setItem('otp_token', otpToken);
-            console.log("otpTrustResponse in handle submit func: ", otpData);
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
                 setOtpError(error?.response?.data?.message);
@@ -114,6 +115,8 @@ const ConfirmOtp = () => {
                     secondaryBtn: true
                 }));
             }
+        } finally {
+            setLoader(false);
         }
     };
 
@@ -122,6 +125,7 @@ const ConfirmOtp = () => {
         setOtp(new Array(7).fill(''));
         setActiveOTPIndex(0);
         try {
+            setLoader(true);
             const email = sessionStorage.getItem("user_email");
             await resendOtpTrigger({ body: { email: email } });
             setOtpError(null);
@@ -136,78 +140,85 @@ const ConfirmOtp = () => {
                     secondaryBtn: true
                 });
             };
-        };
+        } finally {
+            setLoader(false);
+        }
     };
 
     return (
-        <Box className={style.confirm_otp_container} component="div">
-            {openPopup && (
-                <Box className={style.overlay}>
-                    <Box className={style.popup_container}>
-                        <Box className={style.popup_content}>
-                            <Typography>Daha sonra yenidən cəhd edin</Typography>
-                            <Button variant="secondary" onClick={() => router.push("/login")}>Oldu</Button>
+        <>
+            <Box className={style.confirm_otp_container} component="div">
+                {openPopup && (
+                    <Box className={style.overlay}>
+                        <Box className={style.popup_container}>
+                            <Box className={style.popup_content}>
+                                <Typography>Daha sonra yenidən cəhd edin</Typography>
+                                <Button variant="secondary" onClick={() => router.push("/login")}>Oldu</Button>
+                            </Box>
                         </Box>
                     </Box>
-                </Box>
-            )}
+                )}
 
-            <Box component="div" className={style.confirm_otp_content}>
-                <Box component="div">
-                    <Typography className={style.form_title}>Təsdiq kodu</Typography>
-                    <Typography className={style.sub_title}>E-poçtunuza gələn təsdiq kodunu daxil edin</Typography>
-                    <Divider className={style.divider} component="hr" />
-                </Box>
+                <Box component="div" className={`${style.confirm_otp_content} lg:w-[68%] w-11/12 mx-auto`}>
+                    <Box component="div">
+                        <Typography className={style.form_title}>Təsdiq kodu</Typography>
+                        <Typography className={style.sub_title}>E-poçtunuza gələn təsdiq kodunu daxil edin</Typography>
+                        <Divider className={style.divider} component="hr" />
+                    </Box>
 
-                <Grid container component="div" className={style.otp_input_container}>
-                    {otp?.map((_, index) => (
-                        index === 3 ? (
-                            <Grid item key={index} sx={{
-                                height: "100% !importance",
-                            }} className={style.hyphen}>
-                                <Box component="div" width="100%" height="1px" border="1px solid #2981FF" />
-                            </Grid>
-                        ) : (
-                            <Grid item key={index} textAlign="center" >
-                                <OutlinedInput
-                                    className={style.otp_input}
-                                    sx={success ? null : { border: "2px solid #EF5648", backgroundColor: "#FF3D2C0F" }}
-                                    inputProps={{
-                                        style: { textAlign: "center", border: 0, outline: 0 }
-                                    }}
-                                    inputRef={index === activeOTPIndex ? inputRef : null}
-                                    onKeyDown={(e) => handleKeyDownOn(e, index)}
-                                    value={otp[index]}
-                                    onChange={(e) => handleChange(e, index)}
-                                />
-                            </Grid>
-                        )
-                    ))}
-                </Grid>
+                    <Grid container component="div" className={style.otp_input_container}>
+                        {otp?.map((_, index) => (
+                            index === 3 ? (
+                                <Grid item key={index} sx={{
+                                    height: "100% !importance",
+                                }} className={style.hyphen}>
+                                    <Box component="div" width="100%" height="1px" border="1px solid #2981FF" />
+                                </Grid>
+                            ) : (
+                                <Grid item key={index} textAlign="center" >
+                                    <OutlinedInput
+                                        className={style.otp_input}
+                                        sx={success ? null : { border: "2px solid #EF5648", backgroundColor: "#FF3D2C0F" }}
+                                        inputProps={{
+                                            style: { textAlign: "center", border: 0, outline: 0 }
+                                        }}
+                                        inputRef={index === activeOTPIndex ? inputRef : null}
+                                        onKeyDown={(e) => handleKeyDownOn(e, index)}
+                                        value={otp[index]}
+                                        onChange={(e) => handleChange(e, index)}
+                                    />
+                                </Grid>
+                            )
+                        ))}
+                    </Grid>
 
-                <Box component="div" height={20}>
-                    {timer != 0 && (
-                        <Typography fontSize="17px" color="#2981FF">
-                            Qalan vaxt: {`${Math.floor(timer / 60)}`.padStart(2, "0")}:{`${timer % 60}`.padStart(2, "0")}
-                        </Typography>
-                    )}
-                </Box>
+                    <Box component="div" height={20}>
+                        {timer != 0 && (
+                            <Typography fontSize="17px" color="#2981FF">
+                                Qalan vaxt: {`${Math.floor(timer / 60)}`.padStart(2, "0")}:{`${timer % 60}`.padStart(2, "0")}
+                            </Typography>
+                        )}
+                    </Box>
 
-                {otpError && <Typography color="red">{otpError}</Typography>}
+                    {otpError && <Typography color="red">{otpError}</Typography>}
 
-                <Box component="div" marginTop="83px">
-                    <Button variant="primary" onClick={handleSubmit} disabled={btnsDisabled.primaryBtn ? true : false} fullWidth sx={{
-                        textTransform: "capitalize"
-                    }}>Təsdiqlə</Button>
-                </Box>
+                    <Box component="div" marginTop="83px">
+                        <Button variant="primary" onClick={handleSubmit} disabled={btnsDisabled.primaryBtn ? true : false} fullWidth sx={{
+                            textTransform: "capitalize"
+                        }}>Təsdiqlə</Button>
+                    </Box>
 
-                <Box component="div" textAlign="center" paddingBlock="16px">
-                    <Button variant="secondary" fullWidth disabled={btnsDisabled.secondaryBtn ? true : false} onClick={handleSendOtpAgainBtn} sx={{
-                        textTransform: "capitalize"
-                    }}>Kodu yenidən göndər</Button>
+                    <Box component="div" textAlign="center" paddingBlock="16px">
+                        <Button variant="secondary" fullWidth disabled={btnsDisabled.secondaryBtn ? true : false} onClick={handleSendOtpAgainBtn} sx={{
+                            textTransform: "capitalize"
+                        }}>Kodu yenidən göndər</Button>
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+            <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 lg:left-auto left-0 right-0 flex lg:w-[50%] flex-col items-center justify-center bg-black/30 z-40`}>
+                <CircularProgress size="4rem" />
+            </div>
+        </>
     )
 };
 

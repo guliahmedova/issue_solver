@@ -10,6 +10,7 @@ import { ZodError, z } from "zod";
 import { Button } from "../common";
 import Input from "../common/Input";
 import EmailValidationSchema from "./schema";
+
 type FormValues = z.infer<typeof EmailValidationSchema>;
 
 export default function ForgotPassword() {
@@ -40,7 +41,6 @@ export default function ForgotPassword() {
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         setEmailError(error?.response?.data?.message);
-        console.log("error in email: ", error);
       }
       actions.setSubmitting(false);
     } finally {
@@ -58,7 +58,7 @@ export default function ForgotPassword() {
         flexDirection="column"
         alignItems="center"
       >
-        <Box paddingBottom="20px" textAlign="left" width="68%">
+        <Box paddingBottom="20px" textAlign="left" className="lg:w-[68%] w-11/12 mx-auto">
           <Typography color="initial" fontSize={28} fontWeight={600}>
             E-poçtunuzu daxil edin
           </Typography>
@@ -96,7 +96,7 @@ export default function ForgotPassword() {
             isValid,
             dirty,
           }: FormikProps<FormValues>) => (
-            <Box display="flex" justifyContent="center" alignItems="center" width="68%">
+            <Box display="flex" justifyContent="center" alignItems="center"  className="lg:w-[68%] w-11/12 mx-auto">
               <Form
                 onSubmit={handleSubmit}
                 style={{ width: "100%", display: "flex", flexDirection: "column", gap: "60px" }}
