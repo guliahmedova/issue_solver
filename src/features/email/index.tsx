@@ -30,19 +30,21 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     try {
+      setLoader(true);
       const email = values?.email;
       await sendEmailTrigger({ body: { email: email } });
       actions.setSubmitting(false);
       router.push('/confirm-otp');
       sessionStorage.setItem('user_email', email);
       setEmailError(null);
-      setLoader(true);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         setEmailError(error?.response?.data?.message);
         console.log("error in email: ", error);
       }
       actions.setSubmitting(false);
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -56,24 +58,27 @@ export default function ForgotPassword() {
         flexDirection="column"
         alignItems="center"
       >
-        <Box paddingBottom="20px" textAlign="left" className='xl:w-[68%] w-11/12'>
+        <Box paddingBottom="20px" textAlign="left" width="68%">
           <Typography color="initial" fontSize={28} fontWeight={600}>
             E-poçtunuzu daxil edin
           </Typography>
           <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap>
-            E-poçt hesabiniza təsdiq kod göndəriləcək.
+            E-poçt hesabınıza təsdiq kod göndəriləcək.
           </Typography>
+
         </Box>
         <Divider
           component="hr"
           color="#2981FF"
-          className='xl:w-[68%] w-11/12'
           style={{
             borderColor: "#2981ff",
             opacity: "0.4",
+            width: "68%",
             marginBottom: "30px",
           }}
         />
+
+
         <Formik
           initialValues={{
             email: "",
@@ -91,7 +96,7 @@ export default function ForgotPassword() {
             isValid,
             dirty,
           }: FormikProps<FormValues>) => (
-            <Box display="flex" justifyContent="center" alignItems="center" className='xl:w-[68%] w-11/12'>
+            <Box display="flex" justifyContent="center" alignItems="center" width="68%">
               <Form
                 onSubmit={handleSubmit}
                 style={{ width: "100%", display: "flex", flexDirection: "column", gap: "60px" }}
@@ -109,6 +114,8 @@ export default function ForgotPassword() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
+                {emailError && <Typography color="red" textAlign="left" width="60%">{emailError}</Typography>}
+
                 <Button variant="primary" type="submit" disabled={!isValid || !dirty}>
                   Təsdiq kodu göndər
                 </Button>
@@ -117,7 +124,6 @@ export default function ForgotPassword() {
           )}
         </Formik>
 
-        {emailError && <Typography color="red">{emailError}</Typography>}
       </Box>
 
       <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 lg:left-auto left-0 right-0 flex lg:w-[50%] flex-col items-center justify-center bg-black/30 z-40`}>
