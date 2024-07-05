@@ -1,7 +1,7 @@
 import ApplyCard from "./RequestCard";
 import Filter from "./RequestFilter";
 
-export default function ProfileSection() {
+export default function RequestSection() {
   return (
     <div className="ml-[20%] flex flex-col gap-8 py-6 bg-surface-background">
       <Filter />
