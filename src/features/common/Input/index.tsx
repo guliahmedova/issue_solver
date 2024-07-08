@@ -16,7 +16,6 @@ interface IMuiInput extends Pick<InputProps, Exclude<keyof InputProps, "icon">> 
   labelVariant?: "filled" | "outlined" | "standard";
   position?: "end" | "start";
   edge?: "end" | "start";
-  handleMouseDownPassword?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   errorText?: string;
   labelText: string;
   field?: any;
@@ -27,7 +26,6 @@ interface IMuiInput extends Pick<InputProps, Exclude<keyof InputProps, "icon">> 
 const Input = ({
   labelText,
   labelVariant = "standard",
-  handleMouseDownPassword,
   position = "end",
   edge = "end",
   field,
@@ -38,6 +36,16 @@ const Input = ({
 }: IMuiInput) => {
   const isError = get(form?.errors, field?.name) && get(form?.touched, field?.name);
   const [showPassword, setShowPassword] = useState(false)
+
+  console.log("isError: ", isError);
+  console.log("field: ", field);
+  console.log("form: ", form);
+  console.log("errorText: ", errorText);
+  console.log("props: ", props);
+
+  const handleMouseDownPassword = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+  };
 
   return (
     <Box sx={{
@@ -59,7 +67,7 @@ const Input = ({
                   onMouseDown={handleMouseDownPassword}
                   edge={edge}
                 >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                  {showPassword ? <Visibility color={isError ? "error" : "primary"} /> : <VisibilityOff color={isError ? "error" : "primary"} />}
                 </IconButton>
               </InputAdornment>
             ) : null

@@ -193,15 +193,35 @@ export const theme = extendTheme({
             },
           }),
         },
+        {
+          props: {
+            variant: "text",
+          },
+          style: ({ theme }) => ({
+            padding: "16px 24px",
+            textTransform: "none",
+            backgroundColor: theme.palette.background.default,
+            textWrap: "nowrap",
+            fontSize: "14px",
+            fontWeight: "500",
+            lineHeight: "16.8px",
+            color: "#2981FF",
+            display: "flex",
+            alignItems: "center",
+            "& > .MuiButton-endIcon > svg": {
+              fontSize: "16px ",
+            },
+          }),
+        },
       ],
     },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
           borderRadius: "12px",
-          backgroundColor: "white",
+          backgroundColor: "#F0F4F9",
           fontSize: "14px",
-          color: "black",
+          color: "#9D9D9D",
           "& > fieldset": {
             border: "none ",
           },
