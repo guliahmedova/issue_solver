@@ -7,6 +7,8 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import style from './confirmOtp.module.scss';
+import Image from "next/image";
+import { time } from "@/assets/imgs";
 
 let currentOTPIndex: number;
 
@@ -161,8 +163,21 @@ const ConfirmOtp = () => {
 
                 <Box component="div" className={`${style.confirm_otp_content} lg:w-[68%] w-11/12 mx-auto`}>
                     <Box component="div">
-                        <Typography className={style.form_title}>Təsdiq kodu</Typography>
-                        <Typography className={style.sub_title}>E-poçtunuza gələn təsdiq kodunu daxil edin</Typography>
+
+                        <div className="flex justify-between">
+                            <Box className="">
+                                <Typography className={style.form_title}>Təsdiq kodu</Typography>
+                                <Typography className={style.sub_title}>E-poçtunuza gələn təsdiq kodunu daxil edin</Typography>
+                            </Box>
+                            <Box component="div" height={20} className="mt-4">
+                                {timer != 0 && (
+                                    <Typography fontSize="17px" color="#2981FF" className="select-none flex items-center gap-1.5 text-lg">
+                                        <Image src={time} alt="" /> {`${Math.floor(timer / 60)}`.padStart(2, "0")}:{`${timer % 60}`.padStart(2, "0")}
+                                    </Typography>
+                                )}
+                            </Box>
+                        </div>
+
                         <Divider className={style.divider} component="hr" />
                     </Box>
 
@@ -192,14 +207,6 @@ const ConfirmOtp = () => {
                         ))}
                     </Grid>
 
-                    <Box component="div" height={20}>
-                        {timer != 0 && (
-                            <Typography fontSize="17px" color="#2981FF" className="select-none">
-                                Qalan vaxt: {`${Math.floor(timer / 60)}`.padStart(2, "0")}:{`${timer % 60}`.padStart(2, "0")}
-                            </Typography>
-                        )}
-                    </Box>
-
                     {otpError && <Typography color="red">{otpError}</Typography>}
 
                     <Box component="div" marginTop="83px">
@@ -223,29 +230,3 @@ const ConfirmOtp = () => {
 };
 
 export default ConfirmOtp;
-
-// email page -de user email localda qalmalidir.
-// change password page-de ise responde body-de olan data localda qalmalidir. eger experie date kecibse o zaman localSt silinmelidir. - bunu status code esasen teyin
-// etmeliyem.
-
-// tesdiqleye basanda - otp trust
-/**
- * {
-  "data": "CdAumAoD/jc6bAJclKhwaMFJr0JgyyqLcJMwd1NRmo1coucZ02V0wXmck05ueYOqtWusTbFXhYMqgls1tdbfOg==",
-  "success": true,
-  "status": 200,
-  "message": "otp is confirm.."
-}
- */
-
-// kodu yeniden gonder - reset otp
-
-/**
- * {
-  "success": true,
-  "status": 200,
-  "message": "new opt code send to gmail"
- }
- */
-
-// change password da user_email silmek lazimdir.
