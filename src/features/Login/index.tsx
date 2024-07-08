@@ -7,7 +7,8 @@ import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ZodError, z } from "zod";
+import { z } from "zod";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 import Button from "../common/Button/Button";
 import Input from "../common/Input";
 import ValidationSchema from "./schema";
@@ -41,23 +42,12 @@ export default function LoginForm() {
         }
       };
 
-      console.log("loginData: ", loginData);
       setAuth({ token: loginData?.data?.accessToken, refreshToken: loginData?.data?.refreshToken });
       setLoginError(null);
     } catch (error: any) {
       setLoginError(error?.response?.data?.message);
     } finally {
       setLoader(false);
-    }
-  };
-
-  const validateForm = (values: FormValues) => {
-    try {
-      ValidationSchema.parse(values);
-    } catch (error) {
-      if (error instanceof ZodError) {
-        return error.formErrors.fieldErrors;
-      }
     }
   };
 
@@ -83,7 +73,8 @@ export default function LoginForm() {
               password: "",
             }}
             onSubmit={handleSubmit}
-            validate={validateForm}
+            validationSchema={toFormikValidationSchema(ValidationSchema)}
+            validateOnBlur={true}
           >
             {({
               handleSubmit,
