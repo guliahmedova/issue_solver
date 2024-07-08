@@ -6,10 +6,10 @@ import { Box, Button, CircularProgress, Divider, Typography } from "@mui/materia
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { z, ZodError } from "zod";
+import { z } from "zod";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 import style from "./changepassword.module.scss";
 import ValidationSchema from "./schema";
-import { AxiosError } from "axios";
 
 type FormValues = z.infer<typeof ValidationSchema>;
 
@@ -18,16 +18,6 @@ const ChangePassword = () => {
   const router = useRouter();
   const [error, setError] = useState(null);
   const [loader, setLoader] = useState(false);
-
-  const validateForm = (values: FormValues) => {
-    try {
-      ValidationSchema.parse(values);
-    } catch (error) {
-      if (error instanceof ZodError) {
-        return error.formErrors.fieldErrors;
-      }
-    }
-  };
 
   const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     const otpToken = sessionStorage.getItem('otp_token');
@@ -71,8 +61,9 @@ const ChangePassword = () => {
                 password: "",
                 confirmPassword: "",
               }}
-              validate={validateForm}
               onSubmit={handleSubmit}
+              validationSchema={toFormikValidationSchema(ValidationSchema)}
+              validateOnBlur={true}
             >
               {({
                 handleSubmit,
