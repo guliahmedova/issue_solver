@@ -4,7 +4,7 @@ import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 
 interface ButtonProps extends Pick<MuiButtonProps, Exclude<keyof MuiButtonProps, "variant">> {
   handleClick?: () => void;
-  variant: "primary" | "secondary" | "disabled";
+  variant: "primary" | "secondary" | "text";
   showIcon?: boolean;
 }
 
@@ -26,4 +26,4 @@ export default function Button({
       {children}
     </MuiButton>
   );
-};
+}
