@@ -2,13 +2,17 @@ import { about, applies, comments, exit, faq, privacy } from "@/assets/imgs";
 import Image from "next/image";
 import Link from "next/link";
 
-const Sidebar = () => {
+interface ISidebar {
+    openSidebar: boolean;
+};
+
+const Sidebar = ({ openSidebar }: ISidebar) => {
     return (
-        <div className="hidden md:flex flex-col lg:w-72 bg-sidebar-img bg-no-repeat bg-fix bg-center bg-cover shadow border">
+        <div className={`${openSidebar ? 'md:flex' : 'hidden'} flex-col lg:w-72 bg-sidebar-img bg-no-repeat bg-fix bg-center bg-cover shadow border`}>
             <div className="flex items-center justify-start h-16 px-9 mt-3">
                 <Link href="/dashboard" className="text-[#2981FF] font-bold text-3xl">Issue Solver</Link>
             </div>
-            <div className="flex flex-col flex-1 overflow-y-auto mt-7">
+            <div className="flex flex-col overflow-y-auto mt-7 lg:h-full">
                 <nav className="flex-1 px-9 py-4">
                     <Link href="/dashboard/requests" className="flex items-center gap-3 text-[#4D96FF] font-bold text-xl mb-3 py-4">
                         <Image alt="" src={applies} />
