@@ -6,7 +6,8 @@ import { AxiosError } from "axios";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ZodError, z } from "zod";
+import { z } from "zod";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 import { Button } from "../common";
 import Input from "../common/Input";
 import EmailValidationSchema from "./schema";
@@ -18,16 +19,6 @@ export default function ForgotPassword() {
   const router = useRouter();
   const [emailError, setEmailError] = useState<null | string>(null);
   const [loader, setLoader] = useState(false);
-
-  const validateForm = (values: FormValues) => {
-    try {
-      EmailValidationSchema.parse(values);
-    } catch (error) {
-      if (error instanceof ZodError) {
-        return error.formErrors.fieldErrors;
-      }
-    }
-  };
 
   const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     try {
@@ -83,8 +74,9 @@ export default function ForgotPassword() {
           initialValues={{
             email: "",
           }}
-          validate={validateForm}
           onSubmit={handleSubmit}
+          validationSchema={toFormikValidationSchema(EmailValidationSchema)}
+          validateOnBlur={true}
         >
           {({
             handleSubmit,
