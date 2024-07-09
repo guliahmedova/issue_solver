@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useRef } from "react";
 
 interface ILogoutPopup {
@@ -8,11 +9,18 @@ interface ILogoutPopup {
 
 const LogoutPopup = ({ isOpen, close }: ILogoutPopup) => {
     const modalRef = useRef<HTMLDivElement>(null);
+    const router = useRouter();
 
     const handleOutsideClick = (e: React.MouseEvent<HTMLElement>) => {
         if (modalRef?.current && !modalRef?.current?.contains(e.target as Node)) {
             close(false);
         };
+    };
+
+    const handleLogout = () => {
+        sessionStorage.clear();
+        localStorage.clear();
+        router.push('/login');
     };
 
     return (
@@ -25,7 +33,9 @@ const LogoutPopup = ({ isOpen, close }: ILogoutPopup) => {
                 </Typography>
 
                 <Box className="flex ">
-                    <button className="w-6/12 text-center text-xl text-[#EF5648]">Çıxış</button>
+                    <button className="w-6/12 text-center text-xl text-[#EF5648]"
+                        onClick={handleLogout}
+                    >Çıxış</button>
                     <button className="w-6/12 text-center text-xl"
                         onClick={() => close(false)}
                     >İmtina</button>
