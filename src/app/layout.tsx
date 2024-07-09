@@ -3,7 +3,9 @@ import { theme } from "@/utils/theme";
 import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
+import Loading from "./loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +23,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <CssVarsProvider theme={theme} defaultMode="light">
-          <SWRProvider>{children}</SWRProvider>
+          <SWRProvider>
+            <Suspense fallback={<Loading />}>
+              {children}
+            </Suspense>
+          </SWRProvider>
         </CssVarsProvider>
       </body>
     </html>
