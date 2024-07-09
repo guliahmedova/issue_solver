@@ -3,9 +3,9 @@ import EmailType from "./modules/user";
 
 const EmailValidationSchema: ZodType<EmailType> = z.object({
     email: z.string({
-        required_error: "E-poçt mütləq daxil edilməlidir."
+        required_error: "E-poçt mütləq daxil edilməlidir"
     })
-        .email({ message: "E-poçt yanlışdır." })
+        .email({ message: "E-poçt yanlışdır" })
 });
 
 export default EmailValidationSchema;

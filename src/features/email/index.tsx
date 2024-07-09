@@ -50,11 +50,11 @@ export default function ForgotPassword() {
         alignItems="center"
       >
         <Box paddingBottom="20px" textAlign="left" className="lg:w-[68%] w-11/12 mx-auto">
-          <Typography color="initial" fontSize={28} fontWeight={600}>
+          <Typography color="initial" fontSize={28} fontWeight={600} className="select-none">
             E-poçtunuzu daxil edin
           </Typography>
-          <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap>
-            E-poçt hesabınıza təsdiq kod göndəriləcək.
+          <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap className="select-none">
+            E-poçt hesabınıza təsdiq kod göndəriləcək
           </Typography>
 
         </Box>
@@ -100,7 +100,7 @@ export default function ForgotPassword() {
                   autoFocus={true}
                   autoComplete="email"
                   component={Input}
-                  placeholder="E-poçtunuzu daxil edin."
+                  placeholder="E-poçtunuzu daxil edin"
                   errorText={touched.email && errors.email ? errors.email : undefined}
                   value={values.email}
                   onChange={handleChange}

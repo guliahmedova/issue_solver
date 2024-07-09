@@ -166,8 +166,8 @@ const ConfirmOtp = () => {
 
                         <div className="flex justify-between">
                             <Box className="">
-                                <Typography className={style.form_title}>Təsdiq kodu</Typography>
-                                <Typography className={style.sub_title}>E-poçtunuza gələn təsdiq kodunu daxil edin</Typography>
+                                <Typography className={`${style.form_title} select-none`}>Təsdiq kodu</Typography>
+                                <Typography className={`${style.sub_title} select-none`}>E-poçtunuza gələn təsdiq kodunu daxil edin</Typography>
                             </Box>
                             <Box component="div" height={20} className="mt-4">
                                 {timer != 0 && (

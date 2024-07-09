@@ -48,9 +48,9 @@ const ChangePassword = () => {
       <Box className={style.changepassword_container} component="div">
         <Box component="div" className={`${style.changepassword_content} lg:w-[68%] w-11/12 mx-auto`} >
           <Box component="div">
-            <Typography className={style.form_title}>Yeni şifrə təyin edin</Typography>
-            <Typography className={style.sub_title}>
-              Daxil olmaq üçün yeni şifrə təyin edin.
+            <Typography className={`${style.form_title} select-none`}>Yeni şifrə təyin edin</Typography>
+            <Typography className={`${style.sub_title} select-none`}>
+              Daxil olmaq üçün yeni şifrə təyin edin
             </Typography>
             <Divider className={style.divider} component="hr" />
           </Box>
