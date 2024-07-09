@@ -29,11 +29,15 @@ export default function LoginForm() {
     actions.setSubmitting(false);
     try {
       const loginData = await LoginTrigger({ body: data });
-      router.push('/dashboard');
+      if (loginData?.success) {
+        router.push('/dashboard');
+      }
       setAuth({ token: loginData?.data?.accessToken, refreshToken: loginData?.data?.refreshToken });
       setLoginError(null);
     } catch (error: any) {
-      setLoginError(error?.response?.data?.message);
+      if (!error?.response?.data?.success) {
+        setLoginError(error?.response?.data?.message);
+      }
     }
   };
 
@@ -99,7 +103,7 @@ export default function LoginForm() {
                 />
                 {loginError && <Typography color="red">{loginError}</Typography>}
                 <Box textAlign="right" color="#4D96FF" marginBottom="40px">
-                  <Link href="/forgot-password">Şifrənizi unutmusuz?</Link>
+                  <Link href="/forgot-password">Şifrənizi unutmusunuz?</Link>
                 </Box>
                 <Button type="submit" variant="primary" disabled={!isValid || !dirty}>
                   Daxil ol

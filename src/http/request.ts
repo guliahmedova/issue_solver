@@ -2,6 +2,7 @@ import { useAuthStore } from "@/state/useAuthStore";
 import axios from "axios";
 import useSWR from "swr";
 import useSWRMutation, { SWRMutationConfiguration } from "swr/mutation";
+import API from "./api";
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -21,22 +22,20 @@ axiosInstance.interceptors.request.use(
   },
   error => {
     return Promise.reject(error);
-  },
+  }
 );
 
 axiosInstance.interceptors.response.use(
   (res) => {
-    const token = res.headers["Authorization"];
+    const token = useAuthStore.getState().authData?.token;
+    const refreshToken = useAuthStore.getState().authData?.refreshToken;
 
-    if (token) {
-      const authData = useAuthStore.getState().authData;
-      if (authData) {
-        authData.token = token.replace("Bearer ", "");
-        useAuthStore.setState({ authData });
-      }
+    if (token && refreshToken) {
+      const setState = useAuthStore.getState().setAuth;
+      setState({ token: token, refreshToken: refreshToken });
     }
 
-    return res;
+    return res; 
   },
   async (error) => {
     const originalRequest = error.config;
@@ -47,25 +46,18 @@ axiosInstance.interceptors.response.use(
 
       try {
         const response = await axiosInstance.post(
-          // process.env.NEXT_PUBLIC_BASE_URL + API.login_refreshtoken
-          'https://govermentauthapi20240610022027.azurewebsites.net/api/Auths/login-refreshtoken',
-          { refreshToken }
+          process.env.NEXT_PUBLIC_BASE_URL + API.login_refreshtoken,
+          {
+            token: refreshToken
+          }
         );
 
-        const newAccessToken = response.data.accessToken;
-        const newRefreshToken = response.data.refreshToken;
-
-        const authData = useAuthStore.getState().authData;
-        if (authData) {
-          authData.token = newAccessToken;
-          authData.refreshToken = newRefreshToken;
-          useAuthStore.setState({ authData });
-        }
-
+        const newAccessToken = response?.data?.data?.token;
+        const setAuth = useAuthStore.getState()?.setAuth;
+        setAuth({ token: newAccessToken });
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
       } catch (error) {
-        console.error("Error refreshing tokens:", error);
         throw error;
       }
     }

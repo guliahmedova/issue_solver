@@ -48,11 +48,9 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
             };
 
             const res = await updatePasswordTrigger({ body: data });
-            console.log("res: ", res);
             actions.setSubmitting(false);
             setError(null);
         } catch (error: any) {
-            console.log("error: ", error);
             setError(error?.response?.data?.message);
         } finally {
             setLoader(false);

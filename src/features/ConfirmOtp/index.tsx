@@ -1,14 +1,14 @@
 "use client";
+import { time } from "@/assets/imgs";
 import { Button } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
-import { Box, CircularProgress, Divider, Grid, OutlinedInput, Typography } from "@mui/material";
+import { Box, Divider, Grid, OutlinedInput, Typography } from "@mui/material";
 import { AxiosError } from "axios";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import style from './confirmOtp.module.scss';
-import Image from "next/image";
-import { time } from "@/assets/imgs";
 
 let currentOTPIndex: number;
 
@@ -143,19 +143,18 @@ const ConfirmOtp = () => {
     return (
         <Box className={style.confirm_otp_container} component="div">
             {openPopup && (
-                <Box className={style.overlay}>
-                    <Box className={style.popup_container}>
-                        <Box className={style.popup_content}>
-                            <Typography>Daha sonra yenidən cəhd edin</Typography>
+                <div className="fixed top-0 bottom-0 lg:right-0 lg:left-auto right-0 left-0 w-full bg-black/30 lg:w-6/12 h-full z-40 flex flex-col justify-center items-center">
+                    <Box className='bg-white rounded-md shadow border p-6'>
+                        <Box className=''>
+                            <Typography className="text-xl select-none mb-5">Daha sonra yenidən cəhd edin</Typography>
                             <Button variant="secondary" onClick={() => router.push("/login")}>Oldu</Button>
                         </Box>
                     </Box>
-                </Box>
+                </div>
             )}
 
             <Box component="div" className={`${style.confirm_otp_content} lg:w-[68%] w-11/12 mx-auto`}>
                 <Box component="div">
-
                     <div className="flex justify-between">
                         <Box className="">
                             <Typography className={`${style.form_title} select-none`}>Təsdiq kodu</Typography>

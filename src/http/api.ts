@@ -6,7 +6,7 @@ const API = {
   "forgot_password": "Auths/forget-password",
   "login_refreshtoken": "Auths/login-refreshtoken",
   "user_update_password": "Users/updatepassword",
-  "get_me": "Users/getme"
+  "get_me": "Users/getmeweb"
 };
 
 export default API;

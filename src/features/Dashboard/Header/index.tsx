@@ -1,9 +1,11 @@
 "use client";
 import { building, key, logout, notif, user } from "@/assets/imgs";
+import API from "@/http/api";
+import { useRequest } from "@/http/request";
+import MenuIcon from '@mui/icons-material/Menu';
 import Image from "next/image";
 import { useRef, useState } from "react";
 import ChangePassword from "../ChangePassword";
-import MenuIcon from '@mui/icons-material/Menu';
 import LogoutPopup from "../LogoutPopup";
 
 interface IHeader {
@@ -11,6 +13,7 @@ interface IHeader {
 };
 
 const Header = ({ setOpenSidebar }: IHeader) => {
+    const getMeData = useRequest(API.get_me);
     const [showDropdown, setShowDropdown] = useState(false);
     const [openPasswordModal, setOpenPasswordModal] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -66,8 +69,8 @@ const Header = ({ setOpenSidebar }: IHeader) => {
                                             <Image alt="" src={user} />
                                         </div>
                                         <div>
-                                            <h3 className="font-medium text-lg text-nowrap">İnnovasiya və Rəqəmsal <br /> İnkişaf Agentliyi</h3>
-                                            <span className="text-[#F09350]">info@idda.az</span>
+                                            <h3 className="font-medium text-lg text-wrap w-64">{getMeData?.data?.data?.organizationName}</h3>
+                                            <span className="text-[#F09350]">{getMeData?.data?.data?.email}</span>
                                         </div>
                                     </li>
                                     <li className="cursor-pointer flex items-center gap-5 mb-4"
