@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 
 export interface IAuthData {
   token: string;
-  refreshToken: string;
+  refreshToken?: string;
 };
 
 interface IState {
@@ -24,7 +24,6 @@ export const useAuthStore = create<IState & IAction>()(
     }),
     {
       name: "__auth",
-      skipHydration: true,
     },
   ),
 );
