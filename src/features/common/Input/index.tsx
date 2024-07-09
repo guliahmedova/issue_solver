@@ -37,12 +37,6 @@ const Input = ({
   const isError = get(form?.errors, field?.name) && get(form?.touched, field?.name);
   const [showPassword, setShowPassword] = useState(false)
 
-  console.log("isError: ", isError);
-  console.log("field: ", field);
-  console.log("form: ", form);
-  console.log("errorText: ", errorText);
-  console.log("props: ", props);
-
   const handleMouseDownPassword = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
   };

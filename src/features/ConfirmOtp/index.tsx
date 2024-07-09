@@ -144,9 +144,9 @@ const ConfirmOtp = () => {
         <Box className={style.confirm_otp_container} component="div">
             {openPopup && (
                 <div className="fixed top-0 bottom-0 lg:right-0 lg:left-auto right-0 left-0 w-full bg-black/30 lg:w-6/12 h-full z-40 flex flex-col justify-center items-center">
-                    <Box className='bg-white rounded-md shadow border p-4'>
+                    <Box className='bg-white rounded-md shadow border p-6'>
                         <Box className=''>
-                            <Typography className="text-lg select-none">Daha sonra yenidən cəhd edin</Typography>
+                            <Typography className="text-xl select-none mb-5">Daha sonra yenidən cəhd edin</Typography>
                             <Button variant="secondary" onClick={() => router.push("/login")}>Oldu</Button>
                         </Box>
                     </Box>
@@ -155,7 +155,6 @@ const ConfirmOtp = () => {
 
             <Box component="div" className={`${style.confirm_otp_content} lg:w-[68%] w-11/12 mx-auto`}>
                 <Box component="div">
-
                     <div className="flex justify-between">
                         <Box className="">
                             <Typography className={`${style.form_title} select-none`}>Təsdiq kodu</Typography>
