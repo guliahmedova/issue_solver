@@ -65,7 +65,6 @@ axiosInstance.interceptors.response.use(
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
       } catch (error) {
-        console.error("Error refreshing tokens:", error);
         throw error;
       }
     }
