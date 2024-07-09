@@ -56,11 +56,11 @@ export default function LoginForm() {
       <Box component="div" height="100%" display="flex" justifyContent="center" alignItems="center">
         <Box className="lg:w-[68%] w-11/12 mx-auto" display="flex" flexDirection="column" gap="20px">
           <Box>
-            <Typography color="initial" fontSize={28} fontWeight={600}>
+            <Typography color="initial" fontSize={28} fontWeight={600} className="select-none">
               Daxil ol
             </Typography>
-            <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap>
-              Zəhmət olmasa, giriş üçün məlumatlarınızı daxil edin.
+            <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap className="select-none">
+              Zəhmət olmasa, giriş üçün məlumatlarınızı daxil edin
             </Typography>
           </Box>
           <Divider
@@ -94,7 +94,7 @@ export default function LoginForm() {
                     type="text"
                     autoComplete="email"
                     component={Input}
-                    placeholder="E-poçtunuzu daxil edin."
+                    placeholder="E-poçtunuzu daxil edin"
                     errorText={touched.email && errors.email ? errors.email : undefined}
                     value={values.email}
                     onChange={handleChange}
@@ -105,7 +105,7 @@ export default function LoginForm() {
                     labelText="Şifrə"
                     type="password"
                     component={Input}
-                    placeholder="Şifrənizi daxil edin."
+                    placeholder="Şifrənizi daxil edin"
                     autoComplete="password"
                     errorText={touched.password && errors.password ? errors.password : undefined}
                     value={values.password}
