@@ -1,8 +1,5 @@
+import RequestSection from "@/features/Dashboard/RequestToGov";
 
-const Dashboard = () => {
-    return (
-        <div>Admin</div>
-    )
+export default function RequestPage() {
+  return <RequestSection />;
 }
-
-export default Dashboard
