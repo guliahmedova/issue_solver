@@ -18,3 +18,7 @@
 ::-webkit-scrollbar-thumb:hover {
     background: transparent;
 }
+
+select {
+    appearance: none;
+}
