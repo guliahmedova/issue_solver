@@ -25,9 +25,9 @@ const Header = ({ setOpenSidebar }: IHeader) => {
     const handleOutsideClick = (e: React.MouseEvent<HTMLElement>) => {
         if (dropdownRef?.current && !dropdownRef?.current?.contains(e.target as Node)) {
             setShowDropdown(false);
-        };  
+        };
     };
-
+    
     return (
         <>
             <div className="flex items-center justify-between lg:justify-end px-10 pt-4">

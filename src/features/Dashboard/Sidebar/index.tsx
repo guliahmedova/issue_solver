@@ -24,6 +24,8 @@ const Sidebar = ({ openSidebar }: ISidebar) => {
                 <nav className="flex-1 px-10 py-4">
                     {sidebarItems?.map((item) => (
                         <Link
+                            prefetch={true}
+                            shallow={true}
                             href={item.path}
                             key={item.path}
                             className={`${currentPath === item.path ? "bg-[#2981FF] text-white rounded-xl" : "text-[#4D96FF]"} flex items-center gap-3 font-medium text-lg mb-4 py-4 px-3`}

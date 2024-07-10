@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
       setState({ token: token, refreshToken: refreshToken });
     }
 
-    return res; 
+    return res;
   },
   async (error) => {
     const originalRequest = error.config;
@@ -58,6 +58,8 @@ axiosInstance.interceptors.response.use(
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
       } catch (error) {
+        console.log("error: ", error);
+        // redirect to login 
         throw error;
       }
     }
