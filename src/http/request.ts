@@ -26,44 +26,30 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-  (res) => {
-    const token = useAuthStore.getState().authData?.token;
-    const refreshToken = useAuthStore.getState().authData?.refreshToken;
-
-    if (token && refreshToken) {
-      const setState = useAuthStore.getState().setAuth;
-      setState({ token: token, refreshToken: refreshToken });
-    }
-
-    return res;
-  },
-  async (error) => {
+  (response) => response,
+  async (error: any) => {
     const originalRequest = error.config;
-    const refreshToken = useAuthStore.getState().authData?.refreshToken;
+    // console.log("originalRequest: ", originalRequest);
+    // console.log("error in response: ", error);
 
-    if (error.response.status === 401 && refreshToken && !originalRequest._retry) {
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const response = await axiosInstance.post(
-          process.env.NEXT_PUBLIC_BASE_URL + API.login_refreshtoken,
-          {
-            token: refreshToken
-          }
-        );
-
+        const refreshToken = useAuthStore.getState().authData?.refreshToken;
+        const response = await axiosInstance.post(process.env.NEXT_PUBLIC_BASE_URL + API.login_refreshtoken, { token: refreshToken });
         const newAccessToken = response?.data?.data?.token;
-        const setAuth = useAuthStore.getState()?.setAuth;
-        setAuth({ token: newAccessToken });
-        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+        const setState = useAuthStore.getState().setAuth;
+        setState({ token: newAccessToken, refreshToken: refreshToken });
+        axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
-      } catch (error) {
-        console.log("error: ", error);
-        // redirect to login 
-        throw error;
+      } catch (refreshError) {
+        // console.error('Token refresh failed:', refreshError);
+        localStorage.clear();
+        window.location.href = '/login';
+        return Promise.reject(refreshError);
       }
     }
-
     return Promise.reject(error);
   }
 );
