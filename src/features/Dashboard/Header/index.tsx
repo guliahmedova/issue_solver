@@ -18,13 +18,16 @@ const Header = ({ setOpenSidebar }: IHeader) => {
     const [openPasswordModal, setOpenPasswordModal] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [logoutModal, setLogoutModal] = useState<boolean>(false);
+    const organizationName = getMeData?.data?.data?.organizationName ?
+        getMeData?.data?.data?.organizationName : "İnnovasiya və Rəqəmsal İnkişaf Agentliyi";
+    const email = getMeData?.data?.data?.email ? getMeData?.data?.data?.email : "info@idda.az";
 
     const handleOutsideClick = (e: React.MouseEvent<HTMLElement>) => {
         if (dropdownRef?.current && !dropdownRef?.current?.contains(e.target as Node)) {
             setShowDropdown(false);
         };
     };
-
+    
     return (
         <>
             <div className="flex items-center justify-between lg:justify-end px-10 pt-4">
@@ -68,9 +71,9 @@ const Header = ({ setOpenSidebar }: IHeader) => {
                                         <div className="w-12 h-12 rounded-full bg-[#E0EDFF] flex items-center justify-center">
                                             <Image alt="" src={user} />
                                         </div>
-                                        <div>
-                                            <h3 className="font-medium text-lg text-wrap w-64">{getMeData?.data?.data?.organizationName}</h3>
-                                            <span className="text-[#F09350]">{getMeData?.data?.data?.email}</span>
+                                        <div className="text-wrap w-64 overflow-x-scroll">
+                                            <h3 className="font-medium text-lg">{organizationName}</h3>
+                                            <span className="text-[#F09350] text-wrap w-64 overflow-hidden">{email}</span>
                                         </div>
                                     </li>
                                     <li className="cursor-pointer flex items-center gap-5 mb-4"

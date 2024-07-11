@@ -2,11 +2,12 @@ import { closeBtn } from "@/assets/imgs";
 import { Button, Input } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
-import { Box, CircularProgress, Divider, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { z, ZodError } from "zod";
+import { z } from "zod";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 import ValidationSchema from "./schema";
 
 type FormValues = z.infer<typeof ValidationSchema>;
@@ -20,16 +21,6 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
     const { trigger: updatePasswordTrigger } = useRequestMutation(API.user_update_password, { method: 'PUT' });
     const modelRef = useRef<HTMLDivElement>(null);
     const [error, setError] = useState(null);
-
-    const validateForm = (values: FormValues) => {
-        try {
-            ValidationSchema.parse(values);
-        } catch (error) {
-            if (error instanceof ZodError) {
-                return error.formErrors.fieldErrors;
-            }
-        }
-    };
 
     const handleOutsideClick = (e: React.MouseEvent<HTMLElement>) => {
         if (modelRef?.current && !modelRef?.current?.contains(e.target as Node)) {
@@ -67,12 +58,12 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
                     </button>
                 </div>
                 <div className="w-full">
-                    <Box>
+                    <Box className="select-none">
                         <Typography color="initial" fontSize={28} fontWeight={600}>
                             Yeni Şifrə
                         </Typography>
                         <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap>
-                            Zəhmət olmasa, aşağıda məlumatlarınızı qeyd edin.
+                            Zəhmət olmasa, aşağıda məlumatlarınızı qeyd edin
                         </Typography>
                     </Box>
                     <Divider
@@ -87,7 +78,8 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
                             confirmPassword: ""
                         }}
                         onSubmit={handleSubmit}
-                        validate={validateForm}
+                        validationSchema={toFormikValidationSchema(ValidationSchema)}
+                        validateOnBlur={true}
                     >
                         {({
                             handleSubmit,
