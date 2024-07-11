@@ -16,7 +16,7 @@ const Sidebar = ({ openSidebar }: ISidebar) => {
     const sidebarItems = sidebarMenu.filter((item) => checkPermission(item?.permissions, userPermissions));
 
     return (
-        <div className={`${openSidebar ? 'md:flex' : 'hidden'} flex-col lg:w-72 bg-[#E0EDFF] bg-no-repeat bg-fix bg-center bg-cover shadow border`}>
+        <div className={`${openSidebar ? 'md:flex' : 'hidden'} flex-col lg:w-72 bg-[#E0EDFF] shadow`}>
             <div className="flex items-center justify-start h-16 px-9 mt-3">
                 <Link href="/dashboard" className="text-[#2981FF] font-bold text-3xl">Issue Solver</Link>
             </div>

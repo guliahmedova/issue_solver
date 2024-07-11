@@ -13,7 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Suspense fallback={<Loading />}>
                 <div className="flex h-screen bg-gray-100">
                     <Sidebar openSidebar={openSidebar} />
-                    <div className="flex flex-col flex-1 overflow-y-auto">
+                    <div className="flex flex-col flex-1 overflow-y-auto bg-surface-background">
                         <Header setOpenSidebar={setOpenSidebar} />
                         <div className="p-4">
                             {children}
