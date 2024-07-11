@@ -33,7 +33,7 @@ const Sidebar = ({ openSidebar }: ISidebar) => {
                             <Image
                                 alt=""
                                 src={item.icon}
-                                className={`${currentPath === item.path ? "brightness-[6.5]" : ""}`}
+                                className={`${currentPath === item.path ? "brightness-[6.5]" : ""} w-7 h-7`}
                             />
                             {item.label}
                         </Link>

@@ -17,6 +17,8 @@ export { default as applies } from './muractietler.svg';
 export { default as NameIcon } from './Name icon.svg';
 export { default as notif } from './notif.svg';
 export { default as privacy } from './Privacy.svg';
+export { default as qurum } from './qurum.svg';
 export { default as comments } from './sherh.svg';
+export { default as staff } from './staff.svg';
 export { default as time } from './time.svg';
 export { default as user } from './user.svg';
