@@ -29,8 +29,8 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error: any) => {
     const originalRequest = error.config;
-    // console.log("originalRequest: ", originalRequest);
-    // console.log("error in response: ", error);
+    console.log("originalRequest: ", originalRequest);
+    console.log("error in response: ", error);
 
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
@@ -44,7 +44,8 @@ axiosInstance.interceptors.response.use(
         axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        // console.error('Token refresh failed:', refreshError);
+        console.error('Token refresh failed:', refreshError);
+        console.log("window.location.href: ", window.location.href);
         localStorage.clear();
         window.location.href = '/login';
         return Promise.reject(refreshError);

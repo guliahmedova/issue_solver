@@ -38,13 +38,20 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
                 password: values.newPassword,
                 confirmPassword: values.confirmPassword
             };
-            const res = await updatePasswordTrigger({ body: data });
+            await updatePasswordTrigger({ body: data });
             actions.setSubmitting(false);
             setOpenPasswordModal(false);
         } catch (error: any) {
             setError(error?.response?.data?.message);
         } finally {
             setLoader(false);
+            actions.resetForm({
+                values: {
+                    password: "",
+                    newPassword: "",
+                    confirmPassword: ""
+                }
+            })
         }
     };
 

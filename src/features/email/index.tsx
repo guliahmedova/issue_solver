@@ -36,6 +36,11 @@ export default function ForgotPassword() {
       actions.setSubmitting(false);
     } finally {
       setLoader(false);
+      actions.resetForm({
+        values: {
+          email: ""
+        }
+      });
     }
   };
 

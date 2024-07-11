@@ -50,6 +50,12 @@ export default function LoginForm() {
       }
     } finally {
       setLoader(false);
+      actions.resetForm({
+        values: {
+          email: "",
+          password: ""
+        }
+      });
     }
   };
 

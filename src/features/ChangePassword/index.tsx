@@ -41,6 +41,12 @@ const ChangePassword = () => {
       setError(error?.response?.data?.message);
     } finally {
       setLoader(false);
+      actions.resetForm({
+        values: {
+          password: "",
+          confirmPassword: "",
+        }
+      });
     }
   };
 
