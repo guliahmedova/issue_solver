@@ -12,6 +12,7 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import Button from "../common/Button/Button";
 import Input from "../common/Input";
 import ValidationSchema from "./schema";
+import { ROLES } from "@/constants/roles";
 
 type FormValues = z.infer<typeof ValidationSchema>;
 
@@ -30,9 +31,16 @@ export default function LoginForm() {
     try {
       const loginData = await LoginTrigger({ body: data });
       if (loginData?.success) {
-        router.push('/dashboard');
+        for (const permission of loginData?.data?.permissons) {
+          if (permission === ROLES.ADMIN) {
+            router.push('/dashboard/comments');
+          } else if (permission === ROLES.STAFF) {
+            router.push('/dashboard/');
+          }
+        }
       }
       setAuth({ token: loginData?.data?.accessToken, refreshToken: loginData?.data?.refreshToken });
+      sessionStorage.setItem('permissions', loginData?.data?.permissons);
       setLoginError(null);
     } catch (error: any) {
       if (!error?.response?.data?.success) {
