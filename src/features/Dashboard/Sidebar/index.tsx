@@ -18,7 +18,7 @@ const Sidebar = ({ openSidebar }: ISidebar) => {
     return (
         <div className={`${openSidebar ? 'md:flex' : 'hidden'} flex-col lg:w-72 bg-[#E0EDFF] shadow`}>
             <div className="flex items-center justify-start h-16 px-9 mt-3">
-                <Link href="/dashboard" className="text-[#2981FF] font-bold text-3xl">Issue Solver</Link>
+                <h2 className="text-[#2981FF] font-bold text-3xl select-none">Issue Solver</h2>
             </div>
             <div className="flex flex-col overflow-y-auto mt-11 lg:h-full">
                 <nav className="flex-1 px-10 py-4">

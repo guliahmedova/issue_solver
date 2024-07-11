@@ -7,13 +7,14 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import ChangePassword from "../ChangePassword";
 import LogoutPopup from "../LogoutPopup";
+import { CircularProgress } from "@mui/material";
 
 interface IHeader {
     setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>
 };
 
 const Header = ({ setOpenSidebar }: IHeader) => {
-    const getMeData = useRequest(API.get_me);
+    const { data: getMeData, isLoading } = useRequest(API.get_me);
     const [showDropdown, setShowDropdown] = useState(false);
     const [openPasswordModal, setOpenPasswordModal] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -27,7 +28,7 @@ const Header = ({ setOpenSidebar }: IHeader) => {
             setShowDropdown(false);
         };
     };
-    
+
     return (
         <>
             <div className="flex items-center justify-between lg:justify-end px-10 pt-4">
@@ -108,6 +109,10 @@ const Header = ({ setOpenSidebar }: IHeader) => {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div className={`${isLoading ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 flex w-full flex-col items-center justify-center bg-black/10 z-40`}>
+                <CircularProgress size="4rem" />
             </div>
 
             <ChangePassword openPasswordModal={openPasswordModal}

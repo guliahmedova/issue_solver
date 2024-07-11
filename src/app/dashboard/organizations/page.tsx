@@ -1,8 +1,9 @@
+import Organizations from "@/features/Dashboard/Organizations";
 
-const Organizations = () => {
+const OrganizationsPage = () => {
     return (
-        <div>Organizations</div>
+        <Organizations />
     )
 }
 
-export default Organizations
+export default OrganizationsPage
