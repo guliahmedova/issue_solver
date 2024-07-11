@@ -4,6 +4,8 @@ import useSWR from "swr";
 import useSWRMutation, { SWRMutationConfiguration } from "swr/mutation";
 import API from "./api";
 
+let counter = 0;
+
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   headers: {
@@ -34,22 +36,21 @@ axiosInstance.interceptors.response.use(
 
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
-      try {
-        const refreshToken = useAuthStore.getState().authData?.refreshToken;
-        const response = await axiosInstance.post(process.env.NEXT_PUBLIC_BASE_URL + API.login_refreshtoken, { token: refreshToken });
-        const newAccessToken = response?.data?.data?.token;
-        const setState = useAuthStore.getState().setAuth;
-        setState({ token: newAccessToken, refreshToken: refreshToken });
-        axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
-        return axiosInstance(originalRequest);
-      } catch (refreshError) {
-        console.error('Token refresh failed:', refreshError);
-        console.log("window.location.href: ", window.location.href);
+      if (counter === 2) {
         localStorage.clear();
         window.location.href = '/login';
-        return Promise.reject(refreshError);
       }
+      counter++;
+      const refreshToken = useAuthStore.getState().authData?.refreshToken;
+      const response = await axiosInstance.post(process.env.NEXT_PUBLIC_BASE_URL + API.login_refreshtoken, { token: refreshToken });
+      console.log("response: ", response);
+      const newAccessToken = response?.data?.data?.token;
+      const setState = useAuthStore.getState().setAuth;
+      setState({ token: newAccessToken, refreshToken: refreshToken + "aaa" });
+      axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
+      counter = 0;
+      console.log('1111111');
+      return axiosInstance(originalRequest);
     }
     return Promise.reject(error);
   }
