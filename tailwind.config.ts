@@ -42,7 +42,8 @@ const config: Config = {
       'text-gray':'#8C8C8C',
       'parag-gray':'#6E6E6E',
       'warning':'#C46017',
-      'surface-background':'#F0F4F9'
+      'surface-background':'#F0F4F9',
+      "transparent": "transparent"
     },
     fontSize: {
       xxs:['13px','16px'],
