@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <Sidebar openSidebar={openSidebar} />
                     <div className="flex flex-col flex-1 overflow-y-auto bg-surface-background">
                         <Header setOpenSidebar={setOpenSidebar} />
-                        <div className="p-4">
+                        <div className="py-4 px-11">
                             {children}
                         </div>
                     </div>

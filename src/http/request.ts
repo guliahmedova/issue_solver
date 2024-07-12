@@ -38,7 +38,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
       if (counter === 2) {
         localStorage.clear();
-        window.location.href = '/login';
+        // window.location.href = '/login';
       }
       counter++;
       const refreshToken = useAuthStore.getState().authData?.refreshToken;
