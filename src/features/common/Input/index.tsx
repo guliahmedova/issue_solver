@@ -43,7 +43,7 @@ const Input = ({
 
   return (
     <Box sx={{
-      marginBottom: "40px"
+      marginBottom: "24px"
     }}>
       <InputLabel variant={labelVariant} error={isError}>
         {labelText}

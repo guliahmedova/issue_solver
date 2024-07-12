@@ -66,12 +66,13 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
                     <div className="w-full">
                         <Box className="select-none">
                             <Typography color="initial" fontSize={28} fontWeight={600} className="text-[#2981FF]">
-                                Yeni Qurum
+                                Yeni Staff
                             </Typography>
                             <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap>
                                 Zəhmət olmasa, aşağıda məlumatlarınızı qeyd edin
                             </Typography>
                         </Box>
+                        
                         <Divider
                             color="#2981FF"
                             sx={{ height: "0.5px", width: "100%", border: "0.5px", opacity: "20%", marginBlock: "1rem" }}
@@ -101,17 +102,64 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
                                     <Box display="flex" flexDirection="column">
                                         <Field
                                             name="confirmPassword"
-                                            labelText="Qurumun Adı"
+                                            labelText="Staffın Adı"
                                             type="text"
                                             component={Input}
-                                            placeholder="Qurmun adını əlavə edin"
+                                            placeholder="Ad, Soyad"
                                             autoComplete="confirmPassword"
                                             errorText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
                                             value={values.confirmPassword}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                         />
-
+                                        <Field
+                                            name="confirmPassword"
+                                            labelText="E-poçt"
+                                            type="text"
+                                            component={Input}
+                                            placeholder="E-poçtunuzu daxil edin"
+                                            autoComplete="confirmPassword"
+                                            errorText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
+                                            value={values.confirmPassword}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        <Field
+                                            name="confirmPassword"
+                                            labelText="Aid olduğu qurum"
+                                            type="text"
+                                            component={Input}
+                                            placeholder="Qurum"
+                                            autoComplete="confirmPassword"
+                                            errorText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
+                                            value={values.confirmPassword}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        <Field
+                                            name="confirmPassword"
+                                            labelText="Şifrə"
+                                            type="password"
+                                            component={Input}
+                                            placeholder="Şifrənizi qeyd edin"
+                                            autoComplete="confirmPassword"
+                                            errorText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
+                                            value={values.confirmPassword}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        <Field
+                                            name="confirmPassword"
+                                            labelText="Şifrə Təsdiqi"
+                                            type="password"
+                                            component={Input}
+                                            placeholder="Şifrənizi təsdiq edin"
+                                            autoComplete="confirmPassword"
+                                            errorText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
+                                            value={values.confirmPassword}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
                                         {error && <Typography color="red">{error}</Typography>}
                                         <Button type="submit" variant="primary" disabled={!isValid || !dirty}>
                                             Əlavə et
