@@ -1,8 +1,9 @@
+import Staff from "@/features/Dashboard/Staff";
 
-const Staff = () => {
+const StaffPage = () => {
   return (
-    <div>Staff</div>
+    <Staff />
   )
 }
 
-export default Staff
+export default StaffPage

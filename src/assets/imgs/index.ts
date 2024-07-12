@@ -22,4 +22,5 @@ export { default as qurum } from './qurum.svg';
 export { default as comments } from './sherh.svg';
 export { default as staff } from './staff.svg';
 export { default as time } from './time.svg';
+export { default as trashbin } from './trashbin.svg';
 export { default as user } from './user.svg';
