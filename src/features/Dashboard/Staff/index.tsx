@@ -1,11 +1,11 @@
 "use client";
-import { trashbin, plus } from "@/assets/imgs";
+import { plus, trashbin } from "@/assets/imgs";
 import Image from "next/image";
 import { useState } from "react";
 import CreatePopup from "./CreatePopup";
 
 const Staff = () => {
-    const [openPopup, setOpenPopup] = useState(true);
+    const [openPopup, setOpenPopup] = useState(false);
 
     return (
         <>
@@ -18,21 +18,23 @@ const Staff = () => {
                 </div>
 
                 <div>
-                    <div className="flex items-center justify-between bg-white py-6 px-14 rounded-xl mb-10 select-none">
+                    <div className="grid grid-cols-5 items-center justify-between bg-white py-6 px-14 rounded-xl mb-10 select-none">
                         <span className="text-xs">No</span>
-                        <span className="text-xs">Staffın Adı</span>
-                        <span className="text-xs">Staffın E-Poçtu</span>
-                        <span className="text-xs">Aid olduğu qurum</span>
-                        <span className="text-xs">Staffın Redaktəsi</span>
+                        <span className="text-xs text-center">Staffın Adı</span>
+                        <span className="text-xs text-center">Staffın E-Poçtu</span>
+                        <span className="text-xs text-end">Aid olduğu qurum</span>
+                        <span className="text-xs text-end">Staffın Sil</span>
                     </div>
 
                     <div>
-                        <div className="flex items-center justify-between bg-white py-6 px-14 rounded-xl mb-3">
+                        <div className="grid grid-cols-5 items-center justify-between bg-white py-6 px-14 rounded-xl mb-3">
                             <span className="text-xs select-none">1</span>
-                            <span className="text-xs">Leyla Əsədova</span>
-                            <span className="text-xs">leylaiddia@gmail.com</span>
-                            <span className="text-xs select-none">İnnovasiya və Rəqəmsal İnkşaf Agentliyi</span>
-                            <Image alt="" src={trashbin} className="cursor-pointer" />
+                            <span className="text-xs text-center">Leyla Əsədova</span>
+                            <span className="text-xs text-center">leylaiddia@gmail.com</span>
+                            <span className="text-xs text-center whitespace-nowrap">İnnovasiya və Rəqəmsal İnkşaf Agentliyi</span>
+                            <div className="text-center flex justify-end">
+                                <Image alt="" src={trashbin} className="cursor-pointer" />
+                            </div>
                         </div>
                     </div>
                 </div>

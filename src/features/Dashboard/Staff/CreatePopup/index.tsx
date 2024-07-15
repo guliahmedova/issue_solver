@@ -55,7 +55,7 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
             <div className={`${openPopup ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 z-40 right-0 bg-black/20 flex flex-col items-center justify-center`}
                 onClick={handleOutsideClick}
             >
-                <div className="bg-white rounded-lg shadow py-8 px-6 lg:w-4/12 md:w-6/12 sm:w-7/12 relative"
+                <div className="bg-white rounded-lg shadow py-8 px-6 xl:w-4/12 lg:w-6/12 md:w-7/12 sm:w-8/12 w-9/12 h-[650px] relative"
                     ref={modelRef}
                 >
                     <div className="absolute -top-4 -right-4 cursor-pointer">
@@ -63,7 +63,7 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
                             <Image alt="" src={closeBtn} />
                         </button>
                     </div>
-                    <div className="w-full">
+                    <div className="w-full h-full overflow-auto">
                         <Box className="select-none">
                             <Typography color="initial" fontSize={28} fontWeight={600} className="text-[#2981FF]">
                                 Yeni Staff
@@ -72,7 +72,7 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
                                 Zəhmət olmasa, aşağıda məlumatlarınızı qeyd edin
                             </Typography>
                         </Box>
-                        
+
                         <Divider
                             color="#2981FF"
                             sx={{ height: "0.5px", width: "100%", border: "0.5px", opacity: "20%", marginBlock: "1rem" }}
