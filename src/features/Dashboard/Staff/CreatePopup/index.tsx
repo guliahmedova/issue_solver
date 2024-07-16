@@ -2,15 +2,21 @@ import { closeBtn } from "@/assets/imgs";
 import { Button, Input } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
-import { Box, CircularProgress, Divider, Typography } from "@mui/material";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Box, CircularProgress, Divider, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { z } from "zod";
+import { toFormikValidationSchema } from "zod-formik-adapter";
+import ValidationSchema from "./schema";
 
 interface ICreatePopup {
     openPopup: boolean;
     setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>
 };
+
+type FormValues = z.infer<typeof ValidationSchema>;
 
 const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
     const { trigger: updatePasswordTrigger } = useRequestMutation(API.user_update_password, { method: 'PUT' });
@@ -24,13 +30,16 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
         };
     };
 
-    const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
+    const handleSubmit = async (values: FormValues, actions: FormikHelpers<any>) => {
+        console.log("values: ", values);
         try {
             setLoader(true);
             setError(null);
             const data = {
-                currentPassword: values.password,
-                password: values.newPassword,
+                title: values.title,
+                email: values.email,
+                organization: values.organization,
+                password: values.password,
                 confirmPassword: values.confirmPassword
             };
             await updatePasswordTrigger({ body: data });
@@ -42,8 +51,10 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
             setLoader(false);
             actions.resetForm({
                 values: {
+                    title: "",
+                    email: "",
+                    organization: "",
                     password: "",
-                    newPassword: "",
                     confirmPassword: ""
                 }
             })
@@ -80,12 +91,14 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
 
                         <Formik
                             initialValues={{
+                                title: "",
+                                email: "",
+                                organization: "",
                                 password: "",
-                                newPassword: "",
                                 confirmPassword: ""
                             }}
                             onSubmit={handleSubmit}
-                            // validationSchema={toFormikValidationSchema(an)}
+                            validationSchema={toFormikValidationSchema(ValidationSchema)}
                             validateOnBlur={true}
                         >
                             {({
@@ -101,50 +114,68 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
                                 <Form onSubmit={handleSubmit}>
                                     <Box display="flex" flexDirection="column">
                                         <Field
-                                            name="confirmPassword"
+                                            name="title"
                                             labelText="Staffın Adı"
                                             type="text"
                                             component={Input}
                                             placeholder="Ad, Soyad"
-                                            autoComplete="confirmPassword"
-                                            errorText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
-                                            value={values.confirmPassword}
+                                            autoComplete="title"
+                                            errorText={touched.title && errors.title ? errors.title : undefined}
+                                            value={values.title}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                         />
                                         <Field
-                                            name="confirmPassword"
+                                            name="email"
                                             labelText="E-poçt"
                                             type="text"
                                             component={Input}
                                             placeholder="E-poçtunuzu daxil edin"
-                                            autoComplete="confirmPassword"
-                                            errorText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
-                                            value={values.confirmPassword}
+                                            autoComplete="email"
+                                            errorText={touched.email && errors.email ? errors.email : undefined}
+                                            value={values.email}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                         />
+
+                                        {/*-------------------------------------------------- */}
+                                        <Box className="w-full mb-6">
+                                            <InputLabel variant="standard">Aid olduğu qurum</InputLabel>
+                                            <Select
+                                                className="w-full"
+                                                value={values.organization}
+                                                MenuProps={{
+                                                    disablePortal: true,
+                                                    onClick: e => {
+                                                        e.preventDefault();
+                                                    }
+                                                }}
+                                                onChange={(e) => handleChange(e)}
+                                                displayEmpty
+                                                name="organization"
+                                                IconComponent={({ className }) => (
+                                                    <KeyboardArrowDownIcon className={className} style={{ color: '#4D96FF' }} />
+                                                )}
+                                            >
+                                                <MenuItem className="text-[#000000] bg-white hidden" value="" disabled>
+                                                    Qurum
+                                                </MenuItem>
+                                                <MenuItem className="text-[#000000] bg-white" value="Ten">Qurum A</MenuItem>
+                                                <MenuItem className="text-[#000000] bg-white" value="Twenty">Qurum B</MenuItem>
+                                                <MenuItem className="text-[#000000] bg-white" value="Thirty">Qurum C</MenuItem>
+                                            </Select>
+                                        </Box>
+                                        {/*-------------------------------------------------- */}
+
                                         <Field
-                                            name="confirmPassword"
-                                            labelText="Aid olduğu qurum"
-                                            type="text"
-                                            component={Input}
-                                            placeholder="Qurum"
-                                            autoComplete="confirmPassword"
-                                            errorText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
-                                            value={values.confirmPassword}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        />
-                                        <Field
-                                            name="confirmPassword"
+                                            name="password"
                                             labelText="Şifrə"
                                             type="password"
                                             component={Input}
                                             placeholder="Şifrənizi qeyd edin"
-                                            autoComplete="confirmPassword"
-                                            errorText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
-                                            value={values.confirmPassword}
+                                            autoComplete="password"
+                                            errorText={touched.password && errors.password ? errors.password : undefined}
+                                            value={values.password}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                         />

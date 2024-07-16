@@ -1,12 +1,12 @@
 const API = {
-  "login": "Auths/loginweb",
-  "otp_trust": "Auths/otp-trust",
-  "resend_otp": "Auths/resend-otp",
-  "reset_password": "Auths/reset-password",
-  "forgot_password": "Auths/forget-password",
-  "login_refreshtoken": "Auths/login-refreshtoken",
-  "user_update_password": "Users/updatepassword",
-  "get_me": "Users/getmeweb"
+  "login": "api/Auths/loginweb",
+  "otp_trust": "api/Auths/otp-trust",
+  "resend_otp": "api/Auths/resend-otp",
+  "reset_password": "api/Auths/reset-password",
+  "forgot_password": "api/Auths/forget-password",
+  "login_refreshtoken": "api/Auths/login-refreshtoken",
+  "user_update_password": "api/Users/updatepassword",
+  "get_me": "api/Users/getmeweb",
 };
 
 export default API;

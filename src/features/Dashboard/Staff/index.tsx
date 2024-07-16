@@ -11,7 +11,7 @@ const Staff = () => {
         <>
             <div>
                 <div className="flex items-center justify-between mb-7">
-                    <h2 className="font-bold text-lg">Bütün Qurumlar</h2>
+                    <h2 className="font-bold text-lg">Bütün Stafflar</h2>
                     <button className="bg-[#2981FF] text-white rounded-3xl py-3 px-6 flex items-center justify-between w-[136px] text-[13px]"
                         onClick={() => setOpenPopup(true)}
                     >Qurum <Image alt="" src={plus} /></button>
