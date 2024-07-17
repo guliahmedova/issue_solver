@@ -19,6 +19,7 @@
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-infinite-scroller": "^1.2.6",
     "sass": "^1.77.4",
     "swr": "^2.2.5",
     "zod": "^3.23.8",
