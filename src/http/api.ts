@@ -7,6 +7,13 @@ const API = {
   "login_refreshtoken": "api/Auths/login-refreshtoken",
   "user_update_password": "api/Users/updatepassword",
   "get_me": "api/Users/getmeweb",
+  "search": "",
+
+  "staff_create": "api/Users/create",
+  "staff_delete": "api/Users/delete",
+  "staffs_get": "api/Users/getlist",
+  "organizations_get": "api/Organozations/getlist",
+  "organization_create": ""
 };
 
 export default API;
