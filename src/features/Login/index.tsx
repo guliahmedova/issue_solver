@@ -12,6 +12,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import ValidationSchema from "./schema";
+import { ROLES } from "@/constants/roles";
 
 type FormValues = z.infer<typeof ValidationSchema>;
 
@@ -36,6 +37,7 @@ export default function LoginForm() {
         for (const permission of loginData?.data?.permissons) {
           if (permission === ROLES.ADMIN) {
             router.push('/dashboard/organizations');
+            router.push('/dashboard/comments');
           } else if (permission === ROLES.STAFF) {
             router.push('/dashboard/');
           }

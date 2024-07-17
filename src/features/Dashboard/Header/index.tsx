@@ -28,7 +28,7 @@ const Header = ({ setOpenSidebar }: IHeader) => {
             setShowDropdown(false);
         };
     };
-
+    
     return (
         <>
             <div className="flex items-center justify-between lg:justify-end px-10 pt-4">

@@ -3,6 +3,7 @@ import { ROLES } from "@/constants/roles";
 import { useAuthStore } from "@/state/useAuthStore";
 import { ReactNode } from "react";
 import { about, applies, comments, faq, privacy, qurum, staff } from "@/assets/imgs";
+import { about, applies, comments, faq, privacy } from "@/assets/imgs";
 
 interface IProtectRoute {
     children: ReactNode
@@ -19,18 +20,21 @@ export const sidebarMenu = [
         path: "/dashboard/comments",
         label: "Şərhlərim",
         permissions: [ROLES.STAFF],
+        permissions: [ROLES.STAFF, ROLES.ADMIN],
         icon: comments
     },
     {
         path: "/dashboard/about",
         label: "Platforma haqqında",
         permissions: [ROLES.STAFF],
+        permissions: [ROLES.STAFF, ROLES.ADMIN],
         icon: about
     },
     {
         path: "/dashboard/faq",
         label: "Tez-tez verilən suallar",
         permissions: [ROLES.STAFF],
+        permissions: [ROLES.STAFF, ROLES.ADMIN],
         icon: faq
     },
     {
@@ -50,6 +54,8 @@ export const sidebarMenu = [
         label: "Əməkdaşlar",
         permissions: [ROLES.ADMIN],
         icon: staff
+        permissions: [ROLES.STAFF, ROLES.ADMIN],
+        icon: privacy
     }
 ];
 
@@ -60,6 +66,9 @@ const ProtectRoute = ({ children }: IProtectRoute) => {
     // if (isLoading || !token) {
     //     return <Loading />;
     // };
+    if (isLoading || !token) {
+        return <Loading />;
+    };
 
     return children;
 };

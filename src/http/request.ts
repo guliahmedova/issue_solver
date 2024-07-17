@@ -30,6 +30,18 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error: any) => {
+  (res) => {
+    const token = useAuthStore.getState().authData?.token;
+    const refreshToken = useAuthStore.getState().authData?.refreshToken;
+
+    if (token && refreshToken) {
+      const setState = useAuthStore.getState().setAuth;
+      setState({ token: token, refreshToken: refreshToken });
+    }
+
+    return res;
+  },
+  async (error) => {
     const originalRequest = error.config;
     console.log("originalRequest: ", originalRequest);
     console.log("error in response: ", error);
@@ -39,6 +51,23 @@ axiosInstance.interceptors.response.use(
       if (counter === 2) {
         localStorage.clear();
         window.location.href = '/login';
+      try {
+        const response = await axiosInstance.post(
+          process.env.NEXT_PUBLIC_BASE_URL + API.login_refreshtoken,
+          {
+            token: refreshToken
+          }
+        );
+
+        const newAccessToken = response?.data?.data?.token;
+        const setAuth = useAuthStore.getState()?.setAuth;
+        setAuth({ token: newAccessToken });
+        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+        return axiosInstance(originalRequest);
+      } catch (error) {
+        console.log("error: ", error);
+        // redirect to login 
+        throw error;
       }
       counter++;
       const refreshToken = useAuthStore.getState().authData?.refreshToken;
