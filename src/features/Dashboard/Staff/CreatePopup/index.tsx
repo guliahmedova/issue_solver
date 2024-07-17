@@ -31,7 +31,6 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
     };
 
     const handleSubmit = async (values: FormValues, actions: FormikHelpers<any>) => {
-        console.log("values: ", values);
         try {
             setLoader(true);
             setError(null);
@@ -41,7 +40,7 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
                 password: values.password,
                 confirmPassword: values.confirmPassword
             };
-            await updatePasswordTrigger({ body: data, params: { organization: values.organization } });
+            await updatePasswordTrigger({ body: data, params: { organization: values.organization, role: "STAFF" } });
             actions.setSubmitting(false);
             setOpenPopup(false);
         } catch (error: any) {

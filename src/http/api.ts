@@ -9,9 +9,9 @@ const API = {
   "get_me": "api/Users/getmeweb",
   "search": "",
 
+  "staffs_get": "api/Staffs/getlist",
   "staff_create": "api/Users/create",
-  "staff_delete": "api/Users/delete",
-  "staffs_get": "api/Users/getlist",
+  "staff_delete": "api/Users/remove",
   "organizations_get": "api/Organozations/getlist",
   "organization_create": ""
 };
