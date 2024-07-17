@@ -1,10 +1,18 @@
 "use client";
 import { plus, trashbin } from "@/assets/imgs";
+import API from "@/http/api";
+import { useRequest } from "@/http/request";
 import Image from "next/image";
 import { useState } from "react";
 import CreatePopup from "./CreatePopup";
 
+interface IStaff {
+    email: string;
+    fullName: string;
+};
+
 const Staff = () => {
+    const { data: staffs } = useRequest(API.staffs_get);
     const [openPopup, setOpenPopup] = useState(false);
 
     return (
@@ -27,15 +35,17 @@ const Staff = () => {
                     </div>
 
                     <div>
-                        <div className="grid grid-cols-5 items-center justify-between bg-white py-6 px-8 rounded-xl mb-3">
-                            <span className="text-xs select-none">1</span>
-                            <span className="text-xs">Leyla Əsədova</span>
-                            <span className="text-xs">leylaiddia@gmail.com</span>
-                            <span className="text-xs whitespace-nowrap">İnnovasiya və Rəqəmsal İnkşaf Agentliyi</span>
-                            <div className="flex justify-end">
-                                <Image alt="" src={trashbin} className="cursor-pointer" />
+                        {staffs?.data?.items?.map((item: IStaff, index: number) => (
+                            <div className="grid grid-cols-5 items-center justify-between bg-white py-6 px-8 rounded-xl mb-3" key={index}>
+                                <span className="text-xs select-none">{index + 1}</span>
+                                <span className="text-xs">{item.fullName}</span>
+                                <span className="text-xs">{item.fullName}</span>
+                                <span className="text-xs whitespace-nowrap">İnnovasiya və Rəqəmsal İnkşaf Agentliyi</span>
+                                <div className="flex justify-end">
+                                    <Image alt="" src={trashbin} className="cursor-pointer" />
+                                </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>

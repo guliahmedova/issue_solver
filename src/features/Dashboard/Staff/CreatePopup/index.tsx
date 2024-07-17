@@ -19,7 +19,7 @@ interface ICreatePopup {
 type FormValues = z.infer<typeof ValidationSchema>;
 
 const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
-    const { trigger: updatePasswordTrigger } = useRequestMutation(API.user_update_password, { method: 'PUT' });
+    const { trigger: updatePasswordTrigger } = useRequestMutation(API.staff_create, { method: 'POST' });
     const modelRef = useRef<HTMLDivElement>(null);
     const [error, setError] = useState(null);
     const [loader, setLoader] = useState(false);
@@ -36,13 +36,12 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
             setLoader(true);
             setError(null);
             const data = {
-                title: values.title,
+                fullName: values.title,
                 email: values.email,
-                organization: values.organization,
                 password: values.password,
                 confirmPassword: values.confirmPassword
             };
-            await updatePasswordTrigger({ body: data });
+            await updatePasswordTrigger({ body: data, params: { organization: values.organization } });
             actions.setSubmitting(false);
             setOpenPopup(false);
         } catch (error: any) {
@@ -160,9 +159,9 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
                                                 <MenuItem className="text-[#000000] bg-white hidden" value="" disabled>
                                                     Qurum
                                                 </MenuItem>
-                                                <MenuItem className="text-[#000000] bg-white" value="Ten">Qurum A</MenuItem>
-                                                <MenuItem className="text-[#000000] bg-white" value="Twenty">Qurum B</MenuItem>
-                                                <MenuItem className="text-[#000000] bg-white" value="Thirty">Qurum C</MenuItem>
+                                                <MenuItem className="text-[#000000] bg-white" value="ABB">ABB</MenuItem>
+                                                <MenuItem className="text-[#000000] bg-white" value="Qurum B">Qurum B</MenuItem>
+                                                <MenuItem className="text-[#000000] bg-white" value="Qurum C">Qurum C</MenuItem>
                                             </Select>
                                         </Box>
                                         {/*-------------------------------------------------- */}
