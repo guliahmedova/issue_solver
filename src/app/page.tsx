@@ -6,7 +6,7 @@ const Home = () => {
     <AuthSidebar>
       <LoginForm />
     </AuthSidebar>
-  )
+  );
 };
 
 export default Home;
