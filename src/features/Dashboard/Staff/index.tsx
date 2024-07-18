@@ -2,9 +2,11 @@
 import { plus, trashbin } from "@/assets/imgs";
 import API from "@/http/api";
 import { useRequest, useRequestMutation } from "@/http/request";
-import { CircularProgress } from "@mui/material";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import CreatePopup from "./CreatePopup";
 
 interface IStaff {
@@ -14,19 +16,62 @@ interface IStaff {
     isActiveOrganization: boolean;
 };
 
+interface IStaffResponse {
+    data: {
+        items: IStaff[],
+        hasNext: boolean
+    },
+};
+
 const Staff = () => {
-    const { data: staffs, isLoading } = useRequest(API.staffs_get);
-    const { trigger: deleteStaffTrigger } = useRequestMutation(API.staff_delete, { method: 'DELETE' });
+    const [staffData, setStaffData] = useState<IStaff[]>([]);
     const [openPopup, setOpenPopup] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(0);
+    const { trigger: deleteStaffTrigger } = useRequestMutation(API.staff_delete, { method: 'DELETE' });
+    const { data: staffs } = useRequest(`${API.staffs_get}?Page=${page}&PageSize=9`);
+
+    useEffect(() => {
+        if (staffs) {
+            const response: IStaffResponse = staffs;
+            setStaffData(prevStaffData => [...prevStaffData, ...response.data.items]);
+            setHasMore(response.data.hasNext);
+        }
+    }, [staffs]);
+
+    const fetchStaffData = () => {
+        setPage(prevPage => prevPage + 1);
+    };
+
+    const refreshStaffData = async () => {
+        setPage(0);
+        setStaffData([]);
+    };
 
     const handleDeleteStaff = async (username: string) => {
-        const res = await deleteStaffTrigger({ params: username });
-        console.log("Response delete: ", res);
-        console.log("username: ", username);
+        try {
+            await deleteStaffTrigger({ body: { email: username } });
+            toast.success('Stafff uğurla silindi!');
+        } catch (error: any) {
+            toast.error(error.response.data.message);
+        }
     };
 
     return (
         <>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+
             <div>
                 <div className="flex items-center justify-between mb-7">
                     <h2 className="font-bold text-lg">Bütün Stafflar</h2>
@@ -43,29 +88,35 @@ const Staff = () => {
                         <span className="text-xs text-center">Aid olduğu qurum</span>
                         <span className="text-xs text-end">Staffın Sil</span>
                     </div>
-
-                    <div>
-                        {
-                            isLoading ? (
-                                <div className={`fixed top-0 bottom-0 left-0 right-0 flex w-full flex-col items-center justify-center bg-black/10 z-40`}>
-                                    <CircularProgress size="4rem" />
-                                </div>
-                            ) : (
-                                staffs?.data?.items?.map((item: IStaff, index: number) => (
-                                    <div className="grid grid-cols-5 items-center justify-between bg-white py-6 px-8 rounded-xl mb-3" key={index}>
-                                        <span className="text-xs select-none">{index + 1}</span>
-                                        <span className="text-xs">{item.fullname}</span>
-                                        <span className="text-xs">{item.username}</span>
-                                        <span className="text-xs whitespace-nowrap text-center">{item.isActiveOrganization && item.organizationName}</span>
-                                        <div className="flex justify-end"
-                                            onClick={() => handleDeleteStaff(item.username)}
-                                        >
-                                            <Image alt="" src={trashbin} className="cursor-pointer" />
-                                        </div>
+                    <div className="h-[550px] overflow-auto" id="parentScrollBar">
+                        <InfiniteScroll
+                            dataLength={staffData?.length}
+                            next={fetchStaffData}
+                            hasMore={hasMore}
+                            loader={<h4 className="text-center text-lg text-gray">Loading...</h4>}
+                            endMessage={
+                                <p style={{ textAlign: 'center' }}>
+                                    <b>The End</b>
+                                </p>
+                            }
+                            refreshFunction={refreshStaffData}
+                            pullDownToRefresh
+                            scrollableTarget="parentScrollBar"
+                        >
+                            {staffData?.map((item: IStaff, index: number) => (
+                                <div className="grid grid-cols-5 items-center justify-between bg-white py-6 px-8 rounded-xl mb-3 w-full" key={index}>
+                                    <span className="text-xs select-none">{index + 1}</span>
+                                    <span className="text-xs">{item.fullname}</span>
+                                    <span className="text-xs">{item.username}</span>
+                                    <span className="text-xs whitespace-nowrap text-center">{item.isActiveOrganization && item.organizationName}</span>
+                                    <div className="flex justify-end"
+                                        onClick={() => handleDeleteStaff(item.username)}
+                                    >
+                                        <Image alt="" src={trashbin} className="cursor-pointer" />
                                     </div>
-                                ))
-                            )
-                        }
+                                </div>
+                            ))}
+                        </InfiniteScroll>
                     </div>
                 </div>
             </div>
