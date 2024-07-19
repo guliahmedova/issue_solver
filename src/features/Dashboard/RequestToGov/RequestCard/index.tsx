@@ -8,10 +8,16 @@ import {
   StatusIcon,
 } from "@/assets/imgs";
 import { Button } from "@/features/common";
+import API from "@/http/api";
 import { Divider } from "@mui/material";
 import Image from "next/image";
 
-export default function ApplyCard() {
+export default async function ApplyCard() {
+  const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${API.organization_requests}`);
+  const response = await data.json();
+
+  console.log(response);
+  // const { isLoading } = useRequest("request/organization-requests");
   return (
     <div className="bg-white flex flex-col gap-6 px-4  py-4 rounded-xl border-l-8 border-warning">
       <div className="w-full flex justify-between items-center ">
