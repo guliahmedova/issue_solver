@@ -5,8 +5,9 @@ import { useRequestMutation } from "@/http/request";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import CreatePopup from "./CreatePopup";
+import { CircularProgress } from "@mui/material";
 
 interface IOrganization {
     name: string;
@@ -30,8 +31,10 @@ const Organizations = () => {
         name: ''
     });
     const [openPopup, setOpenPopup] = useState(false);
+    const [loader, setLoader] = useState(false);
 
     const { trigger: getOrganizationTrigger } = useRequestMutation(API.organizations_get, { method: 'GET' });
+    const { trigger: statusTrigger } = useRequestMutation(API.organization_status, { method: 'PATCH' });
 
     const fetchData = async (reset = false) => {
         const currentPage = reset ? 0 : page;
@@ -70,12 +73,25 @@ const Organizations = () => {
         }));
     };
 
-    const handleStatusChange = (name: string, currentStatus: boolean) => {
-        setSelectStatus(prevState => ({ name: '', status: "Deaktiv", open: false }));
-        const newStatus = !currentStatus;
-        setOrganizationData(prevData => prevData.map(org =>
-            org.name === name ? { ...org, active: newStatus } : org
-        ));
+    const handleStatusChange = async (name: string, currentStatus: boolean) => {
+        try {
+            setLoader(true);
+            setSelectStatus(prevState => ({ name: '', status: "Deaktiv", open: false }));
+            const newStatus = !currentStatus;
+            setOrganizationData(prevData => prevData.map(org =>
+                org.name === name ? { ...org, active: newStatus } : org
+            ));
+            await statusTrigger({
+                body: {
+                    name: name
+                }
+            });
+            await refreshData();
+        } catch (error: any) {
+            toast.error(error.response.data.message);
+        } finally {
+            setLoader(false);
+        }
     };
 
     return (
@@ -121,7 +137,7 @@ const Organizations = () => {
                             }
                             refreshFunction={refreshData}
                             pullDownToRefresh
-                            scrollableTarget="parentScrollBar"
+                            scrollableTarget="parentScrollBarOrganization"
                         >
                             {
                                 organizationData?.map((item: IOrganization, index: number) => (
@@ -154,7 +170,11 @@ const Organizations = () => {
                 </div>
             </div>
 
-            <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} />
+            <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 flex w-full flex-col items-center justify-center bg-black/10 z-40`}>
+                <CircularProgress size="4rem" />
+            </div>
+
+            <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} refreshData={refreshData} />
         </>
     )
 };
