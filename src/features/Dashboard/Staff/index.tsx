@@ -29,7 +29,7 @@ const Staff = () => {
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(0);
     const { trigger: deleteStaffTrigger } = useRequestMutation(API.staff_delete, { method: 'DELETE' });
-    const { data: staffs } = useRequest(`${API.staffs_get}?Page=${page}&PageSize=9`);
+    const { trigger: getStaffTrigger, data: staffs } = useRequestMutation(API.staffs_get, { method: 'GET' });
 
     useEffect(() => {
         if (staffs) {
@@ -39,8 +39,18 @@ const Staff = () => {
         }
     }, [staffs]);
 
-    const fetchStaffData = () => {
-        setPage(prevPage => prevPage + 1);
+    const fetchStaffData = async () => {
+        try {
+            setPage(prevPage => prevPage + 1);
+            await getStaffTrigger({
+                params: {
+                    Page: page,
+                    PageSize: 9
+                }
+            });
+        } catch (error) {
+            
+        }
     };
 
     const refreshStaffData = async () => {
