@@ -59,7 +59,7 @@ const Header = ({ setOpenSidebar }: IHeader) => {
                         </div>
                         <div onClick={handleOutsideClick} className={`${showDropdown ? 'fixed' : 'hidden'} bg-black/20 top-0 bottom-0 left-0 right-0 z-40`}
                         >
-                            <div className="absolute bg-white rounded-xl p-4 border shadow top-24 right-8 h-auto"
+                            <div className="absolute bg-white rounded-xl p-4 shadow top-24 right-8 h-auto"
                                 ref={dropdownRef}
                             >
                                 <ul>

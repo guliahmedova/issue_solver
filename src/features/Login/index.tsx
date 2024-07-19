@@ -33,7 +33,7 @@ export default function LoginForm() {
       if (loginData?.success) {
         for (const permission of loginData?.data?.permissons) {
           if (permission === ROLES.ADMIN) {
-            router.push("/dashboard/comments");
+            router.push('/dashboard/organizations');
           } else if (permission === ROLES.STAFF) {
             router.push("/dashboard/");
           }

@@ -1,7 +1,7 @@
 "use client";
 import { plus, trashbin } from "@/assets/imgs";
 import API from "@/http/api";
-import { useRequest, useRequestMutation } from "@/http/request";
+import { useRequestMutation } from "@/http/request";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -20,7 +20,7 @@ interface IStaffResponse {
     data: {
         items: IStaff[],
         hasNext: boolean
-    },
+    }
 };
 
 const Staff = () => {
@@ -29,40 +29,47 @@ const Staff = () => {
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(0);
     const { trigger: deleteStaffTrigger } = useRequestMutation(API.staff_delete, { method: 'DELETE' });
-    const { trigger: getStaffTrigger, data: staffs } = useRequestMutation(API.staffs_get, { method: 'GET' });
+    const { trigger: getStaffTrigger } = useRequestMutation(API.staffs_get, { method: 'GET' });
+
+    const fetchData = async (reset = false) => {
+        const currentPage = reset ? 0 : page;
+        const response = await getStaffTrigger({
+            params: {
+                Page: currentPage,
+                PageSize: 9
+            }
+        });
+        const data: IStaffResponse = response;
+
+        if (reset) {
+            setStaffData(data.data.items);
+        } else {
+            setStaffData(prevStaffData => [...prevStaffData, ...data.data.items]);
+        }
+
+        setHasMore(data.data.hasNext);
+        setPage(currentPage + 1);
+    };
 
     useEffect(() => {
-        if (staffs) {
-            const response: IStaffResponse = staffs;
-            setStaffData(prevStaffData => [...prevStaffData, ...response.data.items]);
-            setHasMore(response.data.hasNext);
-        }
-    }, [staffs]);
+        fetchData(true);
+    }, []);
 
-    const fetchStaffData = async () => {
+    const refreshData = async () => {
+        await fetchData(true);
+    };
+
+    const handleStaffDelete = async (email: string) => {
         try {
-            setPage(prevPage => prevPage + 1);
-            await getStaffTrigger({
-                params: {
-                    Page: page,
-                    PageSize: 9
+            await deleteStaffTrigger({
+                body: {
+                    email: email
                 }
             });
-        } catch (error) {
-            
-        }
-    };
-
-    const refreshStaffData = async () => {
-        setPage(0);
-        setStaffData([]);
-    };
-
-    const handleDeleteStaff = async (username: string) => {
-        try {
-            await deleteStaffTrigger({ body: { email: username } });
-            toast.success('Stafff uğurla silindi!');
+            setStaffData(prevStaffData => prevStaffData.filter(staff => staff.username !== email));
+            toast.success('Uğurla silindi');
         } catch (error: any) {
+            console.log(error, '<- ERROR');
             toast.error(error.response.data.message);
         }
     };
@@ -71,7 +78,7 @@ const Staff = () => {
         <>
             <ToastContainer
                 position="top-center"
-                autoClose={5000}
+                autoClose={1000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
@@ -101,7 +108,7 @@ const Staff = () => {
                     <div className="h-[550px] overflow-auto" id="parentScrollBar">
                         <InfiniteScroll
                             dataLength={staffData?.length}
-                            next={fetchStaffData}
+                            next={fetchData}
                             hasMore={hasMore}
                             loader={<h4 className="text-center text-lg text-gray">Loading...</h4>}
                             endMessage={
@@ -109,7 +116,7 @@ const Staff = () => {
                                     <b>The End</b>
                                 </p>
                             }
-                            refreshFunction={refreshStaffData}
+                            refreshFunction={refreshData}
                             pullDownToRefresh
                             scrollableTarget="parentScrollBar"
                         >
@@ -120,7 +127,7 @@ const Staff = () => {
                                     <span className="text-xs">{item.username}</span>
                                     <span className="text-xs whitespace-nowrap text-center">{item.isActiveOrganization && item.organizationName}</span>
                                     <div className="flex justify-end"
-                                        onClick={() => handleDeleteStaff(item.username)}
+                                        onClick={() => handleStaffDelete(item.username)}
                                     >
                                         <Image alt="" src={trashbin} className="cursor-pointer" />
                                     </div>
