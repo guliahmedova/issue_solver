@@ -57,9 +57,9 @@ const ProtectRoute = ({ children }: IProtectRoute) => {
   const token = useAuthStore(state => state.authData?.token);
   const isLoading = useAuthStore(state => state.loading);
 
-  // if (isLoading || !token) {
-  //     return <Loading />;
-  // };
+    if (isLoading || !token) {
+        return <Loading />;
+    };
 
   return children;
 };

@@ -31,9 +31,6 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error: any) => {
     const originalRequest = error.config;
-    console.log("originalRequest: ", originalRequest);
-    console.log("error in response: ", error);
-
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       if (counter === 2) {
@@ -43,13 +40,11 @@ axiosInstance.interceptors.response.use(
       counter++;
       const refreshToken = useAuthStore.getState().authData?.refreshToken;
       const response = await axiosInstance.post(process.env.NEXT_PUBLIC_BASE_URL + API.login_refreshtoken, { token: refreshToken });
-      console.log("response: ", response);
       const newAccessToken = response?.data?.data?.token;
       const setState = useAuthStore.getState().setAuth;
       setState({ token: newAccessToken, refreshToken: refreshToken + "aaa" });
       axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
       counter = 0;
-      console.log('1111111');
       return axiosInstance(originalRequest);
     }
     return Promise.reject(error);
