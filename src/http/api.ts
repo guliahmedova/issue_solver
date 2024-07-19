@@ -14,7 +14,7 @@ const API = {
   "staff_create": "api/Users/create",
   "staff_delete": "api/Users/remove",
   "organizations_get": "api/Organizations/getpaginationlist",
-  "organization_create": "",
+  "organization_create": "api/Organizations/create",
   "organization_delete": "api/Organizations/delete",
   "organization_status": "api/Organizations/updateActiveOrDeactive"
 };
