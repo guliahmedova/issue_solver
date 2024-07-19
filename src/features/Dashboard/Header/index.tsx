@@ -1,32 +1,61 @@
 "use client";
 import { building, key, logout, notif, user } from "@/assets/imgs";
 import API from "@/http/api";
-import { useRequest } from "@/http/request";
+import { useRequestMutation } from "@/http/request";
 import MenuIcon from '@mui/icons-material/Menu';
+import { CircularProgress } from "@mui/material";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { toast } from "react-toastify";
 import ChangePassword from "../ChangePassword";
 import LogoutPopup from "../LogoutPopup";
-import { CircularProgress } from "@mui/material";
 
 interface IHeader {
     setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>
 };
 
+interface IUserResponse {
+    data: {
+        organizationName: string;
+        fullName: string;
+        email: string;
+    }
+};
+
 const Header = ({ setOpenSidebar }: IHeader) => {
-    const { data: getMeData, isLoading } = useRequest(API.get_me);
     const [showDropdown, setShowDropdown] = useState(false);
     const [openPasswordModal, setOpenPasswordModal] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [logoutModal, setLogoutModal] = useState<boolean>(false);
-    const organizationName = getMeData?.data?.data?.organizationName ?
-        getMeData?.data?.data?.organizationName : "İnnovasiya və Rəqəmsal İnkişaf Agentliyi";
-    const email = getMeData?.data?.data?.email ? getMeData?.data?.data?.email : "info@idda.az";
+    const [userData, setUserData] = useState({
+        organizationName: "",
+        email: "",
+        fullName: ""
+    });
+    const [loader, setLoader] = useState(false);
+    const { trigger: getDataTrigger } = useRequestMutation(API.get_me, { method: 'GET' });
 
     const handleOutsideClick = (e: React.MouseEvent<HTMLElement>) => {
         if (dropdownRef?.current && !dropdownRef?.current?.contains(e.target as Node)) {
             setShowDropdown(false);
         };
+    };
+
+    const handledropdownMenu = async () => {
+        try {
+            setLoader(true);
+            const res: IUserResponse = await getDataTrigger();
+            setShowDropdown(true);
+            setUserData({
+                organizationName: res?.data?.organizationName ? res?.data?.organizationName : res?.data?.fullName,
+                email: res?.data?.email,
+                fullName: res?.data?.fullName
+            });
+        } catch (error: any) {
+            toast.error(error.response.data.message);
+        } finally {
+            setLoader(false);
+        }
     };
 
     return (
@@ -53,7 +82,7 @@ const Header = ({ setOpenSidebar }: IHeader) => {
                     </div>
                     <div className="relative" >
                         <div className="bg-[#E0EDFF] rounded-full w-12 h-12 flex items-center justify-center cursor-pointer relative z-20"
-                            onClick={() => setShowDropdown(true)}
+                            onClick={handledropdownMenu}
                         >
                             <Image alt="" src={building} />
                         </div>
@@ -73,8 +102,8 @@ const Header = ({ setOpenSidebar }: IHeader) => {
                                             <Image alt="" src={user} />
                                         </div>
                                         <div className="text-wrap w-64 overflow-x-scroll">
-                                            <h3 className="font-medium text-lg">{organizationName}</h3>
-                                            <span className="text-[#F09350] text-wrap w-64 overflow-hidden">{email}</span>
+                                            <h3 className="font-medium text-lg">{userData.organizationName}</h3>
+                                            <span className="text-[#F09350] text-wrap w-64 overflow-hidden">{userData.email}</span>
                                         </div>
                                     </li>
                                     <li className="cursor-pointer flex items-center gap-5 mb-4"
@@ -111,7 +140,7 @@ const Header = ({ setOpenSidebar }: IHeader) => {
                 </div>
             </div>
 
-            <div className={`${isLoading ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 flex w-full flex-col items-center justify-center bg-black/10 z-40`}>
+            <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 flex w-full flex-col items-center justify-center bg-black/10 z-40`}>
                 <CircularProgress size="4rem" />
             </div>
 
