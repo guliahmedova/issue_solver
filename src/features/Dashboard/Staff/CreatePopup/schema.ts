@@ -8,7 +8,7 @@ const passwordValidation = new RegExp(
 const ValidationSchema: ZodType<Staff> = z.object({
     email: z.string({
         required_error: "E-poçt mütləq daxil edilməlidir"
-    }).email({ message: "E-poçt yanlışdır" }),
+    }).email({ message: "E-poçt formatı yanlışdır" }),
     title: z.string({
         required_error: "Staffın Adı mütləq daxil edilməlidir"
     }),

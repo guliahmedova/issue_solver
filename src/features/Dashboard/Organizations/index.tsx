@@ -130,11 +130,6 @@ const Organizations = () => {
                             next={fetchData}
                             hasMore={hasMore}
                             loader={<h4 className="text-center text-lg text-gray">Loading...</h4>}
-                            endMessage={
-                                <p style={{ textAlign: 'center' }}>
-                                    <b>The End</b>
-                                </p>
-                            }
                             refreshFunction={refreshData}
                             pullDownToRefresh
                             scrollableTarget="parentScrollBarOrganization"

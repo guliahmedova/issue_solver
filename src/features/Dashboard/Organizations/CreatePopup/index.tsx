@@ -73,7 +73,7 @@ const CreatePopup = ({ openPopup, setOpenPopup, refreshData }: ICreatePopup) => 
                                 Yeni Qurum
                             </Typography>
                             <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap>
-                                Zəhmət olmasa, aşağıda məlumatlarınızı qeyd edin
+                                Zəhmət olmasa məlumatlarınızı qeyd edin
                             </Typography>
                         </Box>
                         <Divider
