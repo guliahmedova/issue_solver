@@ -28,6 +28,7 @@ const Sidebar = ({ openSidebar }: ISidebar) => {
                             shallow={true}
                             href={item.path}
                             key={item.path}
+                            scroll={false}
                             className={`${currentPath === item.path ? "bg-[#2981FF] text-white rounded-xl" : "text-[#4D96FF]"} flex items-center gap-3 font-medium text-lg mb-4 py-4 px-3`}
                         >
                             <Image
