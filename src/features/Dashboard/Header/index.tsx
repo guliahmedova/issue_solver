@@ -1,9 +1,9 @@
 "use client";
 import { building, key, logout, notif, user } from "@/assets/imgs";
+import { Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
 import MenuIcon from '@mui/icons-material/Menu';
-import { CircularProgress } from "@mui/material";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -74,7 +74,7 @@ const Header = ({ setOpenSidebar }: IHeader) => {
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
                             </div>
-                            <input type="text" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 rounded-xl outline-none" placeholder="Search" />
+                            <input type="text" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 rounded-xl outline-none" placeholder="Axtarış" />
                         </div>
                     </form>
                     <div>
@@ -140,9 +140,7 @@ const Header = ({ setOpenSidebar }: IHeader) => {
                 </div>
             </div>
 
-            <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 flex w-full flex-col items-center justify-center bg-black/10 z-40`}>
-                <CircularProgress size="4rem" />
-            </div>
+            <Loader loader={loader} />
 
             <ChangePassword openPasswordModal={openPasswordModal}
                 setOpenPasswordModal={setOpenPasswordModal} />

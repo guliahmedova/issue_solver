@@ -1,14 +1,14 @@
 import { closeBtn } from "@/assets/imgs";
-import { Button, Input } from "@/features/common";
+import { Button, Input, Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
-import { Box, CircularProgress, Divider, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import ValidationSchema from "./schema";
-import { z } from "zod";
 
 interface ICreatePopup {
     openPopup: boolean;
@@ -127,9 +127,7 @@ const CreatePopup = ({ openPopup, setOpenPopup, refreshData }: ICreatePopup) => 
                 </div>
             </div>
 
-            <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 flex w-full flex-col items-center justify-center bg-black/10 z-40`}>
-                <CircularProgress size="4rem" />
-            </div>
+            <Loader loader={loader} />
         </>
     )
 }

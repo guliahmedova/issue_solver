@@ -2,8 +2,8 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/features/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
@@ -37,25 +37,26 @@ const config: Config = {
       'gray-dark': '#273444',
       'gray': '#8492a6',
       'gray-light': '#d3dce6',
-      'surface-secondary':'#9D9D9D',
-      'gray-disabled':'#9D9D9D26',
-      'text-gray':'#8C8C8C',
-      'parag-gray':'#6E6E6E',
-      'warning':'#C46017',
-      'surface-background':'#F0F4F9',
+      'surface-secondary': '#9D9D9D',
+      'gray-disabled': '#9D9D9D26',
+      'text-gray': '#8C8C8C',
+      'parag-gray': '#6E6E6E',
+      'warning': '#C46017',
+      'surface-background': '#F0F4F9',
       "transparent": "transparent"
     },
     fontSize: {
-      xxs:['13px','16px'],
-      xs:['15','18px'],
+      xxs: ['13px', '16px'],
+      xs: ['15', '18px'],
       sm: ['15px', '21px'],
-      'sm-alt':['15px','18px'],
+      'sm-alt': ['15px', '18px'],
       base: ['16px', '24px'],
       lg: ['20px', '28px'],
       xl: ['24px', '32px'],
-      '3xl':['31px','37px']
+      '3xl': ['31px', '37px']
     }
   },
   plugins: [],
 };
+
 export default config;

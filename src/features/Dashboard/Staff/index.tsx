@@ -1,5 +1,6 @@
 "use client";
 import { plus, trashbin } from "@/assets/imgs";
+import { Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
 import Image from "next/image";
@@ -8,7 +9,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CreatePopup from "./CreatePopup";
-import { CircularProgress } from "@mui/material";
 
 interface IStaff {
     fullname: string;
@@ -138,9 +138,7 @@ const Staff = () => {
                 </div>
             </div>
 
-            <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 flex w-full flex-col items-center justify-center bg-black/10 z-40`}>
-                <CircularProgress size="4rem" />
-            </div>
+            <Loader loader={loader} />
 
             <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} refreshData={refreshData} />
         </>

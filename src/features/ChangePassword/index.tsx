@@ -1,8 +1,8 @@
 "use client";
-import { Input } from "@/features/common";
+import { Input, Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
-import { Box, Button, CircularProgress, Divider, Typography } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -128,9 +128,7 @@ const ChangePassword = () => {
         </Box>
       </Box>
 
-      <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 lg:left-auto left-0 right-0 flex lg:w-[50%] flex-col items-center justify-center bg-black/10 z-40`}>
-        <CircularProgress size="4rem" />
-      </div>
+      <Loader loader={loader} />
     </>
   );
 };
