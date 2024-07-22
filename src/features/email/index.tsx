@@ -1,15 +1,14 @@
 "use client";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
-import { Box, CircularProgress, Divider, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { AxiosError } from "axios";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
-import { Button } from "../common";
-import Input from "../common/Input";
+import { Button, Input, Loader } from "../common";
 import EmailValidationSchema from "./schema";
 
 type FormValues = z.infer<typeof EmailValidationSchema>;
@@ -120,9 +119,7 @@ export default function ForgotPassword() {
         </Formik>
       </Box>
 
-      <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 lg:left-auto left-0 right-0 flex lg:w-[50%] flex-col items-center justify-center bg-black/10 z-40`}>
-        <CircularProgress size="4rem" />
-      </div>
+      <Loader loader={loader} />
     </>
   );
 };

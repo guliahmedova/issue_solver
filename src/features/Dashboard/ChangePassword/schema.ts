@@ -1,13 +1,13 @@
 import { z, ZodType } from "zod";
 import Password from "./modules/password";
 
-const passwordValidation = new RegExp(
-    /(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/
-);
+const passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.* ).{8,}$/;
 
 const required_error_msg = "Şifrə mütləq daxil edilməlidir";
 const validation_msg = 'Şifrədə ən azı bir böyük və kiçik latın hərfi, rəqəm və xüsusi simvol istifadə olunmalıdır';
 const min_msg = "Şifrə ən azı 8 simvoldan ibarət olmalıdır";
+const confirmPassword_msg = "Hər iki şifrə dəqiq eyni olmalıdır";
+const match_msg = "Yeni şifrə cari şifrə ilə eyni olmamalıdır";
 
 const ValidationSchema: ZodType<Password> = z.object({
     password: z.string({
@@ -25,12 +25,12 @@ const ValidationSchema: ZodType<Password> = z.object({
 }).refine(({ newPassword, confirmPassword }) => {
     if (newPassword !== confirmPassword) {
         return {
-            confirmPassword: "Hər iki şifrə dəqiq eyni olmalıdır"
+            confirmPassword: confirmPassword_msg
         };
     }
     return true;
 }, {
-    message: "Yeni şifrə cari şifrə ilə eyni olmamalıdır",
+    message: match_msg,
     path: ['newPassword']
 });
 

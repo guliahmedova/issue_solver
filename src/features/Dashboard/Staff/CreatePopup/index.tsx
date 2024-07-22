@@ -1,9 +1,9 @@
 import { closeBtn } from "@/assets/imgs";
-import { Button, Input } from "@/features/common";
+import { Button, Input, Loader } from "@/features/common";
 import API from "@/http/api";
-import { useRequestMutation } from "@/http/request";
+import { useRequest, useRequestMutation } from "@/http/request";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Box, CircularProgress, Divider, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Divider, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import Image from "next/image";
 import { useRef, useState } from "react";
@@ -13,13 +13,20 @@ import ValidationSchema from "./schema";
 
 interface ICreatePopup {
     openPopup: boolean;
-    setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>
+    setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
+    refreshData: () => Promise<void>;
+};
+
+interface Organization {
+    name: string;
+    active: boolean;
 };
 
 type FormValues = z.infer<typeof ValidationSchema>;
 
-const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
+const CreatePopup = ({ openPopup, setOpenPopup, refreshData }: ICreatePopup) => {
     const { trigger: updatePasswordTrigger } = useRequestMutation(API.staff_create, { method: 'POST' });
+    const { data: organizations } = useRequest(API.organizations_get, { method: 'GET' });
     const modelRef = useRef<HTMLDivElement>(null);
     const [error, setError] = useState(null);
     const [loader, setLoader] = useState(false);
@@ -43,6 +50,7 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
             await updatePasswordTrigger({ body: data, params: { organization: values.organization, role: "STAFF" } });
             actions.setSubmitting(false);
             setOpenPopup(false);
+            await refreshData();
         } catch (error: any) {
             setError(error?.response?.data?.message);
         } finally {
@@ -78,7 +86,7 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
                                 Yeni Staff
                             </Typography>
                             <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap>
-                                Zəhmət olmasa, aşağıda məlumatlarınızı qeyd edin
+                                Zəhmət olmasa məlumatlarınızı qeyd edin
                             </Typography>
                         </Box>
 
@@ -158,9 +166,9 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
                                                 <MenuItem className="text-[#000000] bg-white hidden" value="" disabled>
                                                     Qurum
                                                 </MenuItem>
-                                                <MenuItem className="text-[#000000] bg-white" value="ABB">ABB</MenuItem>
-                                                <MenuItem className="text-[#000000] bg-white" value="Qurum B">Qurum B</MenuItem>
-                                                <MenuItem className="text-[#000000] bg-white" value="Qurum C">Qurum C</MenuItem>
+                                                {organizations?.data?.items?.map((organization: Organization, index: number) => (
+                                                    <MenuItem className="text-[#000000] bg-white" key={index} value={organization.name}>{organization.name}</MenuItem>
+                                                ))}
                                             </Select>
                                         </Box>
                                         {/*-------------------------------------------------- */}
@@ -202,11 +210,9 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
                 </div>
             </div>
 
-            <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 flex w-full flex-col items-center justify-center bg-black/10 z-40`}>
-                <CircularProgress size="4rem" />
-            </div>
+            <Loader loader={loader} />
         </>
     )
-}
+};
 
-export default CreatePopup
+export default CreatePopup;

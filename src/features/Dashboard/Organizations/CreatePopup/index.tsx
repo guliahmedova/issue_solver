@@ -1,19 +1,25 @@
 import { closeBtn } from "@/assets/imgs";
-import { Button, Input } from "@/features/common";
+import { Button, Input, Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
-import { Box, CircularProgress, Divider, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { z } from "zod";
+import { toFormikValidationSchema } from "zod-formik-adapter";
+import ValidationSchema from "./schema";
 
 interface ICreatePopup {
     openPopup: boolean;
-    setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>
+    setOpenPopup: React.Dispatch<React.SetStateAction<boolean>>;
+    refreshData: () => Promise<void>;
 };
 
-const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
-    const { trigger: updatePasswordTrigger } = useRequestMutation(API.user_update_password, { method: 'PUT' });
+type FormValues = z.infer<typeof ValidationSchema>;
+
+const CreatePopup = ({ openPopup, setOpenPopup, refreshData }: ICreatePopup) => {
+    const { trigger: createOrganizationTrigger } = useRequestMutation(API.organization_create, { method: 'POST' });
     const modelRef = useRef<HTMLDivElement>(null);
     const [error, setError] = useState(null);
     const [loader, setLoader] = useState(false);
@@ -24,29 +30,27 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
         };
     };
 
-    const handleSubmit = async (values: any, actions: FormikHelpers<any>) => {
+    const handleSubmit = async (values: FormValues, actions: FormikHelpers<any>) => {
         try {
             setLoader(true);
             setError(null);
-            const data = {
-                currentPassword: values.password,
-                password: values.newPassword,
-                confirmPassword: values.confirmPassword
-            };
-            await updatePasswordTrigger({ body: data });
+            await createOrganizationTrigger({
+                body: {
+                    name: values.name
+                }
+            });
             actions.setSubmitting(false);
             setOpenPopup(false);
+            await refreshData();
         } catch (error: any) {
             setError(error?.response?.data?.message);
         } finally {
             setLoader(false);
             actions.resetForm({
                 values: {
-                    password: "",
-                    newPassword: "",
-                    confirmPassword: ""
+                    name: ""
                 }
-            })
+            });
         }
     };
 
@@ -69,7 +73,7 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
                                 Yeni Qurum
                             </Typography>
                             <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap>
-                                Zəhmət olmasa, aşağıda məlumatlarınızı qeyd edin
+                                Zəhmət olmasa məlumatlarınızı qeyd edin
                             </Typography>
                         </Box>
                         <Divider
@@ -79,12 +83,10 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
 
                         <Formik
                             initialValues={{
-                                password: "",
-                                newPassword: "",
-                                confirmPassword: ""
+                                name: ""
                             }}
                             onSubmit={handleSubmit}
-                            // validationSchema={toFormikValidationSchema(an)}
+                            validationSchema={toFormikValidationSchema(ValidationSchema)}
                             validateOnBlur={true}
                         >
                             {({
@@ -100,19 +102,19 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
                                 <Form onSubmit={handleSubmit}>
                                     <Box display="flex" flexDirection="column">
                                         <Field
-                                            name="confirmPassword"
+                                            name="name"
                                             labelText="Qurumun Adı"
                                             type="text"
                                             component={Input}
                                             placeholder="Qurmun adını əlavə edin"
-                                            autoComplete="confirmPassword"
-                                            errorText={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : undefined}
-                                            value={values.confirmPassword}
+                                            autoComplete="name"
+                                            errorText={touched.name && errors.name ? errors.name : undefined}
+                                            value={values.name}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                         />
 
-                                        {error && <Typography color="red">{error}</Typography>}
+                                        {error && <Typography color="red" className="mb-2">{error}</Typography>}
                                         <Button type="submit" variant="primary" disabled={!isValid || !dirty}>
                                             Əlavə et
                                         </Button>
@@ -125,9 +127,7 @@ const CreatePopup = ({ openPopup, setOpenPopup }: ICreatePopup) => {
                 </div>
             </div>
 
-            <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 flex w-full flex-col items-center justify-center bg-black/10 z-40`}>
-                <CircularProgress size="4rem" />
-            </div>
+            <Loader loader={loader} />
         </>
     )
 }

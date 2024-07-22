@@ -12,8 +12,10 @@ const API = {
   "staffs_get": "api/Staffs/getlist",
   "staff_create": "api/Users/create",
   "staff_delete": "api/Users/remove",
-  "organizations_get": "api/Organozations/getlist",
-  "organization_create": ""
+  "organizations_get": "api/Organizations/getpaginationlist",
+  "organization_create": "",
+  "organization_delete": "api/Organizations/delete",
+  "organization_status": "api/Organizations/updateActiveOrDeactive"
 };
 
 export default API;

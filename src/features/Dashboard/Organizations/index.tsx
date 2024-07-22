@@ -1,11 +1,12 @@
 "use client";
 import { plus } from "@/assets/imgs";
+import { Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import CreatePopup from "./CreatePopup";
 
 interface IOrganization {
@@ -30,8 +31,10 @@ const Organizations = () => {
         name: ''
     });
     const [openPopup, setOpenPopup] = useState(false);
+    const [loader, setLoader] = useState(false);
 
     const { trigger: getOrganizationTrigger } = useRequestMutation(API.organizations_get, { method: 'GET' });
+    const { trigger: statusTrigger } = useRequestMutation(API.organization_status, { method: 'PATCH' });
 
     const fetchData = async (reset = false) => {
         const currentPage = reset ? 0 : page;
@@ -70,12 +73,25 @@ const Organizations = () => {
         }));
     };
 
-    const handleStatusChange = (name: string, currentStatus: boolean) => {
-        setSelectStatus(prevState => ({ name: '', status: "Deaktiv", open: false }));
-        const newStatus = !currentStatus;
-        setOrganizationData(prevData => prevData.map(org =>
-            org.name === name ? { ...org, active: newStatus } : org
-        ));
+    const handleStatusChange = async (name: string, currentStatus: boolean) => {
+        try {
+            setLoader(true);
+            setSelectStatus(prevState => ({ name: '', status: "Deaktiv", open: false }));
+            const newStatus = !currentStatus;
+            setOrganizationData(prevData => prevData.map(org =>
+                org.name === name ? { ...org, active: newStatus } : org
+            ));
+            await statusTrigger({
+                body: {
+                    name: name
+                }
+            });
+            await refreshData();
+        } catch (error: any) {
+            toast.error(error.response.data.message);
+        } finally {
+            setLoader(false);
+        }
     };
 
     return (
@@ -114,14 +130,9 @@ const Organizations = () => {
                             next={fetchData}
                             hasMore={hasMore}
                             loader={<h4 className="text-center text-lg text-gray">Loading...</h4>}
-                            endMessage={
-                                <p style={{ textAlign: 'center' }}>
-                                    <b>The End</b>
-                                </p>
-                            }
                             refreshFunction={refreshData}
                             pullDownToRefresh
-                            scrollableTarget="parentScrollBar"
+                            scrollableTarget="parentScrollBarOrganization"
                         >
                             {
                                 organizationData?.map((item: IOrganization, index: number) => (
@@ -154,7 +165,9 @@ const Organizations = () => {
                 </div>
             </div>
 
-            <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} />
+            <Loader loader={loader} />
+
+            <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} refreshData={refreshData} />
         </>
     )
 };

@@ -1,5 +1,6 @@
 "use client";
 import { plus, trashbin } from "@/assets/imgs";
+import { Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
 import Image from "next/image";
@@ -28,6 +29,7 @@ const Staff = () => {
     const [openPopup, setOpenPopup] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(0);
+    const [loader, setLoader] = useState(false);
     const { trigger: deleteStaffTrigger } = useRequestMutation(API.staff_delete, { method: 'DELETE' });
     const { trigger: getStaffTrigger } = useRequestMutation(API.staffs_get, { method: 'GET' });
 
@@ -61,6 +63,7 @@ const Staff = () => {
 
     const handleStaffDelete = async (email: string) => {
         try {
+            setLoader(true);
             await deleteStaffTrigger({
                 body: {
                     email: email
@@ -71,6 +74,8 @@ const Staff = () => {
         } catch (error: any) {
             console.log(error, '<- ERROR');
             toast.error(error.response.data.message);
+        } finally {
+            setLoader(false);
         }
     };
 
@@ -103,7 +108,7 @@ const Staff = () => {
                         <span className="text-xs">Staffın Adı</span>
                         <span className="text-xs">Staffın E-Poçtu</span>
                         <span className="text-xs text-center">Aid olduğu qurum</span>
-                        <span className="text-xs text-end">Staffın Sil</span>
+                        <span className="text-xs text-end">Staffı Sil</span>
                     </div>
                     <div className="h-[550px] overflow-auto" id="parentScrollBar">
                         <InfiniteScroll
@@ -111,11 +116,6 @@ const Staff = () => {
                             next={fetchData}
                             hasMore={hasMore}
                             loader={<h4 className="text-center text-lg text-gray">Loading...</h4>}
-                            endMessage={
-                                <p style={{ textAlign: 'center' }}>
-                                    <b>The End</b>
-                                </p>
-                            }
                             refreshFunction={refreshData}
                             pullDownToRefresh
                             scrollableTarget="parentScrollBar"
@@ -138,7 +138,9 @@ const Staff = () => {
                 </div>
             </div>
 
-            <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} />
+            <Loader loader={loader} />
+
+            <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} refreshData={refreshData} />
         </>
     )
 };

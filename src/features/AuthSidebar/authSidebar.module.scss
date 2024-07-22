@@ -1,77 +1,9 @@
-.sidebar {
-    position: relative;
-    height: 100%;
-    width: 50%;
-}
-
 .sidebar_content {
     width: 50%;
 }
 
-.center {
-    position: absolute;
-    z-index: 1;
-    height: 100%;
-    width: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.animation_center {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-}
-
-.sidebar_animation_container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-    gap: 0;
-    font-weight: bold;
-    font-size: 48px;
-    user-select: none;
-}
-
-.sidebar_title {
-    font-weight: bold;
-    font-size: 48px;
-}
-
-.sentence {
-    display: flex;
-    align-items: center;
-    column-gap: 15px;
-    color: #212121;
-}
-
-.scroll_container {
-    width: auto;
-    height: 48px;
-    overflow: hidden;
-    position: relative;
-    display: inline-block;
-}
-
 .scroll_content {
-    display: flex;
-    flex-direction: column;
     animation: scroll 6s linear infinite;
-}
-
-.scroll_content div {
-    height: 48px;
-    line-height: 48px;
-    display: flex;
-    color: #2981ff;
 }
 
 @keyframes scroll {
@@ -81,45 +13,5 @@
 
     100% {
         transform: translateY(-192px);
-    }
-}
-
-@media screen and (max-width: 77rem) {
-    .sidebar_animation_container {
-        font-size: 2rem;
-    }
-
-    .sidebar_title {
-        font-size: 2rem;
-    }
-}
-
-@media screen and (max-width: 64rem) {
-    .sidebar_content {
-        padding-inline: 5%;
-    }
-
-    .sidebar_title {
-        font-size: 2rem;
-    }
-
-    .sidebar_animation_container {
-        font-size: 2rem;
-    }
-}
-
-@media screen and (max-width: 54rem) {
-    .sidebar_content {
-        padding-inline: 4%;
-        width: 90%;
-        margin: 0 auto;
-    }
-
-    .sidebar {
-        display: none;
-    }
-
-    .sidebar_title {
-        font-size: 1.5rem;
     }
 }
