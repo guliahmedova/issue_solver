@@ -1,5 +1,6 @@
 "use client";
 import { plus } from "@/assets/imgs";
+import { Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
 import Image from "next/image";
@@ -7,7 +8,6 @@ import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { toast, ToastContainer } from "react-toastify";
 import CreatePopup from "./CreatePopup";
-import { CircularProgress } from "@mui/material";
 
 interface IOrganization {
     name: string;
@@ -165,9 +165,7 @@ const Organizations = () => {
                 </div>
             </div>
 
-            <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 flex w-full flex-col items-center justify-center bg-black/10 z-40`}>
-                <CircularProgress size="4rem" />
-            </div>
+            <Loader loader={loader} />
 
             <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} refreshData={refreshData} />
         </>

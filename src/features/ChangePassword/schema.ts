@@ -1,9 +1,7 @@
 import { z, ZodType } from "zod";
 import Password from "./modules/password";
 
-const passwordValidation = new RegExp(
-    /(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/
-);
+const passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W)(?!.* ).{8,}$/;
 
 const ValidationSchema: ZodType<Password> = z.object({
     password: z.string({

@@ -1,9 +1,9 @@
 import { closeBtn } from "@/assets/imgs";
-import { Button, Input } from "@/features/common";
+import { Button, Input, Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequest, useRequestMutation } from "@/http/request";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Box, CircularProgress, Divider, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Divider, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import Image from "next/image";
 import { useRef, useState } from "react";
@@ -210,9 +210,7 @@ const CreatePopup = ({ openPopup, setOpenPopup, refreshData }: ICreatePopup) => 
                 </div>
             </div>
 
-            <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 left-0 right-0 flex w-full flex-col items-center justify-center bg-black/10 z-40`}>
-                <CircularProgress size="4rem" />
-            </div>
+            <Loader loader={loader} />
         </>
     )
 };

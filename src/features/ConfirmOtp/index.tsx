@@ -1,9 +1,9 @@
 "use client";
 import { time } from "@/assets/imgs";
-import { Button } from "@/features/common";
+import { Button, Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
-import { Box, CircularProgress, Divider, Grid, OutlinedInput, Typography } from "@mui/material";
+import { Box, Divider, Grid, OutlinedInput, Typography } from "@mui/material";
 import { AxiosError } from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -229,9 +229,8 @@ const ConfirmOtp = () => {
                     </Box>
                 </Box>
             </Box>
-            <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 lg:left-auto left-0 right-0 flex lg:w-[50%] flex-col items-center justify-center bg-black/10 z-40`}>
-                <CircularProgress size="4rem" />
-            </div>
+
+            <Loader loader={loader} />
         </>
     )
 };
