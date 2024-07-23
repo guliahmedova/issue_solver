@@ -13,6 +13,8 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import Button from "../common/Button/Button";
 import Input from "../common/Input";
 import ValidationSchema from "./schema";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type FormValues = z.infer<typeof ValidationSchema>;
 
@@ -33,7 +35,7 @@ export default function LoginForm() {
       if (loginData?.success) {
         for (const permission of loginData?.data?.permissons) {
           if (permission === ROLES.ADMIN) {
-            router.push('/dashboard/organizations');
+            router.push("/dashboard/organizations");
           } else if (permission === ROLES.STAFF) {
             router.push("/dashboard/");
           }
@@ -45,6 +47,7 @@ export default function LoginForm() {
     } catch (error: any) {
       if (!error?.response?.data?.success) {
         setLoginError(error?.response?.data?.message);
+        toast.error(error?.response?.data?.message);
       }
     }
   };
@@ -115,7 +118,6 @@ export default function LoginForm() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {loginError && <Typography color="red">{loginError}</Typography>}
                 <Box textAlign="right" color="#4D96FF" marginBottom="40px">
                   <Link href="/forgot-password">Şifrənizi unutmusunuz?</Link>
                 </Box>
@@ -127,6 +129,7 @@ export default function LoginForm() {
           )}
         </Formik>
       </Box>
+      <ToastContainer />
     </Box>
   );
 }

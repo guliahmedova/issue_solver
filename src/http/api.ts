@@ -7,7 +7,7 @@ const API = {
   "login_refreshtoken": "api/Auths/login-refreshtoken",
   "user_update_password": "api/Users/updatepassword",
   "get_me": "api/Users/getmeweb",
-  "organization_requests_all":"api/request/organization-requests",
+  "organization_requests_all":"request/organization-requests",
   "search": "",
   "staffs_get": "api/Staffs/getlist",
   "staff_create": "api/Users/create",

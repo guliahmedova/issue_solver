@@ -10,11 +10,13 @@ import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { Button, Input, Loader } from "../common";
 import EmailValidationSchema from "./schema";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type FormValues = z.infer<typeof EmailValidationSchema>;
 
 export default function ForgotPassword() {
-  const { trigger: sendEmailTrigger } = useRequestMutation(API.forgot_password, { method: 'POST' });
+  const { trigger: sendEmailTrigger } = useRequestMutation(API.forgot_password, { method: "POST" });
   const router = useRouter();
   const [emailError, setEmailError] = useState<null | string>(null);
   const [loader, setLoader] = useState(false);
@@ -26,19 +28,20 @@ export default function ForgotPassword() {
       const email = values?.email;
       await sendEmailTrigger({ body: { email: email } });
       actions.setSubmitting(false);
-      router.push('/confirm-otp');
-      sessionStorage.setItem('user_email', email);
+      router.push("/confirm-otp");
+      sessionStorage.setItem("user_email", email);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         setEmailError(error?.response?.data?.message);
+        toast.error(error?.response?.data?.message);
       }
       actions.setSubmitting(false);
     } finally {
       setLoader(false);
       actions.resetForm({
         values: {
-          email: ""
-        }
+          email: "",
+        },
       });
     }
   };
@@ -57,7 +60,13 @@ export default function ForgotPassword() {
           <Typography color="initial" fontSize={28} fontWeight={600} className="select-none">
             E-poçtunuzu daxil edin
           </Typography>
-          <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap className="select-none">
+          <Typography
+            fontSize={15}
+            fontWeight={400}
+            sx={{ color: "#9D9D9D" }}
+            noWrap
+            className="select-none"
+          >
             E-poçt hesabınıza təsdiq kod göndəriləcək
           </Typography>
         </Box>
@@ -90,7 +99,12 @@ export default function ForgotPassword() {
             isValid,
             dirty,
           }: FormikProps<FormValues>) => (
-            <Box display="flex" justifyContent="center" alignItems="center" className="lg:w-[68%] w-11/12 mx-auto">
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              className="lg:w-[68%] w-11/12 mx-auto"
+            >
               <Form
                 onSubmit={handleSubmit}
                 style={{ width: "100%", display: "flex", flexDirection: "column", gap: "60px" }}
@@ -108,8 +122,6 @@ export default function ForgotPassword() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {emailError && <Typography color="red" textAlign="left" width="60%">{emailError}</Typography>}
-
                 <Button variant="primary" type="submit" disabled={!isValid || !dirty}>
                   Təsdiq kodu göndər
                 </Button>
@@ -118,8 +130,8 @@ export default function ForgotPassword() {
           )}
         </Formik>
       </Box>
-
       <Loader loader={loader} />
+      <ToastContainer />
     </>
   );
-};
+}
