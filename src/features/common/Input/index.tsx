@@ -17,11 +17,11 @@ interface IMuiInput extends Pick<InputProps, Exclude<keyof InputProps, "icon">> 
   position?: "end" | "start";
   edge?: "end" | "start";
   errorText?: string;
-  labelText: string;
+  labelText?: string;
   field?: any;
   form?: any;
   type: string;
-};
+}
 
 const Input = ({
   labelText,
@@ -35,16 +35,18 @@ const Input = ({
   ...props
 }: IMuiInput) => {
   const isError = get(form?.errors, field?.name) && get(form?.touched, field?.name);
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleMouseDownPassword = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
   };
 
   return (
-    <Box sx={{
-      marginBottom: "24px"
-    }}>
+    <Box
+      sx={{
+        marginBottom: "24px",
+      }}
+    >
       <InputLabel variant={labelVariant} error={isError}>
         {labelText}
       </InputLabel>
@@ -61,7 +63,11 @@ const Input = ({
                   onMouseDown={handleMouseDownPassword}
                   edge={edge}
                 >
-                  {showPassword ? <Visibility color={isError ? "error" : "primary"} /> : <VisibilityOff color={isError ? "error" : "primary"} />}
+                  {showPassword ? (
+                    <Visibility color={isError ? "error" : "primary"} />
+                  ) : (
+                    <VisibilityOff color={isError ? "error" : "primary"} />
+                  )}
                 </IconButton>
               </InputAdornment>
             ) : null
