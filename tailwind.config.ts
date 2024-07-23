@@ -29,6 +29,7 @@ const config: Config = {
       'orange-primary': '#FF7900',
       'orange-secondary': '#FFA500',
       'blue-primary': '#2981FF',
+      'blue-secondary':'#0269FBA6',
       'purple': '#7e5bef',
       'pink': '#ff49db',
       'orange': '#ff7849',
@@ -43,18 +44,27 @@ const config: Config = {
       'parag-gray': '#6E6E6E',
       'warning': '#C46017',
       'surface-background': '#F0F4F9',
-      "transparent": "transparent"
+      "transparent": "transparent",
+      "primary-container" :'#E0EDFF',
+      'container-outline':'#2981FF47'
     },
     fontSize: {
+      'sm-text':['12p','14px'],
       xxs: ['13px', '16px'],
       xs: ['15', '18px'],
       sm: ['15px', '21px'],
+      md:['15px','27px'],
       'sm-alt': ['15px', '18px'],
       base: ['16px', '24px'],
       lg: ['20px', '28px'],
       xl: ['24px', '32px'],
       '3xl': ['31px', '37px']
-    }
+    },
+    placeholderColor: {
+           'primary': '#3490dc',
+            'bl-secondary': '#0269FBA6',
+            'danger': '#e3342f',
+          }
   },
   plugins: [],
 };
