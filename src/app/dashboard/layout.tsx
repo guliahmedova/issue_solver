@@ -11,14 +11,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <ProtectRoute>
       <Suspense fallback={<Loading />}>
-        <div className="flex h-screen bg-gray-100">
-          <Sidebar openSidebar={openSidebar} />
-          <div className="flex flex-col flex-1 overflow-y-auto bg-surface-background">
-            <Header setOpenSidebar={setOpenSidebar} />
-            <div className="py-4 px-11">{children}</div>
+        <div className="bg-surface-background">
+          <div className="flex h-screen overflow-hidden">
+            <Sidebar sidebarOpen={openSidebar} setSidebarOpen={setOpenSidebar} />
+            <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-surface-background">
+              <Header setSidebarOpen={setOpenSidebar} />
+              <main>
+                <div className="mx-auto max-w-screen-2xl py-4 lg:px-11 px-4 md:p-6 2xl:p-10">
+                  {children}
+                </div>
+              </main>
+            </div>
           </div>
         </div>
       </Suspense>
     </ProtectRoute>
   );
-}
+};

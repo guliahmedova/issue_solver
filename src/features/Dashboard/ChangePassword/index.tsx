@@ -141,7 +141,7 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
                                             onBlur={handleBlur}
                                         />
 
-                                        {error && <Typography color="red">{error}</Typography>}
+                                        {error && <Typography className="mb-4 text-[#FF3D2C]">{error}</Typography>}
                                         <Button type="submit" variant="primary" disabled={!isValid || !dirty}>
                                             Yenilə
                                         </Button>

@@ -118,6 +118,7 @@ export default function LoginForm() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
+                {loginError && <Typography className="text-[#FF3D2C] mb-4">{loginError}</Typography>}
                 <Box textAlign="right" color="#4D96FF" marginBottom="40px">
                   <Link href="/forgot-password">Şifrənizi unutmusunuz?</Link>
                 </Box>

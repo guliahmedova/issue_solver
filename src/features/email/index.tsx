@@ -122,6 +122,8 @@ export default function ForgotPassword() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
+                {emailError && <Typography className="text-[#FF3D2C] mb-4" textAlign="left" width="60%">{emailError}</Typography>}
+
                 <Button variant="primary" type="submit" disabled={!isValid || !dirty}>
                   Təsdiq kodu göndər
                 </Button>
