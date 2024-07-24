@@ -13,7 +13,6 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import Button from "../common/Button/Button";
 import Input from "../common/Input";
 import ValidationSchema from "./schema";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type FormValues = z.infer<typeof ValidationSchema>;
@@ -21,7 +20,7 @@ type FormValues = z.infer<typeof ValidationSchema>;
 export default function LoginForm() {
   const { trigger: LoginTrigger } = useRequestMutation(API.login, { method: "POST" });
   const setAuth = useAuthStore(state => state.setAuth);
-  const [loginError, setLoginError] = useState(null);
+  const [loginError, setLoginError] = useState<null | string>(null);
   const router = useRouter();
 
   const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
@@ -46,8 +45,11 @@ export default function LoginForm() {
       setLoginError(null);
     } catch (error: any) {
       if (!error?.response?.data?.success) {
-        setLoginError(error?.response?.data?.message);
-        toast.error(error?.response?.data?.message);
+        if (error?.response?.data?.message == "Staff is not found") {
+          setLoginError("İstifadəçi tapılmadı");
+        } else {
+          setLoginError(error?.response?.data?.message);
+        }
       }
     }
   };
@@ -130,7 +132,6 @@ export default function LoginForm() {
           )}
         </Formik>
       </Box>
-      <ToastContainer />
     </Box>
   );
 }

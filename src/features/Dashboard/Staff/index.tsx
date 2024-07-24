@@ -3,7 +3,6 @@ import { plus, trashbin } from "@/assets/imgs";
 import { Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
-import { useSearchStore } from "@/state/useSearchStore";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -15,7 +14,7 @@ interface IStaff {
     fullname: string;
     username: string;
     organizationName: string;
-    isActiveOrganization: boolean;
+    isActiveOrganization: string;
 };
 
 interface IStaffResponse {
@@ -33,7 +32,6 @@ const Staff = () => {
     const [loader, setLoader] = useState(false);
     const { trigger: deleteStaffTrigger } = useRequestMutation(API.staff_delete, { method: 'DELETE' });
     const { trigger: getStaffTrigger } = useRequestMutation(API.staffs_get, { method: 'GET' });
-    const { searchText } = useSearchStore();
 
     const fetchData = async (reset = false) => {
         const currentPage = reset ? 0 : page;
@@ -74,7 +72,6 @@ const Staff = () => {
             setStaffData(prevStaffData => prevStaffData.filter(staff => staff.username !== email));
             toast.success('Uğurla silindi');
         } catch (error: any) {
-            console.log(error, '<- ERROR');
             toast.error(error.response.data.message);
         } finally {
             setLoader(false);
@@ -127,7 +124,7 @@ const Staff = () => {
                             scrollableTarget="parentScrollBar"
                         >
                             {staffData?.map((item: IStaff, index: number) => (
-                                <div className="grid grid-cols-5 items-center justify-between bg-white py-6 px-8 rounded-xl mb-3 w-full" key={index}>
+                                <div className={`grid grid-cols-5 items-center justify-between ${item.isActiveOrganization === "True" ? "bg-white" : "bg-gray-disabled select-none"} py-6 px-8 rounded-xl mb-3 w-full`} key={index}>
                                     <span className="lg:text-base text-xxs select-none">{index + 1}</span>
                                     <span className="lg:text-base text-xxs whitespace-break-spaces break-words">{item.fullname}</span>
                                     <span className="lg:text-base text-xxs whitespace-break-spaces break-words">{item.username}</span>
