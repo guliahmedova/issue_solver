@@ -10,104 +10,126 @@ import { toast, ToastContainer } from "react-toastify";
 import CreatePopup from "./CreatePopup";
 
 interface IOrganization {
-    name: string;
-    active: boolean;
-};
+  name: string;
+  active: boolean;
+}
 
 interface IOrganizationResponse {
-    data: {
-        items: IOrganization[],
-        hasNext: boolean
-    }
-};
+  data: {
+    items: IOrganization[];
+    hasNext: boolean;
+  };
+}
 
 const Organizations = () => {
-    const [organizationData, setOrganizationData] = useState<IOrganization[]>([]);
-    const [hasMore, setHasMore] = useState(true);
-    const [page, setPage] = useState(0);
-    const [selectStatus, setSelectStatus] = useState({
-        open: false,
-        status: "Aktiv",
-        name: ''
+  const [organizationData, setOrganizationData] = useState<IOrganization[]>([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(0);
+  const [selectStatus, setSelectStatus] = useState({
+    open: false,
+    status: "Aktiv",
+    name: "",
+  });
+  const [openPopup, setOpenPopup] = useState(false);
+  const [loader, setLoader] = useState(false);
+
+  const { trigger: getOrganizationTrigger } = useRequestMutation(API.organizations_get, {
+    method: "GET",
+  });
+  const { trigger: statusTrigger } = useRequestMutation(API.organization_status, {
+    method: "PATCH",
+  });
+
+  const fetchData = async (reset = false) => {
+    const currentPage = reset ? 0 : page;
+    const response = await getOrganizationTrigger({
+      params: {
+        Page: currentPage,
+        PageSize: 9,
+      },
     });
-    const [openPopup, setOpenPopup] = useState(false);
-    const [loader, setLoader] = useState(false);
 
-    const { trigger: getOrganizationTrigger } = useRequestMutation(API.organizations_get, { method: 'GET' });
-    const { trigger: statusTrigger } = useRequestMutation(API.organization_status, { method: 'PATCH' });
+    const data: IOrganizationResponse = response;
 
-    const fetchData = async (reset = false) => {
-        const currentPage = reset ? 0 : page;
-        const response = await getOrganizationTrigger({
-            params: {
-                Page: currentPage,
-                PageSize: 9
-            }
-        });
+    if (reset) {
+      setOrganizationData(data.data.items);
+    } else {
+      setOrganizationData(prevStaffData => [...prevStaffData, ...data.data.items]);
+    }
 
-        const data: IOrganizationResponse = response;
+    setHasMore(data.data.hasNext);
+    setPage(currentPage + 1);
+  };
 
-        if (reset) {
-            setOrganizationData(data.data.items);
-        } else {
-            setOrganizationData(prevStaffData => [...prevStaffData, ...data.data.items]);
-        }
+  useEffect(() => {
+    fetchData(true);
+  }, []);
 
-        setHasMore(data.data.hasNext);
-        setPage(currentPage + 1);
-    };
+  const refreshData = async () => {
+    await fetchData(true);
+  };
 
-    useEffect(() => {
-        fetchData(true);
-    }, []);
+  const handleStatusDropdown = (name: string, currentStatus: boolean) => {
+    setSelectStatus(prevState => ({
+      ...prevState,
+      open: prevState?.name === name ? !currentStatus : currentStatus,
+      name: prevState?.name === name ? "" : name,
+    }));
+  };
 
-    const refreshData = async () => {
-        await fetchData(true);
-    };
+  const handleStatusChange = async (name: string, currentStatus: boolean) => {
+    try {
+      setLoader(true);
+      setSelectStatus(prevState => ({ name: "", status: "Deaktiv", open: false }));
+      const newStatus = !currentStatus;
+      setOrganizationData(prevData =>
+        prevData.map(org => (org.name === name ? { ...org, active: newStatus } : org)),
+      );
+      await statusTrigger({
+        body: {
+          name: name,
+        },
+      });
+      await refreshData();
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    } finally {
+      setLoader(false);
+    }
+  };
 
-    const handleStatusDropdown = (name: string, currentStatus: boolean) => {
-        setSelectStatus(prevState => ({
-            ...prevState,
-            open: prevState?.name === name ? !currentStatus : currentStatus,
-            name: prevState?.name === name ? "" : name
-        }));
-    };
+  return (
+    <>
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
 
-    const handleStatusChange = async (name: string, currentStatus: boolean) => {
-        try {
-            setLoader(true);
-            setSelectStatus(prevState => ({ name: '', status: "Deaktiv", open: false }));
-            const newStatus = !currentStatus;
-            setOrganizationData(prevData => prevData.map(org =>
-                org.name === name ? { ...org, active: newStatus } : org
-            ));
-            await statusTrigger({
-                body: {
-                    name: name
-                }
-            });
-            await refreshData();
-        } catch (error: any) {
-            toast.error(error.response.data.message);
-        } finally {
-            setLoader(false);
-        }
-    };
+      <div>
+        <div className="flex items-center justify-between mb-7">
+          <h2 className="font-bold text-lg">Bütün Qurumlar</h2>
+          <button
+            className="bg-[#2981FF] text-white rounded-3xl py-3 px-6 flex items-center justify-between w-[136px] text-[13px]"
+            onClick={() => setOpenPopup(true)}
+          >
+            Qurum <Image alt="" src={plus} />
+          </button>
+        </div>
 
-    return (
-        <>
-            <ToastContainer
-                position="top-center"
-                autoClose={1000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-            />
+        <div>
+          <div className="flex items-center justify-between bg-white py-6 px-14 rounded-xl mb-10 select-none">
+            <span className="text-xs">No</span>
+            <span className="text-xs">Qurumun Adı</span>
+            <span className="text-xs">Qurumun Statusu</span>
+          </div>
 
             <div>
                 <div className="flex items-center justify-between mb-7">
@@ -160,14 +182,20 @@ const Organizations = () => {
                             }
                         </InfiniteScroll>
                     </div>
+                  </div>
+                  {/**----------------- */}
                 </div>
-            </div>
+              ))}
+            </InfiniteScroll>
+          </div>
+        </div>
+      </div>
 
-            <Loader loader={loader} />
+      <Loader loader={loader} />
 
-            <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} refreshData={refreshData} />
-        </>
-    )
+      <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} refreshData={refreshData} />
+    </>
+  );
 };
 
-export default Organizations
+export default Organizations;
