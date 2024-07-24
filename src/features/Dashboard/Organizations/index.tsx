@@ -1,3 +1,4 @@
+
 "use client";
 import { plus } from "@/assets/imgs";
 import { Loader } from "@/features/common";
@@ -19,7 +20,7 @@ interface IOrganizationResponse {
     items: IOrganization[];
     hasNext: boolean;
   };
-};
+}
 
 const Organizations = () => {
   const [organizationData, setOrganizationData] = useState<IOrganization[]>([]);
@@ -142,9 +143,9 @@ const Organizations = () => {
               scrollableTarget="parentScrollBarOrganization"
             >
               {organizationData?.map((item: IOrganization, index: number) => (
-                <div className="flex items-center justify-between bg-white py-6 px-14 rounded-xl mb-3" key={index}>
+                <div className="flex items-center justify-between bg-white py-6 px-14 rounded-xl mb-3 w-full" key={index}>
                   <span className="text-xs select-none">{index + 1}</span>
-                  <span className="text-xs">{item.name}</span>
+                  <span className="lg:text-base text-xxs text-center">{item.name}</span>
                   <div className="relative text-xxs w-[90px] z-0">
                     <span
                       className={`${item.active ? 'bg-[#DDF1E4] text-[#429A60]' : 'bg-[#FF3D2C33] text-[#EF5648]'} rounded-full py-[6px] px-3 cursor-pointer text-center flex items-center justify-between`}
