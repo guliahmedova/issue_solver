@@ -128,10 +128,10 @@ const Staff = () => {
                         >
                             {staffData?.map((item: IStaff, index: number) => (
                                 <div className="grid grid-cols-5 items-center justify-between bg-white py-6 px-8 rounded-xl mb-3 w-full" key={index}>
-                                    <span className="text-xs select-none">{index + 1}</span>
-                                    <span className="text-xs">{item.fullname}</span>
-                                    <span className="text-xs">{item.username}</span>
-                                    <span className="text-xs whitespace-nowrap text-center">{item.isActiveOrganization && item.organizationName}</span>
+                                    <span className="lg:text-base text-xxs select-none">{index + 1}</span>
+                                    <span className="lg:text-base text-xxs whitespace-break-spaces break-words">{item.fullname}</span>
+                                    <span className="lg:text-base text-xxs whitespace-break-spaces break-words">{item.username}</span>
+                                    <span className="lg:text-base text-xxs text-center whitespace-break-spaces break-words">{item.isActiveOrganization && item.organizationName}</span>
                                     <div className="flex justify-end"
                                         onClick={() => handleStaffDelete(item.username)}
                                     >

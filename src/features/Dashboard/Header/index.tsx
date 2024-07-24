@@ -6,7 +6,7 @@ import { useRequestMutation } from "@/http/request";
 import { useSearchStore } from "@/state/useSearchStore";
 import MenuIcon from '@mui/icons-material/Menu';
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import ChangePassword from "../ChangePassword";
 import LogoutPopup from "../LogoutPopup";
@@ -28,11 +28,13 @@ const Header = ({ setSidebarOpen }: IHeader) => {
     const [openPasswordModal, setOpenPasswordModal] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [logoutModal, setLogoutModal] = useState<boolean>(false);
-    const [userData, setUserData] = useState({
+
+    const [userData, setUserData] = useState<IUserResponse["data"]>({
         organizationName: "",
         email: "",
         fullName: ""
     });
+
     const [loader, setLoader] = useState(false);
     const { trigger: getDataTrigger } = useRequestMutation(API.get_me, { method: 'GET' });
     const { searchText, setSearchText } = useSearchStore();
@@ -48,25 +50,32 @@ const Header = ({ setSidebarOpen }: IHeader) => {
     };
 
     const handledropdownMenu = async () => {
-        try {
-            setLoader(true);
-            const res: IUserResponse = await getDataTrigger();
-            setShowDropdown(true);
-            setUserData({
-                organizationName: res?.data?.organizationName ? res?.data?.organizationName : res?.data?.fullName,
-                email: res?.data?.email,
-                fullName: res?.data?.fullName
-            });
-        } catch (error: any) {
-            toast.error(error.response.data.message);
-        } finally {
-            setLoader(false);
-        }
+        setShowDropdown(true);
     };
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                setLoader(true);
+                const res: IUserResponse = await getDataTrigger();
+                setUserData({
+                    organizationName: res?.data?.organizationName ?? res?.data?.fullName,
+                    email: res?.data?.email,
+                    fullName: res?.data?.fullName
+                });
+            } catch (error: any) {
+                toast.error(error.response?.data?.message ?? "Error fetching user data");
+            } finally {
+                setLoader(false);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     return (
         <>
-            <header className="sticky top-0 z-[999] flex w-full lg:bg-surface-background bg-white drop-shadow-1 lg:shadow-none shadow-sm">
+            <header className="sticky top-0 z-20 flex w-full lg:bg-surface-background bg-white drop-shadow-1 lg:shadow-none shadow-sm">
                 <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
                     <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
                         <button
@@ -105,7 +114,7 @@ const Header = ({ setSidebarOpen }: IHeader) => {
 
                         {/**-----------------------DROPDOWN------------------------- */}
                         <div className="relative" >
-                            <div className="bg-[#E0EDFF] rounded-full w-12 h-12 flex items-center justify-center cursor-pointer relative z-50"
+                            <div className="bg-[#E0EDFF] rounded-full w-12 h-12 flex items-center justify-center cursor-pointer relative z-30"
                                 onClick={handledropdownMenu}
                             >
                                 <Image alt="" src={building} />

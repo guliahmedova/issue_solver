@@ -1,29 +1,31 @@
-import { checkPermission, sidebarMenu } from "@/features/ProtectRoute";
-import API from "@/http/api";
-import { useRequest } from "@/http/request";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRequest } from "@/http/request";
+import API from "@/http/api";
+import { checkPermission, sidebarMenu } from "@/features/ProtectRoute";
 
 interface ISidebar {
     sidebarOpen: boolean;
-    setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
-};
+    setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebar) => {
     const currentPath = usePathname();
     const getMe = useRequest(API.get_me);
-    const userPermissions = getMe?.data?.data?.permissions
-    const sidebarItems = sidebarMenu.filter((item) => checkPermission(item?.permissions, userPermissions));
+    const userPermissions = getMe?.data?.data?.permissions;
+    const sidebarItems = sidebarMenu.filter((item) =>
+        checkPermission(item?.permissions, userPermissions)
+    );
 
     const trigger = useRef<any>(null);
     const sidebar = useRef<any>(null);
 
-    const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
+    const storedSidebarExpanded = localStorage.getItem("sidebar-expanded");
 
     const [sidebarExpanded, _] = useState(
-        storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
+        storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
     );
 
     useEffect(() => {
@@ -38,33 +40,47 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebar) => {
                 return;
             setSidebarOpen(false);
         };
-        document.addEventListener('click', clickHandler);
-        return () => document.removeEventListener('click', clickHandler);
-    });
+        document.addEventListener("click", clickHandler);
+        return () => document.removeEventListener("click", clickHandler);
+    }, [sidebarOpen]);
 
     useEffect(() => {
         const keyHandler = ({ keyCode }: KeyboardEvent) => {
             if (!sidebarOpen || keyCode !== 27) return;
             setSidebarOpen(false);
         };
-        document.addEventListener('keydown', keyHandler);
-        return () => document.removeEventListener('keydown', keyHandler);
-    });
+        document.addEventListener("keydown", keyHandler);
+        return () => document.removeEventListener("keydown", keyHandler);
+    }, [sidebarOpen]);
 
     useEffect(() => {
-        localStorage.setItem('sidebar-expanded', sidebarExpanded.toString());
+        localStorage.setItem("sidebar-expanded", sidebarExpanded.toString());
         if (sidebarExpanded) {
-            document.querySelector('body')?.classList.add('sidebar-expanded');
+            document.querySelector("body")?.classList.add("sidebar-expanded");
         } else {
-            document.querySelector('body')?.classList.remove('sidebar-expanded');
+            document
+                .querySelector("body")
+                ?.classList.remove("sidebar-expanded");
         }
     }, [sidebarExpanded]);
+
+    useEffect(() => {
+        const resizeHandler = () => {
+            if (window.innerWidth <= 1024 && sidebarOpen) {
+                setSidebarOpen(false);
+            }
+        };
+
+        window.addEventListener("resize", resizeHandler);
+        return () => window.removeEventListener("resize", resizeHandler);
+    }, [sidebarOpen]);
 
     return (
         <>
             <aside
                 ref={sidebar}
-                className={`absolute left-0 top-0 z-[99999] flex h-screen w-80 flex-col overflow-y-hidden bg-[#E0EDFF] shadow-sm duration-300 ease-linear lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+                className={`absolute left-0 top-0 flex h-screen w-80 flex-col overflow-y-hidden bg-[#E0EDFF] shadow-sm duration-300 ease-linear lg:static lg:translate-x-0 lg:z-10 ${sidebarOpen ? "translate-x-0 z-30" : "-translate-x-full"
+                    }`}
             >
                 {/* <!-- SIDEBAR HEADER --> */}
                 <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
@@ -94,7 +110,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebar) => {
 
                 <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
                     <div className="flex items-center justify-start h-16 px-9 mt-3">
-                        <h2 className="text-[#2981FF] font-bold text-3xl select-none">Issue Solver</h2>
+                        <h2 className="text-[#2981FF] font-bold text-3xl select-none">
+                            Issue Solver
+                        </h2>
                     </div>
                     <div className="mt-5 lg:mt-9 px-9">
                         <nav className="flex-1 py-4">
@@ -120,7 +138,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebar) => {
                 </div>
             </aside>
         </>
-    )
+    );
 };
 
 export default Sidebar;

@@ -1,3 +1,4 @@
+
 "use client";
 import { plus } from "@/assets/imgs";
 import { Loader } from "@/features/common";
@@ -147,7 +148,7 @@ const Organizations = () => {
                   key={index}
                 >
                   <span className="text-xs select-none">{index + 1}</span>
-                  <span className="text-xs">{item.name}</span>
+                  <span className="lg:text-base text-xxs text-center">{item.name}</span>
                   <div className="relative text-xxs w-[90px] z-0">
                     <span
                       className={`${item.active ? "bg-[#DDF1E4] text-[#429A60]" : "bg-[#FF3D2C33] text-[#EF5648]"} rounded-full py-[6px] px-3 cursor-pointer text-center flex items-center justify-between`}
@@ -179,7 +180,9 @@ const Organizations = () => {
           </div>
         </div>
       </div>
+
       <Loader loader={loader} />
+
       <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} refreshData={refreshData} />
     </>
   );
