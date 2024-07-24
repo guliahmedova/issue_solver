@@ -168,7 +168,9 @@ const Organizations = () => {
           </div>
         </div>
       </div>
+
       <Loader loader={loader} />
+
       <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} refreshData={refreshData} />
     </>
   );
