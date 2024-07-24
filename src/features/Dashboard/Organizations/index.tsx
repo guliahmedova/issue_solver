@@ -19,7 +19,7 @@ interface IOrganizationResponse {
     items: IOrganization[];
     hasNext: boolean;
   };
-}
+};
 
 const Organizations = () => {
   const [organizationData, setOrganizationData] = useState<IOrganization[]>([]);
@@ -131,68 +131,44 @@ const Organizations = () => {
             <span className="text-xs">Qurumun Statusu</span>
           </div>
 
-            <div>
-                <div className="flex items-center justify-between mb-7">
-                    <h2 className="font-bold text-lg select-none">Bütün Qurumlar</h2>
-                    <button className="bg-[#2981FF] text-white rounded-3xl py-3 px-6 flex items-center justify-between w-[136px] text-[13px]"
-                        onClick={() => setOpenPopup(true)}
-                    >Əlavə et <Image alt="" src={plus} /></button>
-                </div>
-
-                <div>
-                    <div className="flex items-center justify-between bg-white py-6 px-14 rounded-xl mb-10 select-none">
-                        <span className="text-xs">No</span>
-                        <span className="text-xs">Qurumun Adı</span>
-                        <span className="text-xs">Qurumun Statusu</span>
-                    </div>
-
-                    <div className="h-[550px] overflow-auto" id="parentScrollBarOrganization">
-                        <InfiniteScroll
-                            dataLength={organizationData?.length}
-                            next={fetchData}
-                            hasMore={hasMore}
-                            loader={<h4 className="text-center text-lg text-gray">Loading...</h4>}
-                            refreshFunction={refreshData}
-                            pullDownToRefresh
-                            scrollableTarget="parentScrollBarOrganization"
-                        >
-                            {
-                                organizationData?.map((item: IOrganization, index: number) => (
-                                    <div className="flex items-center justify-between bg-white py-6 px-14 rounded-xl mb-3" key={index}>
-                                        <span className="text-xs select-none">{index + 1}</span>
-                                        <span className="text-xs">{item.name}</span>
-                                        <div className="relative text-xxs w-[90px] z-0">
-                                            <span className={`${item.active ? 'bg-[#DDF1E4] text-[#429A60]' : 'bg-[#FF3D2C33] text-[#EF5648]'} rounded-full py-[6px] px-3 cursor-pointer text-center flex items-center justify-between`}
-                                                onClick={() => handleStatusDropdown(item.name, item.active)}
-                                            >
-                                                {item.active ? 'Aktiv' : 'Deaktiv'}
-                                                <svg className={`h-4 w-4 ${selectStatus.name === item.name ? 'rotate-180' : 'rotate-0'} ${item.active ? "fill-[#429A60]" : "fill-[#EF5648]"}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                                </svg>
-                                            </span>
-                                            <div className={`${selectStatus.name === item.name ? 'absolute' : 'hidden'} flex flex-col gap-4 bg-white/65 shadow rounded-md p-2 top-[28.6px] w-full`}>
-                                                <span className={`${item.active ? "bg-[#FF3D2C33] text-[#EF5648]" : "bg-[#DDF1E4] text-[#429A60]"} rounded-full py-[6px] px-3 cursor-pointer text-center`}
-                                                    onClick={() => handleStatusChange(item.name, item.active)}
-                                                >{item.active ? "Deaktiv" : "Aktiv"}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                ))
-                            }
-                        </InfiniteScroll>
+          <div className="h-[550px] overflow-auto" id="parentScrollBarOrganization">
+            <InfiniteScroll
+              dataLength={organizationData?.length}
+              next={fetchData}
+              hasMore={hasMore}
+              loader={<h4 className="text-center text-lg text-gray">Loading...</h4>}
+              refreshFunction={refreshData}
+              pullDownToRefresh
+              scrollableTarget="parentScrollBarOrganization"
+            >
+              {organizationData?.map((item: IOrganization, index: number) => (
+                <div className="flex items-center justify-between bg-white py-6 px-14 rounded-xl mb-3" key={index}>
+                  <span className="text-xs select-none">{index + 1}</span>
+                  <span className="text-xs">{item.name}</span>
+                  <div className="relative text-xxs w-[90px] z-0">
+                    <span
+                      className={`${item.active ? 'bg-[#DDF1E4] text-[#429A60]' : 'bg-[#FF3D2C33] text-[#EF5648]'} rounded-full py-[6px] px-3 cursor-pointer text-center flex items-center justify-between`}
+                      onClick={() => handleStatusDropdown(item.name, item.active)}
+                    >
+                      {item.active ? 'Aktiv' : 'Deaktiv'}
+                      <svg className={`h-4 w-4 ${selectStatus.name === item.name ? 'rotate-180' : 'rotate-0'} ${item.active ? "fill-[#429A60]" : "fill-[#EF5648]"}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                      </svg>
+                    </span>
+                    <div className={`${selectStatus.name === item.name ? 'absolute' : 'hidden'} flex flex-col gap-4 bg-white/65 shadow rounded-md p-2 top-[28.6px] w-full`}>
+                      <span
+                        className={`${item.active ? "bg-[#FF3D2C33] text-[#EF5648]" : "bg-[#DDF1E4] text-[#429A60]"} rounded-full py-[6px] px-3 cursor-pointer text-center`}
+                        onClick={() => handleStatusChange(item.name, item.active)}
+                      >{item.active ? "Deaktiv" : "Aktiv"}</span>
                     </div>
                   </div>
-                  {/**----------------- */}
                 </div>
               ))}
             </InfiniteScroll>
           </div>
         </div>
       </div>
-
       <Loader loader={loader} />
-
       <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} refreshData={refreshData} />
     </>
   );
