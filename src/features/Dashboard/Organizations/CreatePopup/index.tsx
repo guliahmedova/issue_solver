@@ -114,7 +114,7 @@ const CreatePopup = ({ openPopup, setOpenPopup, refreshData }: ICreatePopup) => 
                                             onBlur={handleBlur}
                                         />
 
-                                        {error && <Typography color="red" className="mb-2">{error}</Typography>}
+                                        {error && <Typography className="mb-4 text-[#FF3D2C]">{error}</Typography>}
                                         <Button type="submit" variant="primary" disabled={!isValid || !dirty}>
                                             Əlavə et
                                         </Button>

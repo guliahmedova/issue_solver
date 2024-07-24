@@ -69,7 +69,7 @@ const Input = ({
           {...props}
           {...field}
         />
-        {isError && <FormHelperText>{errorText}</FormHelperText>}
+        {isError && <FormHelperText className="text-[#FF3D2C] m-0">{errorText}</FormHelperText>}
       </FormControl>
     </Box>
   );

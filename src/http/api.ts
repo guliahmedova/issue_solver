@@ -8,8 +8,6 @@ const API = {
   "user_update_password": "api/Users/updatepassword",
   "get_me": "api/Users/getmeweb",
 
-  "search": "",
-
   "staffs_get": "api/Staffs/getlist",
   "staff_create": "api/Users/create",
   "staff_delete": "api/Users/remove",

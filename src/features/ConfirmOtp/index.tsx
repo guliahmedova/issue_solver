@@ -214,7 +214,7 @@ const ConfirmOtp = () => {
                         ))}
                     </Grid>
 
-                    {otpError && <Typography color="red">{otpError}</Typography>}
+                    {otpError && <Typography className="text-[#FF3D2C] mb-4">{otpError}</Typography>}
 
                     <Box component="div" marginTop="83px">
                         <Button variant="primary" onClick={handleSubmit} disabled={btnsDisabled.primaryBtn ? true : false} fullWidth sx={{

@@ -3,6 +3,7 @@ import { plus, trashbin } from "@/assets/imgs";
 import { Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
+import { useSearchStore } from "@/state/useSearchStore";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -32,6 +33,7 @@ const Staff = () => {
     const [loader, setLoader] = useState(false);
     const { trigger: deleteStaffTrigger } = useRequestMutation(API.staff_delete, { method: 'DELETE' });
     const { trigger: getStaffTrigger } = useRequestMutation(API.staffs_get, { method: 'GET' });
+    const { searchText } = useSearchStore();
 
     const fetchData = async (reset = false) => {
         const currentPage = reset ? 0 : page;
@@ -96,21 +98,25 @@ const Staff = () => {
 
             <div>
                 <div className="flex items-center justify-between mb-7">
-                    <h2 className="font-bold text-lg">Bütün Stafflar</h2>
+                    <h2 className="font-bold text-lg select-none">Bütün Əməkdaşlar</h2>
                     <button className="bg-[#2981FF] text-white rounded-3xl py-3 px-6 flex items-center justify-between w-[136px] text-[13px]"
                         onClick={() => setOpenPopup(true)}
-                    >Qurum <Image alt="" src={plus} /></button>
+                    >Əlavə et <Image alt="" src={plus} /></button>
                 </div>
 
-                <div>
-                    <div className="grid grid-cols-5 justify-between bg-white py-6 px-8 rounded-xl mb-10 select-none">
-                        <span className="text-xs">No</span>
-                        <span className="text-xs">Staffın Adı</span>
-                        <span className="text-xs">Staffın E-Poçtu</span>
-                        <span className="text-xs text-center">Aid olduğu qurum</span>
-                        <span className="text-xs text-end">Staffı Sil</span>
+                {/**------------------------------------------------- */}
+                <div className="overflow-x-auto">
+                    <div className="max-h-80">
+                        <div className="grid grid-cols-5 justify-between bg-white py-6 px-8 rounded-xl mb-10 select-none">
+                            <span className="text-xs">No</span>
+                            <span className="text-xs">Staffın Adı</span>
+                            <span className="text-xs">Staffın E-Poçtu</span>
+                            <span className="text-xs text-center">Aid olduğu qurum</span>
+                            <span className="text-xs text-end">Staffı Sil</span>
+                        </div>
                     </div>
-                    <div className="h-[550px] overflow-auto" id="parentScrollBar">
+
+                    <div id="parentScrollBar">
                         <InfiniteScroll
                             dataLength={staffData?.length}
                             next={fetchData}
@@ -136,10 +142,11 @@ const Staff = () => {
                         </InfiniteScroll>
                     </div>
                 </div>
+                {/**------------------------------------------------- */}
+
             </div>
 
             <Loader loader={loader} />
-
             <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} refreshData={refreshData} />
         </>
     )

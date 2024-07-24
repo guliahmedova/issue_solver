@@ -111,10 +111,10 @@ const Organizations = () => {
 
             <div>
                 <div className="flex items-center justify-between mb-7">
-                    <h2 className="font-bold text-lg">Bütün Qurumlar</h2>
+                    <h2 className="font-bold text-lg select-none">Bütün Qurumlar</h2>
                     <button className="bg-[#2981FF] text-white rounded-3xl py-3 px-6 flex items-center justify-between w-[136px] text-[13px]"
                         onClick={() => setOpenPopup(true)}
-                    >Qurum <Image alt="" src={plus} /></button>
+                    >Əlavə et <Image alt="" src={plus} /></button>
                 </div>
 
                 <div>
@@ -139,8 +139,7 @@ const Organizations = () => {
                                     <div className="flex items-center justify-between bg-white py-6 px-14 rounded-xl mb-3" key={index}>
                                         <span className="text-xs select-none">{index + 1}</span>
                                         <span className="text-xs">{item.name}</span>
-                                        {/**----------------- */}
-                                        <div className="relative text-xxs w-[90px]">
+                                        <div className="relative text-xxs w-[90px] z-0">
                                             <span className={`${item.active ? 'bg-[#DDF1E4] text-[#429A60]' : 'bg-[#FF3D2C33] text-[#EF5648]'} rounded-full py-[6px] px-3 cursor-pointer text-center flex items-center justify-between`}
                                                 onClick={() => handleStatusDropdown(item.name, item.active)}
                                             >
@@ -155,7 +154,6 @@ const Organizations = () => {
                                                 >{item.active ? "Deaktiv" : "Aktiv"}</span>
                                             </div>
                                         </div>
-                                        {/**----------------- */}
                                     </div>
 
                                 ))
