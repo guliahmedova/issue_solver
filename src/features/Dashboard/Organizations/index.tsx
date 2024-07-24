@@ -143,7 +143,7 @@ const Organizations = () => {
               scrollableTarget="parentScrollBarOrganization"
             >
               {organizationData?.map((item: IOrganization, index: number) => (
-                <div className="flex items-center justify-between bg-white py-6 px-14 rounded-xl mb-3 w-full" key={index}>
+                <div className="flex items-center justify-between bg-white py-6 px-14 rounded-xl mb-3" key={index}>
                   <span className="text-xs select-none">{index + 1}</span>
                   <span className="lg:text-base text-xxs text-center">{item.name}</span>
                   <div className="relative text-xxs w-[90px] z-0">
