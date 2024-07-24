@@ -6,6 +6,7 @@ import {
   LocationIcon,
   NameIcon,
   StatusIcon,
+  ClickedLike,
 } from "@/assets/imgs";
 import { Button } from "@/features/common";
 import API from "@/http/api";
@@ -17,7 +18,7 @@ import CommentSection from "../CommentSection";
 type requestsDataType = {
   requestId: number;
   fullName: string;
-  adress: string;
+  address: string;
   status: string;
   organizationName: string;
   createDate: string;
@@ -28,18 +29,31 @@ type requestsDataType = {
   description: string;
 };
 export default function ApplyCard() {
-  const [commentVisibilty, setCommentVisibilty] = useState(false);
-  const commentHandle = () => {
-    setCommentVisibilty(commentVisibilty === false ? true : false);
+  const [commentVisibility, setCommentVisibility] = useState<{ [key: number]: boolean }>({});
+
+  const commentHandle = (requestId: number) => {
+    setCommentVisibility(prevState => ({
+      ...prevState,
+      [requestId]: !prevState[requestId],
+    }));
   };
+
   const { isLoading, data } = useRequest(API.organization_requests_all, { method: "GET" });
   const requestsData: requestsDataType[] = data?.data;
+  // const likeHandler = (e: any) => {
+  //   console.log(e.target.src);
+  //   e.target.src = "C:Users\nasib.babazadeDesktopIDDA Project 1srcassetsimgsclickLike.svg";
+  // };
+
   return (
-    <div className="bg-white flex flex-col gap-6 px-4  py-4 rounded-xl border-l-8 border-warning">
+    <div className=" flex flex-col gap-6  ">
       {requestsData &&
         requestsData.map(item => {
           return (
-            <Fragment key={item.requestId}>
+            <div
+              key={item.requestId}
+              className="rounded-xl border-l-8 border-warning bg-white px-4  py-4 flex flex-col gap-4"
+            >
               <div className="w-full flex justify-between items-center ">
                 <div className="flex flex-col gap-2 items-start">
                   <div className="flex gap-1 items-center">
@@ -55,7 +69,14 @@ export default function ApplyCard() {
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
                   <div className="flex px-5 py-2 gap-2 bg-gray-disabled rounded-[100px]">
-                    <Image src={StatusIcon} alt="status icon" width={8} height={8} />
+                    <Image
+                      src={StatusIcon}
+                      alt="status icon"
+                      width={8}
+                      height={8}
+                      className="to-blue-primary"
+                      // className={item.status === "Gözləmədə" ? "text-blue-primary" : "text-primary"}
+                    />
                     <span className="text-text-gray text-xxs">{item.status}</span>
                   </div>
                   <div className="px-4 py-2  bg-gray-disabled rounded-[100px]">
@@ -67,7 +88,7 @@ export default function ApplyCard() {
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <Image src={LocationIcon} alt="location" width={20} height={20} />
-                  <span className="text-sm-alt text-blue-primary">{item.adress}</span>
+                  <span className="text-sm-alt text-blue-primary">{item.address}</span>
                 </div>
                 <div className="flex gap-2">
                   <Image src={CalendarIcon} alt="calendar" width={20} height={20} />
@@ -87,15 +108,15 @@ export default function ApplyCard() {
                     <span>{item.likeCount}</span>
                   </div>
                   <div className="flex flex-col gap-1 items-center">
-                    <button onClick={commentHandle}>
+                    <button onClick={() => commentHandle(item.requestId)}>
                       <Image src={CommentIcon} alt="comment" width={20} height={20} />
                     </button>
                     <span>{item.commentCount}</span>
                   </div>
                 </div>
               </div>
-              {commentVisibilty ? <CommentSection /> : ""}
-            </Fragment>
+              {commentVisibility[item.requestId] ? <CommentSection itemId={item.requestId} /> : ""}
+            </div>
           );
         })}
     </div>

@@ -88,6 +88,10 @@ export function useRequestMutation<Data = any, Error = any>(apiUrl: string, { me
     if (arg.params) {
       axiosOptions.params = arg.params;
     }
+
+    if (arg.dynamicValue) {
+      axiosOptions.url = axiosOptions.url.replace("{{id}}", arg.dynamicValue)
+    }
     return axiosInstance(axiosOptions).then(res => {
       return res?.data
     });
