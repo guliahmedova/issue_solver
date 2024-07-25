@@ -32,9 +32,13 @@ const Organizations = () => {
   });
   const [openPopup, setOpenPopup] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [editIndex, setEditIndex] = useState<null | number>(null);
+  const [editOldName, setEditOldName] = useState('');
+  const [editNewName, setEditNewName] = useState('');
 
   const { trigger: getOrganizationTrigger } = useRequestMutation(API.organizations_get, { method: "GET" });
   const { trigger: statusTrigger } = useRequestMutation(API.organization_status, { method: "PATCH" });
+  const { trigger: editOrganizationTrigger } = useRequestMutation(API.organization_edit, { method: "PUT" });
 
   const fetchData = async (reset = false) => {
     const currentPage = reset ? 0 : page;
@@ -94,6 +98,42 @@ const Organizations = () => {
     }
   };
 
+  const handleEditClick = (index: number, name: string) => {
+    setEditIndex(index);
+    setEditOldName(name);
+    setEditNewName(name);
+  };
+
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditNewName(e.target.value);
+  };
+
+  const handleEditSubmit = async () => {
+    try {
+      setLoader(true);
+
+      await editOrganizationTrigger({
+        body: {
+          oldName: editOldName,
+          newName: editNewName
+        }
+      });
+
+      setOrganizationData(prevStaffData =>
+        prevStaffData.map((staff, index) =>
+          index === editIndex ? { ...staff, name: editNewName } : staff
+        )
+      );
+
+      setEditIndex(null);
+      toast.success('Uğurla yeniləndi');
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    } finally {
+      setLoader(false);
+    }
+  };
+
   return (
     <>
       <ToastContainer
@@ -127,7 +167,7 @@ const Organizations = () => {
             <span className="text-xs">Qurumun Statusu</span>
           </div>
 
-          <div className="h-[550px] overflow-auto" id="parentScrollBarOrganization">
+          <div className="h-fit overflow-auto" id="parentScrollBarOrganization">
             <InfiniteScroll
               dataLength={organizationData?.length}
               next={fetchData}
@@ -143,7 +183,25 @@ const Organizations = () => {
                   key={index}
                 >
                   <span className="text-xs select-none">{index + 1}</span>
-                  <span className="lg:text-base text-xxs text-center">{item.name}</span>
+                  <span className="lg:text-base text-xxs text-center">
+                    {editIndex === index ? (
+                      <input
+                        type="text"
+                        value={editNewName}
+                        onChange={handleEditChange}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            handleEditSubmit();
+                          }
+                        }}
+                        className="lg:w-4/6 w-5/6 rounded p-1 border-2 border-[#2981FF] bg-gray-disabled"
+                      />
+                    ) : (
+                      <span onClick={() => handleEditClick(index, item.name)}>
+                        {item.name}
+                      </span>
+                    )}
+                  </span>
                   <div className="relative text-xxs w-[90px] z-0">
                     <span
                       className={`${item.active ? "bg-[#DDF1E4] text-[#429A60]" : "bg-[#FF3D2C33] text-[#EF5648]"} rounded-full py-[6px] px-3 cursor-pointer text-center flex items-center justify-between`}
@@ -177,7 +235,6 @@ const Organizations = () => {
       </div>
 
       <Loader loader={loader} />
-
       <CreatePopup openPopup={openPopup} setOpenPopup={setOpenPopup} refreshData={refreshData} />
     </>
   );
