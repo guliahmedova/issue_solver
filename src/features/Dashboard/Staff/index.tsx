@@ -28,10 +28,15 @@ const Staff = () => {
     const [staffData, setStaffData] = useState<IStaff[]>([]);
     const [openPopup, setOpenPopup] = useState(false);
     const [hasMore, setHasMore] = useState(true);
-    const [page, setPage] = useState(0);
     const [loader, setLoader] = useState(false);
+    const [page, setPage] = useState(0);
+    const [editFullname, setEditFullname] = useState('');
+    const [editUsername, setEditUsername] = useState('');
+    const [editIndex, setEditIndex] = useState<number | null>(null);
+
     const { trigger: deleteStaffTrigger } = useRequestMutation(API.staff_delete, { method: 'DELETE' });
     const { trigger: getStaffTrigger } = useRequestMutation(API.staffs_get, { method: 'GET' });
+    const { trigger: editStaffTrigger } = useRequestMutation(API.staff_edit, { method: 'PUT' });
 
     const fetchData = async (reset = false) => {
         const currentPage = reset ? 0 : page;
@@ -71,6 +76,39 @@ const Staff = () => {
             });
             setStaffData(prevStaffData => prevStaffData.filter(staff => staff.username !== email));
             toast.success('Uğurla silindi');
+        } catch (error: any) {
+            toast.error(error.response.data.message);
+        } finally {
+            setLoader(false);
+        }
+    };
+
+    const handleEditClick = (index: number, currentFullname: string, currentUsername: string) => {
+        setEditFullname(currentFullname);
+        setEditUsername(currentUsername);
+        setEditIndex(index);
+    };
+
+    const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEditFullname(e.target.value);
+    };
+
+    const handleEditSubmit = async () => {
+        try {
+            setLoader(true);
+            await editStaffTrigger({
+                body: {
+                    fullName: editFullname,
+                    username: editUsername
+                }
+            });
+            setStaffData(prevStaffData =>
+                prevStaffData.map((staff, index) =>
+                    index === editIndex ? { ...staff, fullname: editFullname } : staff
+                )
+            );
+            setEditIndex(null);
+            toast.success('Uğurla yeniləndi');
         } catch (error: any) {
             toast.error(error.response.data.message);
         } finally {
@@ -118,7 +156,7 @@ const Staff = () => {
                             dataLength={staffData?.length}
                             next={fetchData}
                             hasMore={hasMore}
-                            loader={<h4 className="text-center text-lg text-gray">Loading...</h4>}
+                            loader={<h4 className="text-center text-lg text-gray">Yüklənir</h4>}
                             refreshFunction={refreshData}
                             pullDownToRefresh
                             scrollableTarget="parentScrollBar"
@@ -126,7 +164,25 @@ const Staff = () => {
                             {staffData?.map((item: IStaff, index: number) => (
                                 <div className={`grid grid-cols-5 items-center justify-between ${item.isActiveOrganization === "True" ? "bg-white" : "bg-gray-disabled select-none"} py-6 px-8 rounded-xl mb-3 w-full`} key={index}>
                                     <span className="lg:text-base text-xxs select-none">{index + 1}</span>
-                                    <span className="lg:text-base text-xxs whitespace-break-spaces break-words">{item.fullname}</span>
+                                    <span className="lg:text-base text-xxs whitespace-break-spaces break-words">
+                                        {editIndex === index ? (
+                                            <input
+                                                type="text"
+                                                value={editFullname}
+                                                onChange={handleEditChange}
+                                                onKeyPress={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        handleEditSubmit();
+                                                    }
+                                                }}
+                                                className="lg:w-4/6 w-5/6 rounded p-1 border-2 border-[#2981FF] bg-gray-disabled"
+                                            />
+                                        ) : (
+                                            <span onClick={() => handleEditClick(index, item.fullname, item.username)}>
+                                                {item.fullname}
+                                            </span>
+                                        )}
+                                    </span>
                                     <span className="lg:text-base text-xxs whitespace-break-spaces break-words">{item.username}</span>
                                     <span className="lg:text-base text-xxs text-center whitespace-break-spaces break-words">{item.isActiveOrganization && item.organizationName}</span>
                                     <div className="flex justify-end"
@@ -149,4 +205,4 @@ const Staff = () => {
     )
 };
 
-export default Staff
+export default Staff;

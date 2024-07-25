@@ -101,6 +101,7 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
                                 touched,
                                 isValid,
                                 dirty,
+                                validateField
                             }: FormikProps<FormValues>) => (
                                 <Form onSubmit={handleSubmit}>
                                     <Box display="flex" flexDirection="column">
@@ -126,6 +127,7 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
                                             errorText={touched.newPassword && errors.newPassword ? errors.newPassword : undefined}
                                             value={values.newPassword}
                                             onChange={handleChange}
+                                            validateField={validateField}
                                             onBlur={handleBlur}
                                         />
                                         <Field

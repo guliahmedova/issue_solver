@@ -1,5 +1,5 @@
 "use client";
-import { building, key, logout, notif, user } from "@/assets/imgs";
+import { building, key, logout, user } from "@/assets/imgs";
 import { Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
@@ -75,7 +75,7 @@ const Header = ({ setSidebarOpen }: IHeader) => {
 
     return (
         <>
-            <header className="sticky top-0 z-20 flex w-full lg:bg-surface-background bg-white drop-shadow-1 lg:shadow-none shadow-sm">
+            <header className="sticky top-0 z-20 flex w-full lg:bg-surface-background bg-white drop-shadow-1 shadow-sm">
                 <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
                     <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
                         <button
@@ -92,7 +92,7 @@ const Header = ({ setSidebarOpen }: IHeader) => {
 
                     <div className="flex items-center gap-3 2xsm:gap-7 w-full justify-end">
                         {/**-----------------------SEARCH------------------------- */}
-                        <form className="max-w-md hidden lg:block ">
+                        {/* <form className="max-w-md hidden lg:block ">
                             <div className="relative">
                                 <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none opacity-80">
                                     <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -105,11 +105,11 @@ const Header = ({ setSidebarOpen }: IHeader) => {
                                     onChange={handleSearchInputChange}
                                 />
                             </div>
-                        </form>
+                        </form> */}
                         {/**-----------------------SEARCH------------------------- */}
 
                         {/**-----------------------NOTIF------------------------- */}
-                        <Image alt="" src={notif} />
+                        {/* <Image alt="" src={notif} /> */}
                         {/**-----------------------NOTIF------------------------- */}
 
                         {/**-----------------------DROPDOWN------------------------- */}
