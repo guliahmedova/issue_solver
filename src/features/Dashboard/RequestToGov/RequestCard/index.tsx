@@ -6,7 +6,8 @@ import {
   LocationIcon,
   NameIcon,
   StatusIcon,
-  ClickedLike,
+  ClickedLikeIcon,
+  ClickedCommentIcon,
 } from "@/assets/imgs";
 import { Button } from "@/features/common";
 import API from "@/http/api";
@@ -28,10 +29,27 @@ type requestsDataType = {
   category: any;
   description: string;
 };
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "Gözləmədə":
+      return "#8C8C8C";
+    case "Əsassızdır":
+      return "#EB2614";
+    case "Baxılır":
+      return "#E67B2E";
+    default:
+      return "#429A60";
+  }
+};
 export default function ApplyCard() {
   const [commentVisibility, setCommentVisibility] = useState<{ [key: number]: boolean }>({});
-
+  const [clickedLike, setClickedLike] = useState(false);
+  const [clickedComment, setClickedComment] = useState(false);
+  const clickedLikeHandle = () => {
+    setClickedLike(clickedLike ? false : true);
+  };
   const commentHandle = (requestId: number) => {
+    setClickedComment(clickedComment ? false : true);
     setCommentVisibility(prevState => ({
       ...prevState,
       [requestId]: !prevState[requestId],
@@ -69,15 +87,18 @@ export default function ApplyCard() {
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
                   <div className="flex px-5 py-2 gap-2 bg-gray-disabled rounded-[100px]">
-                    <Image
-                      src={StatusIcon}
-                      alt="status icon"
-                      width={8}
-                      height={8}
-                      className="to-blue-primary"
-                      // className={item.status === "Gözləmədə" ? "text-blue-primary" : "text-primary"}
-                    />
-                    <span className="text-text-gray text-xxs">{item.status}</span>
+                    <div className="flex items-center gap-2">
+                      <svg
+                        width="8"
+                        height="8"
+                        viewBox="0 0 8 8"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle cx="4" cy="4" r="4" fill="#8C8C8C" />
+                      </svg>
+                      <span className="text-text-gray text-xxs">{item.status}</span>
+                    </div>
                   </div>
                   <div className="px-4 py-2  bg-gray-disabled rounded-[100px]">
                     <span className="text-text-gray text-xxs">{item.category.categoryName}</span>
@@ -102,14 +123,24 @@ export default function ApplyCard() {
                 </Button>
                 <div className="flex gap-6 items-center">
                   <div className="flex flex-col gap-1 items-center">
-                    <button>
-                      <Image src={LikeIcon} alt="like" width={20} height={20} />
+                    <button onClick={clickedLikeHandle}>
+                      <Image
+                        src={!clickedLike ? LikeIcon : ClickedLikeIcon}
+                        alt="like"
+                        width={20}
+                        height={20}
+                      />
                     </button>
                     <span>{item.likeCount}</span>
                   </div>
                   <div className="flex flex-col gap-1 items-center">
                     <button onClick={() => commentHandle(item.requestId)}>
-                      <Image src={CommentIcon} alt="comment" width={20} height={20} />
+                      <Image
+                        src={!clickedComment ? CommentIcon : ClickedCommentIcon}
+                        alt="comment"
+                        width={20}
+                        height={20}
+                      />
                     </button>
                     <span>{item.commentCount}</span>
                   </div>

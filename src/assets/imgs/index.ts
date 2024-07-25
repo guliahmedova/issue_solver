@@ -26,4 +26,5 @@ export { default as trashbin } from './trashbin.svg';
 export { default as user } from './user.svg';
 export {default as ProfileAvatar} from './profile-icon.svg'
 export {  default as UpArrow} from './upIcon.svg'
-export {default as ClickedLike} from './clickLike.svg'
+export {default as ClickedLikeIcon} from './heart-clicked.svg'
+export {default as ClickedCommentIcon} from './comment-clicked.svg'
