@@ -56,7 +56,7 @@ export default function CommentSection({ itemId }: any) {
     const currentPage = reset ? 0 : page;
     const response = await getCommentsTrigger({
       dynamicValue: itemId,
-      params: { page: 0, size: 10 },
+      params: { page: page, size: 10 },
     });
     if (reset) {
       setAllComments(response.data);
@@ -66,13 +66,14 @@ export default function CommentSection({ itemId }: any) {
     setHasMore(true);
     setPage(currentPage + 1);
   };
+  console.log(commentsDatas);
 
   return (
     <>
       <div className="flex flex-col gap-3">
         <h1 className="w-full text-center text-blue-primary text-md">Şərhlər</h1>
         <Divider />
-        <div className="flex flex-col gap-7">
+        <div className="flex flex-col gap-7 " id="parentScrollBarOrganization">
           <InfiniteScroll
             dataLength={commentsDatas?.length}
             next={fetchData}
