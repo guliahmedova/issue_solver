@@ -15,29 +15,25 @@ interface Password {
 
 const ValidationSchema: ZodType<Password> = z.object({
     password: z.string({
-        message: requiredErrorMsg
-    }).min(8, {
-        message: minLengthErrorMsg
-    }).regex(passwordValidation, {
-        message: validationErrorMsg
-    }),
+        required_error: requiredErrorMsg
+    }).min(8, minLengthErrorMsg)
+        .regex(passwordValidation, { message: validationErrorMsg }),
     newPassword: z.string({
-        message: requiredErrorMsg
-    }).min(8, {
-        message: minLengthErrorMsg
-    }).regex(passwordValidation, {
-        message: validationErrorMsg
-    }),
+        required_error: requiredErrorMsg
+    }).min(8, minLengthErrorMsg)
+        .regex(passwordValidation, { message: validationErrorMsg }),
     confirmPassword: z.string({
-        message: requiredErrorMsg
-    }).min(8, {
-        message: minLengthErrorMsg
-    }).regex(passwordValidation, {
-        message: validationErrorMsg
-    }),
-}).refine(data => data.newPassword === data.confirmPassword, {
-    message: matchErrorMsg,
-    path: ['confirmPassword']
+        required_error: requiredErrorMsg
+    }).min(8, minLengthErrorMsg)
+        .regex(passwordValidation, { message: validationErrorMsg })
+}).superRefine(({ password, newPassword }, ctx) => {
+    if (password === newPassword) {
+        ctx.addIssue({
+            code: 'custom',
+            message: matchErrorMsg,
+            path: ['newPassword']
+        })
+    };
 });
 
 export default ValidationSchema;

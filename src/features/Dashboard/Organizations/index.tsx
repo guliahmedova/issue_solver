@@ -1,4 +1,3 @@
-
 "use client";
 import { plus } from "@/assets/imgs";
 import { Loader } from "@/features/common";
@@ -13,14 +12,14 @@ import CreatePopup from "./CreatePopup";
 interface IOrganization {
   name: string;
   active: boolean;
-}
+};
 
 interface IOrganizationResponse {
   data: {
     items: IOrganization[];
     hasNext: boolean;
   };
-}
+};
 
 const Organizations = () => {
   const [organizationData, setOrganizationData] = useState<IOrganization[]>([]);
@@ -34,12 +33,8 @@ const Organizations = () => {
   const [openPopup, setOpenPopup] = useState(false);
   const [loader, setLoader] = useState(false);
 
-  const { trigger: getOrganizationTrigger } = useRequestMutation(API.organizations_get, {
-    method: "GET",
-  });
-  const { trigger: statusTrigger } = useRequestMutation(API.organization_status, {
-    method: "PATCH",
-  });
+  const { trigger: getOrganizationTrigger } = useRequestMutation(API.organizations_get, { method: "GET" });
+  const { trigger: statusTrigger } = useRequestMutation(API.organization_status, { method: "PATCH" });
 
   const fetchData = async (reset = false) => {
     const currentPage = reset ? 0 : page;
@@ -137,7 +132,7 @@ const Organizations = () => {
               dataLength={organizationData?.length}
               next={fetchData}
               hasMore={hasMore}
-              loader={<h4 className="text-center text-lg text-gray">Loading...</h4>}
+              loader={<h4 className="text-center text-lg text-gray">Yüklənir</h4>}
               refreshFunction={refreshData}
               pullDownToRefresh
               scrollableTarget="parentScrollBarOrganization"
@@ -164,7 +159,7 @@ const Organizations = () => {
                       </svg>
                     </span>
                     <div
-                      className={`${selectStatus.name === item.name ? "absolute" : "hidden"} flex flex-col gap-4 bg-white/65 shadow rounded-md p-2 top-[28.6px] w-full`}
+                      className={`${selectStatus.name === item.name ? "absolute" : "hidden"} flex flex-col gap-4 bg-white shadow rounded-md p-2 top-[28.6px] w-full`}
                     >
                       <span
                         className={`${item.active ? "bg-[#FF3D2C33] text-[#EF5648]" : "bg-[#DDF1E4] text-[#429A60]"} rounded-full py-[6px] px-3 cursor-pointer text-center`}

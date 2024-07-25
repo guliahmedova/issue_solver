@@ -77,7 +77,7 @@ export default function CommentSection({ itemId }: any) {
             dataLength={commentsDatas?.length}
             next={fetchData}
             hasMore={hasMore}
-            loader={<h4 className="text-center text-lg text-gray">Loading...</h4>}
+            loader={<h4 className="text-center text-lg text-gray">Yüklənir...</h4>}
             refreshFunction={refreshData}
             pullDownToRefresh
             scrollableTarget="parentScrollBarOrganization"
