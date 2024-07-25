@@ -1,23 +1,76 @@
-import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { about, applies, comments, faq, privacy, qurum, staff } from "@/assets/imgs";
+import { ROLES } from "@/constants/roles";
+import API from "@/http/api";
+import { useRequestMutation } from "@/http/request";
 import Image from "next/image";
 import Link from "next/link";
-import { useRequest } from "@/http/request";
-import API from "@/http/api";
-import { checkPermission, sidebarMenu } from "@/features/ProtectRoute";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 interface ISidebar {
     sidebarOpen: boolean;
     setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};
+
+interface IGetMeResponse {
+    data: {
+        permissions: []
+    }
+};
+
+const sidebarMenu = [
+    {
+        path: "/dashboard",
+        label: "Müraciətlər",
+        permissions: [ROLES.STAFF],
+        icon: applies,
+    },
+    {
+        path: "/dashboard/comments",
+        label: "Şərhlərim",
+        permissions: [ROLES.STAFF],
+        icon: comments,
+    },
+    {
+        path: "/dashboard/about",
+        label: "Platforma haqqında",
+        permissions: [ROLES.STAFF],
+        icon: about,
+    },
+    {
+        path: "/dashboard/faq",
+        label: "Tez-tez verilən suallar",
+        permissions: [ROLES.STAFF],
+        icon: faq,
+    },
+    {
+        path: "/dashboard/privacy",
+        label: "Məxfilik siyasəti",
+        permissions: [ROLES.STAFF],
+        icon: privacy,
+    },
+    {
+        path: "/dashboard/organizations",
+        label: "Qurumlar",
+        permissions: [ROLES.ADMIN],
+        icon: qurum,
+    },
+    {
+        path: "/dashboard/staff",
+        label: "Əməkdaşlar",
+        permissions: [ROLES.ADMIN],
+        icon: staff,
+    }
+];
+
+const checkPermission = (permissions: string[], userPermissions: string[]) => {
+    return permissions?.some(p => userPermissions?.includes(p));
+};
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebar) => {
+    const [getMeData, setGetMeData] = useState<string[]>([]);
     const currentPath = usePathname();
-    const getMe = useRequest(API.get_me);
-    const userPermissions = getMe?.data?.data?.permissions;
-    const sidebarItems = sidebarMenu.filter((item) =>
-        checkPermission(item?.permissions, userPermissions)
-    );
+    const { trigger: getMeTrigger } = useRequestMutation(API.get_me, { method: "GET" });
 
     const trigger = useRef<any>(null);
     const sidebar = useRef<any>(null);
@@ -27,6 +80,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebar) => {
     const [sidebarExpanded, _] = useState(
         storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
     );
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const res: IGetMeResponse = await getMeTrigger();
+                setGetMeData(res?.data?.permissions);
+            } catch (error: any) {
+                console.error(error.response?.data?.message ?? "Error fetching user data");
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     useEffect(() => {
         const clickHandler = ({ target }: MouseEvent) => {
@@ -75,13 +141,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebar) => {
         return () => window.removeEventListener("resize", resizeHandler);
     }, [sidebarOpen]);
 
+    const sidebarItems = sidebarMenu.filter((item) =>
+        checkPermission(item?.permissions, getMeData)
+    );
+
+
+    console.log(sidebarItems);
+    
+
     return (
         <>
             <aside
                 ref={sidebar}
-                className={`absolute left-0 top-0 flex h-screen w-80 flex-col overflow-y-hidden bg-[#E0EDFF] shadow-sm duration-300 ease-linear lg:static lg:translate-x-0 lg:z-10 ${sidebarOpen ? "translate-x-0 z-30" : "-translate-x-full"
-                    }`}
-            >
+                className={`absolute left-0 top-0 flex h-screen w-80 flex-col overflow-y-hidden bg-[#E0EDFF] shadow-sm duration-300 ease-linear lg:static lg:translate-x-0 lg:z-10 ${sidebarOpen ? "translate-x-0 z-30" : "-translate-x-full"}`}>
                 {/* <!-- SIDEBAR HEADER --> */}
                 <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
                     <button

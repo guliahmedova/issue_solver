@@ -27,7 +27,7 @@ const LogoutPopup = ({ isOpen, close }: ILogoutPopup) => {
         <div className={`${isOpen ? 'fixed' : 'hidden'} top-0 left-0 right-0 bottom-0 bg-black/20 flex flex-col items-center justify-center z-[60]`}
             onClick={handleOutsideClick}
         >
-            <div className="bg-white p-6 rounded-md shadow w-2/12" ref={modalRef}>
+            <div className="bg-white p-6 rounded-md shadow xl:w-2/12" ref={modalRef}>
                 <Typography className="text-xl text-center mb-16">
                     Hesabdan çıxış <br /> etməyə əminsiniz?
                 </Typography>
