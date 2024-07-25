@@ -18,10 +18,12 @@ const ValidationSchema: ZodType<Password> = z.object({
         required_error: requiredErrorMsg
     }).min(8, minLengthErrorMsg)
         .regex(passwordValidation, { message: validationErrorMsg }),
+
     newPassword: z.string({
         required_error: requiredErrorMsg
     }).min(8, minLengthErrorMsg)
         .regex(passwordValidation, { message: validationErrorMsg }),
+        
     confirmPassword: z.string({
         required_error: requiredErrorMsg
     }).min(8, minLengthErrorMsg)
