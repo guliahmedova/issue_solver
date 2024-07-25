@@ -167,7 +167,7 @@ const Organizations = () => {
             <span className="text-xs">Qurumun Statusu</span>
           </div>
 
-          <div className="h-fit overflow-auto" id="parentScrollBarOrganization">
+          <div className="max-h-min h-[390px] overflow-auto" id="parentScrollBarOrganization">
             <InfiniteScroll
               dataLength={organizationData?.length}
               next={fetchData}

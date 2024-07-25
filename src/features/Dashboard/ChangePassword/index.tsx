@@ -101,7 +101,6 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
                                 touched,
                                 isValid,
                                 dirty,
-                                validateField
                             }: FormikProps<FormValues>) => (
                                 <Form onSubmit={handleSubmit}>
                                     <Box display="flex" flexDirection="column">
@@ -114,7 +113,6 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
                                             placeholder="Cari şifrənizi qeyd edin"
                                             errorText={touched.password && errors.password ? errors.password : undefined}
                                             value={values.password}
-                                            onChange={handleChange}
                                             onBlur={handleBlur}
                                         />
                                         <Field
@@ -126,7 +124,6 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
                                             autoComplete="newPassword"
                                             errorText={touched.newPassword && errors.newPassword ? errors.newPassword : undefined}
                                             value={values.newPassword}
-                                            onChange={handleChange}
                                             onBlur={handleBlur}
                                         />
                                         <Field

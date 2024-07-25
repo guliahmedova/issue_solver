@@ -151,7 +151,7 @@ const Staff = () => {
                         </div>
                     </div>
 
-                    <div id="parentScrollBar">
+                    <div id="parentScrollBar" className="max-h-max h-[390px]">
                         <InfiniteScroll
                             dataLength={staffData?.length}
                             next={fetchData}
