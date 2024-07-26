@@ -167,7 +167,7 @@ const Organizations = () => {
             <span className="xl:text-base text-xxs">Qurumun Statusu</span>
           </div>
 
-          <div className="max-h-min h-[390px] overflow-auto" id="parentScrollBarOrganization">
+          <div className="max-h-min h-[380px] overflow-auto" id="parentScrollBarOrganization">
             <InfiniteScroll
               dataLength={organizationData?.length}
               next={fetchData}
@@ -204,7 +204,7 @@ const Organizations = () => {
                   </span>
                   <div className="relative text-xxs xl:w-[90px] z-0 flex justify-center w-full">
                     <span
-                      className={`${item.active ? "bg-[#DDF1E4] text-[#429A60]" : "bg-[#FF3D2C33] text-[#EF5648]"} rounded-full py-[6px] px-3 cursor-pointer text-center flex items-center justify-between`}
+                      className={`${item.active ? "bg-[#DDF1E4] text-[#429A60]" : "bg-[#FF3D2C33] text-[#EF5648]"} rounded-full py-[6px] px-3 cursor-pointer text-center flex items-center justify-between lg:mt-0 mt-2`}
                       onClick={() => handleStatusDropdown(item.name, item.active)}
                     >
                       {item.active ? "Aktiv" : "Deaktiv"}
@@ -217,7 +217,7 @@ const Organizations = () => {
                       </svg>
                     </span>
                     <div
-                      className={`${selectStatus.name === item.name ? "absolute" : "hidden"} flex flex-col gap-4 bg-white shadow rounded-md p-2 top-[28.6px]`}
+                      className={`${selectStatus.name === item.name ? "absolute" : "hidden"} flex flex-col gap-4 bg-white shadow rounded-md p-2 top-full z-10 mb-0`}
                     >
                       <span
                         className={`${item.active ? "bg-[#FF3D2C33] text-[#EF5648]" : "bg-[#DDF1E4] text-[#429A60]"} rounded-full py-[6px] px-3 cursor-pointer text-center`}

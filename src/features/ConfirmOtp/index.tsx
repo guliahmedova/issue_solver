@@ -1,9 +1,9 @@
 "use client";
 import { time } from "@/assets/imgs";
-import { Button, Loader } from "@/features/common";
+import { Button } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
-import { Box, Divider, Grid, OutlinedInput, Typography } from "@mui/material";
+import { Box, CircularProgress, Divider, Grid, OutlinedInput, Typography } from "@mui/material";
 import { AxiosError } from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import style from "./confirmOtp.module.scss";
+import { error } from "console";
 
 let currentOTPIndex: number;
 
@@ -123,7 +124,6 @@ const ConfirmOtp = () => {
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         setOtpError(error?.response?.data?.message);
-        toast.error(error?.response?.data?.message);
         setSuccess(false);
         setBtnsDisabled(prevState => ({
           ...prevState,
@@ -205,7 +205,7 @@ const ConfirmOtp = () => {
                 <Grid item key={index} sx={{
                   height: "100% !importance",
                 }} className={style.hyphen}>
-                  <Box component="div" width="100%" height="1px" border="1px solid #2981FF" />
+                  <Box component="div" width="100%" height="1px" border={`1px solid ${otpError ? "#EF5648" : "#2981FF"}`} />
                 </Grid>
               ) : (
                 <Grid item key={index} textAlign="center" >
@@ -242,7 +242,10 @@ const ConfirmOtp = () => {
       </Box>
 
       <ToastContainer />
-      <Loader loader={loader} />
+
+      <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 lg:right-0 lg:left-auto left-0 right-auto flex lg:w-6/12 w-full h-screen items-center justify-center bg-black bg-opacity-10 z-40`}>
+        <CircularProgress size="4rem" />
+      </div>
     </>
   );
 };
