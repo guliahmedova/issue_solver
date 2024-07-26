@@ -8,13 +8,12 @@ interface IProtectRoute {
 
 const ProtectRoute = ({ children }: IProtectRoute) => {
   const token = useAuthStore(state => state.authData?.token);
-  const isLoading = useAuthStore(state => state.loading);
 
-  if (isLoading || !token) {
+  if (!token) {
     return <Loading />;
   };
 
   return children;
 };
 
-export default ProtectRoute;
+export default ProtectRoute;  

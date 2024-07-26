@@ -202,7 +202,7 @@ const Organizations = () => {
                       </span>
                     )}
                   </span>
-                  <div className="relative text-xxs xl:w-[90px] z-0 flex justify-center mt-5 w-full">
+                  <div className="relative text-xxs xl:w-[90px] z-0 flex justify-center w-full">
                     <span
                       className={`${item.active ? "bg-[#DDF1E4] text-[#429A60]" : "bg-[#FF3D2C33] text-[#EF5648]"} rounded-full py-[6px] px-3 cursor-pointer text-center flex items-center justify-between`}
                       onClick={() => handleStatusDropdown(item.name, item.active)}
@@ -217,7 +217,7 @@ const Organizations = () => {
                       </svg>
                     </span>
                     <div
-                      className={`${selectStatus.name === item.name ? "absolute" : "hidden"} flex flex-col gap-4 bg-white shadow rounded-md p-2 top-[28.6px] w-full`}
+                      className={`${selectStatus.name === item.name ? "absolute" : "hidden"} flex flex-col gap-4 bg-white shadow rounded-md p-2 top-[28.6px]`}
                     >
                       <span
                         className={`${item.active ? "bg-[#FF3D2C33] text-[#EF5648]" : "bg-[#DDF1E4] text-[#429A60]"} rounded-full py-[6px] px-3 cursor-pointer text-center`}
