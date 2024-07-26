@@ -2,11 +2,11 @@
 const Privacy = () => {
     return (
         <div className="p-8">
-            <h1 className="text-[#2981FF] text-2xl font-bold">Məxfilik siyasəti</h1>
+            <h1 className="text-[#2981FF] text-3xl font-bold">Məxfilik siyasəti</h1>
             <p className="text-[#9D9D9D] mt-2 opacity-90">Tətbiq istifadə olunarkən aşağıdakı qaydalar pozulmamalıdır.</p>
 
             <div className="mt-3">
-                <h3 className="font-medium text-xl opacity-75">Təşəbbüslərə Müraciət Et vətəndaşların dövlət xidmətlərinə sorğularını göndərən tətbiq üçün Təhlükəsizlik Qaydaları:</h3>
+                <h3 className="font-medium lg:text-xl opacity-75">Təşəbbüslərə Müraciət Et vətəndaşların dövlət xidmətlərinə sorğularını göndərən tətbiq üçün Təhlükəsizlik Qaydaları:</h3>
 
                 <ol className="mt-10">
                     <li className="mt-2">
