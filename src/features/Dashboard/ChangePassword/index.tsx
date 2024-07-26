@@ -9,6 +9,7 @@ import { useRef, useState } from "react";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import ValidationSchema from "./schema";
+import { toast } from "react-toastify";
 
 type FormValues = z.infer<typeof ValidationSchema>;
 
@@ -41,6 +42,7 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
             await updatePasswordTrigger({ body: data });
             actions.setSubmitting(false);
             setOpenPasswordModal(false);
+            toast.success('Uğurla yeniləndi');
         } catch (error: any) {
             setError(error?.response?.data?.message);
         } finally {
@@ -54,6 +56,26 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
             })
         }
     };
+
+    const validateForm = (values: FormValues) => {
+        const errors: Partial<FormValues> = {};
+
+        if (values.newPassword !== values.confirmPassword) {
+            errors.confirmPassword = "Hər iki şifrə dəqiq eyni olmalıdır";
+        }
+
+        const validation = ValidationSchema.safeParse(values);
+        if (!validation.success) {
+            validation.error.errors.forEach(error => {
+                if (error.path.includes('password')) errors.password = error.message;
+                if (error.path.includes('newPassword')) errors.newPassword = error.message;
+                if (error.path.includes('confirmPassword')) errors.confirmPassword = error.message;
+            });
+        }
+
+        return errors;
+    };
+
 
     return (
         <>
@@ -91,6 +113,8 @@ const ChangePassword = ({ openPasswordModal, setOpenPasswordModal }: IChangePass
                             onSubmit={handleSubmit}
                             validationSchema={toFormikValidationSchema(ValidationSchema)}
                             validateOnBlur={true}
+                            validate={validateForm}
+                            validateOnChange={true}
                         >
                             {({
                                 handleSubmit,

@@ -161,10 +161,10 @@ const Organizations = () => {
         </div>
 
         <div>
-          <div className="flex items-center justify-between bg-white py-6 px-14 rounded-xl mb-10 select-none">
-            <span className="text-xs">No</span>
-            <span className="text-xs">Qurumun Adı</span>
-            <span className="text-xs">Qurumun Statusu</span>
+          <div className="xl:flex hidden items-center justify-between bg-white py-6 px-14 rounded-xl mb-10 select-none">
+            <span className="xl:text-base text-xxs">No</span>
+            <span className="xl:text-base text-xxs">Qurumun Adı</span>
+            <span className="xl:text-base text-xxs">Qurumun Statusu</span>
           </div>
 
           <div className="max-h-min h-[390px] overflow-auto" id="parentScrollBarOrganization">
@@ -179,7 +179,7 @@ const Organizations = () => {
             >
               {organizationData?.map((item: IOrganization, index: number) => (
                 <div
-                  className="flex items-center justify-between bg-white py-6 px-14 rounded-xl mb-3"
+                  className="xl:flex grid grid-cols-1 items-center justify-between bg-white py-6 px-14 rounded-xl mb-3"
                   key={index}
                 >
                   <span className="text-xs select-none">{index + 1}</span>
@@ -202,7 +202,7 @@ const Organizations = () => {
                       </span>
                     )}
                   </span>
-                  <div className="relative text-xxs w-[90px] z-0">
+                  <div className="relative text-xxs xl:w-[90px] z-0 flex justify-center mt-5 w-full">
                     <span
                       className={`${item.active ? "bg-[#DDF1E4] text-[#429A60]" : "bg-[#FF3D2C33] text-[#EF5648]"} rounded-full py-[6px] px-3 cursor-pointer text-center flex items-center justify-between`}
                       onClick={() => handleStatusDropdown(item.name, item.active)}
