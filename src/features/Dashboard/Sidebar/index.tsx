@@ -32,12 +32,6 @@ const sidebarMenu = [
         icon: comments,
     },
     {
-        path: "/dashboard/about",
-        label: "Platforma haqqında",
-        permissions: [ROLES.STAFF],
-        icon: about,
-    },
-    {
         path: "/dashboard/faq",
         label: "Tez-tez verilən suallar",
         permissions: [ROLES.STAFF],
