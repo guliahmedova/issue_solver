@@ -145,7 +145,7 @@ const Staff = () => {
                         <div className="lg:grid grid-cols-5 justify-between bg-white py-6 px-8 rounded-xl mb-10 select-none hidden">
                             <span className="xl:text-base text-[13px]">No</span>
                             <span className="xl:text-base text-[13px]">Staffın Adı</span>
-                            <span className="xl:text-base text-[13px]">Staffın E-Poçtu</span>
+                            <span className="xl:text-base text-center text-[13px]">Staffın E-Poçtu</span>
                             <span className="xl:text-base text-[13px] text-center">Aid olduğu qurum</span>
                             <span className="xl:text-base text-[13px] text-end">Staffı Sil</span>
                         </div>
@@ -163,8 +163,8 @@ const Staff = () => {
                         >
                             {staffData?.map((item: IStaff, index: number) => (
                                 <div className={`grid xl:grid-cols-5 grid-cols-1 gap-3 items-center justify-between ${item.isActiveOrganization === "True" ? "bg-white" : "bg-gray-disabled select-none"} py-6 px-8 rounded-xl mb-3 w-full`} key={index}>
-                                    <span className="xl:text-base text-xxs select-none text-left md:text-left w-full">{index + 1}</span>
-                                    <span className="xl:text-base text-xxs whitespace-break-spaces break-words text-center xl:text-left w-full">
+                                    <span className="xl:text-base text-xxs select-none text-left md:text-left w-fit">{index + 1}</span>
+                                    <span className="xl:text-base text-xxs whitespace-break-spaces break-words text-center xl:text-left w-fit">
                                         {editIndex === index ? (
                                             <input
                                                 type="text"
@@ -183,9 +183,9 @@ const Staff = () => {
                                             </span>
                                         )}
                                     </span>
-                                    <span className="xl:text-base text-xxs whitespace-break-spaces break-words w-full xl:text-left text-center">{item.username}</span>
+                                    <span className="xl:text-base text-xxs whitespace-break-spaces break-words w-fit xl:text-left text-center">{item.username}</span>
                                     <span className="xl:text-base text-xxs text-center whitespace-break-spaces break-words w-full">{item.isActiveOrganization && item.organizationName}</span>
-                                    <div className="flex justify-end w-full"
+                                    <div className="flex justify-end"
                                         onClick={() => handleStaffDelete(item.username)}
                                     >
                                         <Image alt="" src={trashbin} className="cursor-pointer" />

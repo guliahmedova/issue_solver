@@ -1,17 +1,17 @@
 "use client";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, CircularProgress, Divider, Typography } from "@mui/material";
 import { AxiosError } from "axios";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { z } from "zod";
-import { toFormikValidationSchema } from "zod-formik-adapter";
-import { Button, Input, Loader } from "../common";
-import EmailValidationSchema from "./schema";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { z } from "zod";
+import { toFormikValidationSchema } from "zod-formik-adapter";
+import { Button, Input } from "../common";
+import EmailValidationSchema from "./schema";
 
 type FormValues = z.infer<typeof EmailValidationSchema>;
 
@@ -132,7 +132,11 @@ export default function ForgotPassword() {
           )}
         </Formik>
       </Box>
-      <Loader loader={loader} />
+
+      <div className={`${loader ? 'fixed' : 'hidden'} top-0 bottom-0 lg:right-0 lg:left-auto left-0 right-auto flex lg:w-6/12 w-full h-screen items-center justify-center bg-black bg-opacity-10 z-40`}>
+        <CircularProgress size="4rem" />
+      </div>
+
       <ToastContainer />
     </>
   );
