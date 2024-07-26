@@ -145,10 +145,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: ISidebar) => {
         checkPermission(item?.permissions, getMeData)
     );
 
-
-    console.log(sidebarItems);
-    
-
     return (
         <>
             <aside

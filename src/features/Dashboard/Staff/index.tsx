@@ -133,7 +133,7 @@ const Staff = () => {
 
             <div>
                 <div className="flex items-center justify-between mb-7">
-                    <h2 className="font-bold text-lg select-none">Bütün Əməkdaşlar</h2>
+                    <h2 className="font-bold text-xl select-none">Bütün Əməkdaşlar</h2>
                     <button className="bg-[#2981FF] text-white rounded-3xl py-3 px-6 flex items-center justify-between w-[136px] text-[13px]"
                         onClick={() => setOpenPopup(true)}
                     >Əlavə et <Image alt="" src={plus} /></button>
@@ -142,12 +142,12 @@ const Staff = () => {
                 {/**------------------------------------------------- */}
                 <div className="overflow-x-auto">
                     <div className="max-h-80">
-                        <div className="grid grid-cols-5 justify-between bg-white py-6 px-8 rounded-xl mb-10 select-none">
-                            <span className="text-xs">No</span>
-                            <span className="text-xs">Staffın Adı</span>
-                            <span className="text-xs">Staffın E-Poçtu</span>
-                            <span className="text-xs text-center">Aid olduğu qurum</span>
-                            <span className="text-xs text-end">Staffı Sil</span>
+                        <div className="lg:grid grid-cols-5 justify-between bg-white py-6 px-8 rounded-xl mb-10 select-none hidden">
+                            <span className="xl:text-base text-[13px]">No</span>
+                            <span className="xl:text-base text-[13px]">Staffın Adı</span>
+                            <span className="xl:text-base text-[13px]">Staffın E-Poçtu</span>
+                            <span className="xl:text-base text-[13px] text-center">Aid olduğu qurum</span>
+                            <span className="xl:text-base text-[13px] text-end">Staffı Sil</span>
                         </div>
                     </div>
 
@@ -162,9 +162,9 @@ const Staff = () => {
                             scrollableTarget="parentScrollBar"
                         >
                             {staffData?.map((item: IStaff, index: number) => (
-                                <div className={`grid grid-cols-5 items-center justify-between ${item.isActiveOrganization === "True" ? "bg-white" : "bg-gray-disabled select-none"} py-6 px-8 rounded-xl mb-3 w-full`} key={index}>
-                                    <span className="lg:text-base text-xxs select-none">{index + 1}</span>
-                                    <span className="lg:text-base text-xxs whitespace-break-spaces break-words">
+                                <div className={`grid xl:grid-cols-5 grid-cols-1 gap-3 items-center justify-between ${item.isActiveOrganization === "True" ? "bg-white" : "bg-gray-disabled select-none"} py-6 px-8 rounded-xl mb-3 w-full`} key={index}>
+                                    <span className="xl:text-base text-xxs select-none text-left md:text-left w-full">{index + 1}</span>
+                                    <span className="xl:text-base text-xxs whitespace-break-spaces break-words text-center xl:text-left w-full">
                                         {editIndex === index ? (
                                             <input
                                                 type="text"
@@ -175,7 +175,7 @@ const Staff = () => {
                                                         handleEditSubmit();
                                                     }
                                                 }}
-                                                className="lg:w-4/6 w-5/6 rounded p-1 border-2 border-[#2981FF] bg-gray-disabled"
+                                                className="xl:w-4/6 w-5/6 rounded p-1 border-2 border-[#2981FF] bg-gray-disabled"
                                             />
                                         ) : (
                                             <span onClick={() => handleEditClick(index, item.fullname, item.username)}>
@@ -183,9 +183,9 @@ const Staff = () => {
                                             </span>
                                         )}
                                     </span>
-                                    <span className="lg:text-base text-xxs whitespace-break-spaces break-words">{item.username}</span>
-                                    <span className="lg:text-base text-xxs text-center whitespace-break-spaces break-words">{item.isActiveOrganization && item.organizationName}</span>
-                                    <div className="flex justify-end"
+                                    <span className="xl:text-base text-xxs whitespace-break-spaces break-words w-full xl:text-left text-center">{item.username}</span>
+                                    <span className="xl:text-base text-xxs text-center whitespace-break-spaces break-words w-full">{item.isActiveOrganization && item.organizationName}</span>
+                                    <div className="flex justify-end w-full"
                                         onClick={() => handleStaffDelete(item.username)}
                                     >
                                         <Image alt="" src={trashbin} className="cursor-pointer" />

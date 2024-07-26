@@ -76,7 +76,7 @@ const Header = ({ setSidebarOpen }: IHeader) => {
     return (
         <>
             <header className="sticky top-0 z-20 flex w-full lg:bg-surface-background bg-white drop-shadow-1 shadow-sm">
-                <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
+                <div className="flex justify-between items-center w-full px-4 py-4 shadow-2 md:px-6 2xl:px-11">
                     <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
                         <button
                             aria-controls="sidebar"
@@ -84,34 +84,13 @@ const Header = ({ setSidebarOpen }: IHeader) => {
                                 e.stopPropagation();
                                 setSidebarOpen(prevState => !prevState);
                             }}
-                            className="z-99999 block lg:bg-surface-background bg-transparent p-1.5 lg:hidden cursor-pointer"
+                            className="z-99999 inline-block lg:bg-surface-background bg-transparent p-1.5 lg:hidden cursor-pointer"
                         >
                             <MenuIcon />
                         </button>
                     </div>
 
                     <div className="flex items-center gap-3 2xsm:gap-7 w-full justify-end">
-                        {/**-----------------------SEARCH------------------------- */}
-                        {/* <form className="max-w-md hidden lg:block ">
-                            <div className="relative">
-                                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none opacity-80">
-                                    <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                    </svg>
-                                </div>
-                                <input type="text" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 rounded-xl outline-none"
-                                    placeholder="Axtarış"
-                                    value={searchText}
-                                    onChange={handleSearchInputChange}
-                                />
-                            </div>
-                        </form> */}
-                        {/**-----------------------SEARCH------------------------- */}
-
-                        {/**-----------------------NOTIF------------------------- */}
-                        {/* <Image alt="" src={notif} /> */}
-                        {/**-----------------------NOTIF------------------------- */}
-
                         {/**-----------------------DROPDOWN------------------------- */}
                         <div className="relative" >
                             <div className="bg-[#E0EDFF] rounded-full w-12 h-12 flex items-center justify-center cursor-pointer relative z-30"
