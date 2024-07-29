@@ -35,13 +35,14 @@ export default function LoginForm() {
 
       if (loginData?.data?.permissons[0] === ROLES.ADMIN) {
         router.push("/dashboard/organizations");
-      } else if (loginData?.data?.permissons[0] === ROLES.STAFF) {
+      } else if (loginData?.data?.permissons[1] === ROLES.STAFF) {
         router.push("/dashboard/");
       }
 
       setAuth({ token: loginData?.data?.accessToken, refreshToken: loginData?.data?.refreshToken });
       setLoginError(null);
     } catch (error: any) {
+      setLoader(false);
       if (error?.response?.data?.message == "Staff is not found") {
         setLoginError("İstifadəçi tapılmadı");
       } else {
