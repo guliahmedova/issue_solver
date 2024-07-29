@@ -3,7 +3,6 @@ import { building, key, logout, user } from "@/assets/imgs";
 import { Loader } from "@/features/common";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
-import { useSearchStore } from "@/state/useSearchStore";
 import MenuIcon from '@mui/icons-material/Menu';
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -37,11 +36,6 @@ const Header = ({ setSidebarOpen }: IHeader) => {
 
     const [loader, setLoader] = useState(false);
     const { trigger: getDataTrigger } = useRequestMutation(API.get_me, { method: 'GET' });
-    const { searchText, setSearchText } = useSearchStore();
-
-    const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchText(event.target.value);
-    };
 
     const handleOutsideClick = (e: React.MouseEvent<HTMLElement>) => {
         if (dropdownRef?.current && !dropdownRef?.current?.contains(e.target as Node)) {

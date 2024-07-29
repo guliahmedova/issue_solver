@@ -130,8 +130,6 @@ const ConfirmOtp = () => {
           secondaryBtn: true,
         }));
       }
-    } finally {
-      setLoader(false);
     }
   };
 
