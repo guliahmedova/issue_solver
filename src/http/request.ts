@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      if (counter === 2) {
+      if (counter === 10) {
         localStorage.clear();
         window.location.href = '/login';
       }
@@ -42,7 +42,7 @@ axiosInstance.interceptors.response.use(
       const response = await axiosInstance.post(process.env.NEXT_PUBLIC_BASE_URL + API.login_refreshtoken, { token: refreshToken });
       const newAccessToken = response?.data?.data?.token;
       const setState = useAuthStore.getState().setAuth;
-      setState({ token: newAccessToken, refreshToken: refreshToken + "aaa" });
+      setState({ token: newAccessToken, refreshToken: refreshToken });
       axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
       counter = 0;
       return axiosInstance(originalRequest);

@@ -163,8 +163,8 @@ const Staff = () => {
                         >
                             {staffData?.map((item: IStaff, index: number) => (
                                 <div className={`grid xl:grid-cols-5 grid-cols-1 gap-3 items-center justify-between ${item.isActiveOrganization === "True" ? "bg-white" : "bg-gray-disabled select-none"} py-6 px-8 rounded-xl mb-3 w-full`} key={index}>
-                                    <span className="xl:text-base text-xxs select-none text-left md:text-left w-fit">{index + 1}</span>
-                                    <span className="xl:text-base text-xxs whitespace-break-spaces break-words text-center xl:text-left w-fit">
+                                    <span className="xl:text-base text-sm select-none text-left md:text-left w-fit">{index + 1}</span>
+                                    <span className="xl:text-base text-sm whitespace-break-spaces break-words text-center xl:text-left xl:w-fit">
                                         {editIndex === index ? (
                                             <input
                                                 type="text"
@@ -183,8 +183,8 @@ const Staff = () => {
                                             </span>
                                         )}
                                     </span>
-                                    <span className="xl:text-base text-xxs whitespace-break-spaces break-words w-fit xl:text-left text-center">{item.username}</span>
-                                    <span className="xl:text-base text-xxs text-center whitespace-break-spaces break-words w-full">{item.isActiveOrganization && item.organizationName}</span>
+                                    <span className="xl:text-base text-sm whitespace-break-spaces break-words xl:w-fit xl:text-left text-center">{item.username}</span>
+                                    <span className="xl:text-base text-sm text-center whitespace-break-spaces break-words w-full">{item.isActiveOrganization && item.organizationName}</span>
                                     <div className="flex justify-end"
                                         onClick={() => handleStaffDelete(item.username)}
                                     >

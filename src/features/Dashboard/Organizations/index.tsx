@@ -182,8 +182,8 @@ const Organizations = () => {
                   className="xl:flex grid grid-cols-1 items-center justify-between bg-white py-6 px-14 rounded-xl mb-3"
                   key={index}
                 >
-                  <span className="text-xs select-none">{index + 1}</span>
-                  <span className="lg:text-base text-xxs text-center">
+                  <span className="xl:text-base text-sm select-none">{index + 1}</span>
+                  <span className="xl:text-base text-sm text-center">
                     {editIndex === index ? (
                       <input
                         type="text"
