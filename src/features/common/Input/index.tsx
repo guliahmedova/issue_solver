@@ -47,7 +47,7 @@ const Input = ({
         marginBottom: "24px",
       }}
     >
-      <InputLabel variant={labelVariant} error={isError}>
+      <InputLabel variant={labelVariant} error={isError} className="select-none">
         {labelText}
       </InputLabel>
       <FormControl error={isError} fullWidth>

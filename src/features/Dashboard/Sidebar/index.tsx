@@ -1,4 +1,4 @@
-import { about, applies, comments, faq, privacy, qurum, staff } from "@/assets/imgs";
+import { applies, comments, faq, privacy, qurum, staff } from "@/assets/imgs";
 import { ROLES } from "@/constants/roles";
 import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
