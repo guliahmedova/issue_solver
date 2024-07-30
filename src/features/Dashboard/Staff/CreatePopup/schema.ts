@@ -10,7 +10,7 @@ const ValidationSchema: ZodType<Staff> = z.object({
         required_error: "E-poçt mütləq daxil edilməlidir"
     }).email({ message: "E-poçt formatı yanlışdır" }),
     title: z.string({
-        required_error: "Staffın Adı mütləq daxil edilməlidir"
+        required_error: "Əməkdaşın adı mütləq daxil edilməlidir"
     }),
     organization: z.string({
         required_error: "Aid olduğu qurum mütləq daxil edilməlidir"

@@ -10,7 +10,7 @@ const API = {
   "search": "",
   "staffs_get": "api/Staffs/getlist",
   "staff_create": "api/Users/create",
-  "staff_delete": "api/Users/remove",
+  "staff_delete": "api/Staffs/delete",
   "staff_edit": "api/Staffs/Update",
   "organizations_get": "api/Organizations/getpaginationlist",
   "organization_create": "api/Organizations/create",
@@ -20,6 +20,7 @@ const API = {
   "organization_edit": "api/Organizations/update",
   "organization_comments": "api/v1/comments/request/{{id}}",
   "create_comment": "api/v1/comments/post",
+  "organization_getlist": "api/Organizations/getlist"
 };
 
 export default API;

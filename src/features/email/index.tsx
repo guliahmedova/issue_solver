@@ -33,9 +33,9 @@ export default function ForgotPassword() {
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         setEmailError(error?.response?.data?.message);
-        toast.error(error?.response?.data?.message);
       }
       actions.setSubmitting(false);
+      setLoader(false);
     } finally {
       setLoader(false);
       actions.resetForm({

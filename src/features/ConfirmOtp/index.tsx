@@ -38,7 +38,7 @@ const ConfirmOtp = () => {
   ): void => {
     const { value } = target;
     const newOTP: string[] = [...otp];
-    newOTP[currentOTPIndex] = value.substring(value.length - 1);
+    newOTP[currentOTPIndex] = value.substring(value.length - 80);
     if (index == 2 && value) {
       currentOTPIndex = 3;
     }
@@ -125,6 +125,7 @@ const ConfirmOtp = () => {
       if (error instanceof AxiosError) {
         setOtpError(error?.response?.data?.message);
         setSuccess(false);
+        setLoader(false);
         setBtnsDisabled(prevState => ({
           ...prevState,
           secondaryBtn: true,
@@ -149,6 +150,7 @@ const ConfirmOtp = () => {
         secondaryBtn: true,
       });
     } catch (error) {
+      setLoader(false);
       if (error instanceof AxiosError) {
         setTimer(0);
         setOpenPopup(true);

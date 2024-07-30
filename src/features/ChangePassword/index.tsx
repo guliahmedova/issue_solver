@@ -38,6 +38,7 @@ const ChangePassword = () => {
       router.push('/login');
       sessionStorage.clear();
     } catch (error: any) {
+      setLoader(false);
       setError(error?.response?.data?.message);
     } finally {
       setLoader(false);
