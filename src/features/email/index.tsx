@@ -36,7 +36,6 @@ export default function ForgotPassword() {
       actions.setSubmitting(false);
       setLoader(false);
     } finally {
-      setLoader(false);
       actions.resetForm({
         values: {
           email: "",
@@ -121,11 +120,10 @@ export default function ForgotPassword() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {emailError && <Typography className="text-[#FF3D2C] mb-4" textAlign="left" width="60%">{emailError}</Typography>}
 
-                <Button variant="primary" type="submit" disabled={!isValid || !dirty}>
-                  Təsdiq kodu göndər
-                </Button>
+                {emailError && <Typography className="text-[#FF3D2C]" textAlign="left" width="60%">{emailError}</Typography>}
+
+                <button disabled={!isValid || !dirty} type="submit" className="bg-[#2981FF] rounded-full text-white font-medium text-xs cursor-pointer py-4 disabled:bg-[#B2D2FF] disabled:text-white active:bg-[#0169FE]/20">Təsdiq kodu göndər</button>
               </Form>
             </Box>
           )}
