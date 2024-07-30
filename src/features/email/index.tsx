@@ -22,14 +22,13 @@ export default function ForgotPassword() {
   const [loader, setLoader] = useState(false);
 
   const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
+    actions.setSubmitting(false);
     try {
       setLoader(true);
       setEmailError(null);
-      const email = values?.email;
-      await sendEmailTrigger({ body: { email: email } });
-      actions.setSubmitting(false);
+      await sendEmailTrigger({ body: { email: values?.email } });
       router.push("/confirm-otp");
-      sessionStorage.setItem("user_email", email);
+      sessionStorage.setItem("user_email", values?.email);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         setEmailError(error?.response?.data?.message);

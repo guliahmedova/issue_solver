@@ -166,7 +166,7 @@ const CreatePopup = ({ openPopup, setOpenPopup, refreshData }: ICreatePopup) => 
                                                 <MenuItem className="text-[#000000] bg-white hidden" value="" disabled>
                                                     Qurum
                                                 </MenuItem>
-                                                {organizations?.data?.items?.map((organization: Organization, index: number) => (
+                                                {organizations?.data?.map((organization: Organization, index: number) => (
                                                     <MenuItem className="text-[#000000] bg-white" key={index} value={organization.name}>{organization.name}</MenuItem>
                                                 ))}
                                             </Select>
