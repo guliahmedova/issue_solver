@@ -33,6 +33,8 @@ export default function LoginForm() {
       setLoader(true);
       const loginData = await LoginTrigger({ body: data });
 
+      sessionStorage.setItem('role', loginData?.data?.permissons?.[1]);
+
       if (loginData?.data?.permissons[0] === ROLES.ADMIN) {
         router.push("/dashboard/organizations");
       } else if (loginData?.data?.permissons[1] === ROLES.STAFF) {
