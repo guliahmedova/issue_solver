@@ -26,7 +26,7 @@ type FormValues = z.infer<typeof ValidationSchema>;
 
 const CreatePopup = ({ openPopup, setOpenPopup, refreshData }: ICreatePopup) => {
     const { trigger: updatePasswordTrigger } = useRequestMutation(API.staff_create, { method: 'POST' });
-    const { data: organizations } = useRequest(API.organizations_get, { method: 'GET' });
+    const { data: organizations } = useRequest(API.organization_getlist, { method: 'GET' });
     const modelRef = useRef<HTMLDivElement>(null);
     const [error, setError] = useState(null);
     const [loader, setLoader] = useState(false);
@@ -83,7 +83,7 @@ const CreatePopup = ({ openPopup, setOpenPopup, refreshData }: ICreatePopup) => 
                     <div className="w-full h-full overflow-auto">
                         <Box className="select-none">
                             <Typography color="initial" fontSize={28} fontWeight={600} className="text-[#2981FF]">
-                                Yeni Staff
+                                Yeni Əməkdaş
                             </Typography>
                             <Typography fontSize={15} fontWeight={400} sx={{ color: "#9D9D9D" }} noWrap>
                                 Zəhmət olmasa məlumatlarınızı qeyd edin
@@ -121,7 +121,7 @@ const CreatePopup = ({ openPopup, setOpenPopup, refreshData }: ICreatePopup) => 
                                     <Box display="flex" flexDirection="column">
                                         <Field
                                             name="title"
-                                            labelText="Staffın Adı"
+                                            labelText="Əməkdaşın adı"
                                             type="text"
                                             component={Input}
                                             placeholder="Ad, Soyad"
@@ -166,7 +166,7 @@ const CreatePopup = ({ openPopup, setOpenPopup, refreshData }: ICreatePopup) => 
                                                 <MenuItem className="text-[#000000] bg-white hidden" value="" disabled>
                                                     Qurum
                                                 </MenuItem>
-                                                {organizations?.data?.items?.map((organization: Organization, index: number) => (
+                                                {organizations?.data?.map((organization: Organization, index: number) => (
                                                     <MenuItem className="text-[#000000] bg-white" key={index} value={organization.name}>{organization.name}</MenuItem>
                                                 ))}
                                             </Select>

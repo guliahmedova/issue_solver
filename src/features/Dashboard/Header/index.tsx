@@ -5,10 +5,11 @@ import API from "@/http/api";
 import { useRequestMutation } from "@/http/request";
 import MenuIcon from '@mui/icons-material/Menu';
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { FormEvent, FormEventHandler, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import ChangePassword from "../ChangePassword";
 import LogoutPopup from "../LogoutPopup";
+import { useSearchStore } from "@/state/useSearchStore";
 
 interface IHeader {
     setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -36,6 +37,13 @@ const Header = ({ setSidebarOpen }: IHeader) => {
 
     const [loader, setLoader] = useState(false);
     const { trigger: getDataTrigger } = useRequestMutation(API.get_me, { method: 'GET' });
+
+    const { trigger: searchTrigger } = useRequestMutation(
+        API["search-request-keyword"],
+        {
+            method: "GET",
+        },
+    );
 
     const handleOutsideClick = (e: React.MouseEvent<HTMLElement>) => {
         if (dropdownRef?.current && !dropdownRef?.current?.contains(e.target as Node)) {
@@ -67,6 +75,28 @@ const Header = ({ setSidebarOpen }: IHeader) => {
         fetchUserData();
     }, []);
 
+
+    const [searchText, setSearchText] = useState("");
+    const { setsearchDatas } = useSearchStore();
+
+    const handleSearchInputChange: FormEventHandler<HTMLFormElement> = async (
+        event: FormEvent<HTMLFormElement>,
+    ) => {
+        event.preventDefault();
+        try {
+            const result = await searchTrigger({
+                params: {
+                    keyword: searchText,
+                    page: 0,
+                    size: 10,
+                },
+            });
+            setsearchDatas(result.data);
+        } catch (error: any) {
+            toast.error(error?.response?.data?.message);
+        }
+    };
+
     return (
         <>
             <header className="sticky top-0 z-20 flex w-full lg:bg-surface-background bg-white drop-shadow-1 shadow-sm">
@@ -85,6 +115,39 @@ const Header = ({ setSidebarOpen }: IHeader) => {
                     </div>
 
                     <div className="flex items-center gap-3 2xsm:gap-7 w-full justify-end">
+
+                        <form
+                            className="max-w-md hidden lg:block "
+                            onSubmit={handleSearchInputChange}
+                        >
+                            <div className="relative">
+                                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none opacity-80">
+                                    <svg
+                                        className="w-4 h-4 text-gray-500"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path
+                                            stroke="currentColor"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                                        />
+                                    </svg>
+                                </div>
+                                <input
+                                    type="text"
+                                    id="default-search"
+                                    className="block w-full p-4 ps-10 text-sm text-gray-900 rounded-xl outline-none"
+                                    placeholder="Axtarış"
+                                    onChange={(e) => setSearchText(e.target.value)}
+                                />
+                            </div>
+                        </form>
+                        
                         {/**-----------------------DROPDOWN------------------------- */}
                         <div className="relative" >
                             <div className="bg-[#E0EDFF] rounded-full w-12 h-12 flex items-center justify-center cursor-pointer relative z-30"

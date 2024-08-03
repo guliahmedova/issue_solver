@@ -22,22 +22,20 @@ export default function ForgotPassword() {
   const [loader, setLoader] = useState(false);
 
   const handleSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
+    actions.setSubmitting(false);
     try {
       setLoader(true);
       setEmailError(null);
-      const email = values?.email;
-      await sendEmailTrigger({ body: { email: email } });
-      actions.setSubmitting(false);
+      await sendEmailTrigger({ body: { email: values?.email } });
       router.push("/confirm-otp");
-      sessionStorage.setItem("user_email", email);
+      sessionStorage.setItem("user_email", values?.email);
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         setEmailError(error?.response?.data?.message);
-        toast.error(error?.response?.data?.message);
       }
       actions.setSubmitting(false);
-    } finally {
       setLoader(false);
+    } finally {
       actions.resetForm({
         values: {
           email: "",
@@ -122,11 +120,10 @@ export default function ForgotPassword() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {emailError && <Typography className="text-[#FF3D2C] mb-4" textAlign="left" width="60%">{emailError}</Typography>}
 
-                <Button variant="primary" type="submit" disabled={!isValid || !dirty}>
-                  Təsdiq kodu göndər
-                </Button>
+                {emailError && <Typography className="text-[#FF3D2C]" textAlign="left" width="60%">{emailError}</Typography>}
+
+                <button disabled={!isValid || !dirty} type="submit" className="bg-[#2981FF] rounded-full text-white font-medium text-xs cursor-pointer py-4 disabled:bg-[#B2D2FF] disabled:text-white active:bg-[#0169FE]/20">Təsdiq kodu göndər</button>
               </Form>
             </Box>
           )}

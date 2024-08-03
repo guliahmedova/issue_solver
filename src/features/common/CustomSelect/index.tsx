@@ -1,57 +1,35 @@
 import { SelectDown } from "@/assets/imgs";
 import Image from "next/image";
 
-const Options = [
-  {
-    id: 1,
-    value: "DİN",
-    abbr: "Daxili İşlər Nazirliyi",
-  },
-  {
-    value: "DIN",
-    abbr: "Daxili İşlər Nazirliyi",
-  },
-  {
-    value: "DIN",
-    abbr: "Daxili İşlər Nazirliyi",
-  },
-  {
-    value: "DIN",
-    abbr: "Daxili İşlər Nazirliyi",
-  },
-  {
-    value: "DIN",
-    abbr: "Daxili İşlər Nazirliyi",
-  },
-  {
-    value: "DIN",
-    abbr: "Daxili İşlər Nazirliyi",
-  },
-];
-
-export default function CustomSelect() {
+export default function CustomSelect({
+  defaultOption,
+  fn,
+  optionVariable,
+  optionValue,
+  handleChange,
+}: any) {
   return (
-    <div className="w-[30%]  flex justify-between relative">
+    <div className="w-[30%] flex justify-between relative">
       <select
-        name="government"
-        id="government "
+        name="custom-select"
+        id="custom-select"
         className="w-full py-3 px-4 bg-white rounded-[8px] hover:cursor-pointer text-xs text-surface-secondary"
         defaultValue={"DEFAULT"}
+        onChange={handleChange}
       >
         <option value="DEFAULT" disabled hidden>
-          Qurum
+          {defaultOption}
         </option>
-        {Options.map((option, index) => {
-          return (
-            <option key={index} value={option.value} className="text-black">
-              {option.abbr}
+        {fn &&
+          fn.map((item: any, index: number) => (
+            <option key={index} value={item[optionValue]}>
+              {item[optionVariable]}
             </option>
-          );
-        })}
+          ))}
       </select>
       <Image
         src={SelectDown}
-        alt="arrow-down "
+        alt="arrow-down"
         className="absolute top-[50%] translate-y-[-50%] right-4"
       />
     </div>

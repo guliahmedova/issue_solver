@@ -26,12 +26,6 @@ const sidebarMenu = [
         icon: applies,
     },
     {
-        path: "/dashboard/comments",
-        label: "Şərhlərim",
-        permissions: [ROLES.STAFF],
-        icon: comments,
-    },
-    {
         path: "/dashboard/faq",
         label: "Tez-tez verilən suallar",
         permissions: [ROLES.STAFF],

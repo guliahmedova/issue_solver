@@ -71,7 +71,7 @@ const Staff = () => {
             setLoader(true);
             await deleteStaffTrigger({
                 body: {
-                    email: email
+                    username: email
                 }
             });
             setStaffData(prevStaffData => prevStaffData.filter(staff => staff.username !== email));
@@ -140,18 +140,16 @@ const Staff = () => {
                 </div>
 
                 {/**------------------------------------------------- */}
-                <div className="overflow-x-auto">
-                    <div className="max-h-80">
-                        <div className="lg:grid grid-cols-5 justify-between bg-white py-6 px-8 rounded-xl mb-10 select-none hidden">
-                            <span className="xl:text-base text-[13px]">No</span>
-                            <span className="xl:text-base text-[13px]">Staffın Adı</span>
-                            <span className="xl:text-base text-center text-[13px]">Staffın E-Poçtu</span>
-                            <span className="xl:text-base text-[13px] text-center">Aid olduğu qurum</span>
-                            <span className="xl:text-base text-[13px] text-end">Staffı Sil</span>
-                        </div>
+                <div>
+                    <div className="xl:flex hidden items-center justify-between bg-white py-6 px-14 rounded-xl mb-10 select-none">
+                        <span className="xl:text-base text-[13px]">No</span>
+                        <span className="xl:text-base text-[13px]">Əməkdaş Adı</span>
+                        <span className="xl:text-base text-center text-[13px]">Əməkdaşın E-Poçtu</span>
+                        <span className="xl:text-base text-[13px] text-center">Aid olduğu qurum</span>
+                        <span className="xl:text-base text-[13px] text-end">Əməkdaşı Sil</span>
                     </div>
 
-                    <div id="parentScrollBar" className="max-h-max h-[390px]">
+                    <div id="parentScrollBar" className="max-h-max h-[380px] overflow-y-auto">
                         <InfiniteScroll
                             dataLength={staffData?.length}
                             next={fetchData}
